@@ -1,0 +1,17 @@
+{
+    "name": "will-may/my-mvc",
+    "authors": [
+        {
+            "name": "William May",
+            "email": "wjrm500@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    }
+}

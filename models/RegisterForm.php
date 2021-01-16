@@ -4,6 +4,8 @@ namespace app\models;
 
 class RegisterForm extends User
 {
+    public string $confirmPassword = '';
+
     public function attributes(): array
     {
         return array_merge(
@@ -42,10 +44,10 @@ class RegisterForm extends User
         ];
     }
 
-    public function save()
+    public function save($returnLastInsertId = true)
     {
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
         unset($this->confirmPassword);
-        return parent::save();
+        return $this->id = parent::save($returnLastInsertId);
     }
 }

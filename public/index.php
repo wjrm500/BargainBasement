@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_URI'] === '/migrations.php') {
 }
 
 use app\controllers\AccountController;
+use app\controllers\AdminController;
 use app\controllers\HomeController;
 use app\core\Application;
 use Dotenv\Dotenv;
@@ -42,6 +43,8 @@ $app->router->post('/register', [AccountController::class, 'register']);
 $app->router->get('/logout', [AccountController::class, 'logout']);
 
 $app->router->get('/profile', [AccountController::class, 'profile']);
+
+$app->router->get('/admin', [AdminController::class, 'index']);
 
 // Run Application
 

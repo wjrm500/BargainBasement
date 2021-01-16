@@ -13,8 +13,6 @@ $session = Application::$app->session;
     <link rel="stylesheet" href="/css/style.css">
     <link rel="shortcut icon" href="#" />
     <script src="https://kit.fontawesome.com/3cd62817c9.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/js/script.js"></script>
 </head>
 <body>
 <?php if ($session->isFlashy()): ?>
@@ -31,6 +29,5 @@ $session = Application::$app->session;
     <?php endforeach; ?>
 <?php endif; ?>
 <?php include __DIR__ . '/../partials/navbar.php'; ?>
-<?php include __DIR__ . '/../partials/secondary_navbar.php'; ?>
     {{ content }}
 </body>

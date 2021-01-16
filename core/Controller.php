@@ -6,11 +6,17 @@ use app\core\middlewares\BaseMiddleware;
 
 class Controller
 {
+    protected string $layout = 'main';
     protected array $protectedMethods = [];
 
-    public function render($view, $params = [], $layout = 'main')
+    public function setLayout($layout)
     {
-        return Application::$app->view->render($view, $params, $layout);
+        $this->layout = $layout;
+    }
+
+    public function render($view, $params = [])
+    {
+        return Application::$app->view->render($view, $params, $this->layout);
     }
 
     public function registerProtectedMethod(string $method, array $middlewares)

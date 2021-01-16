@@ -14,6 +14,7 @@ class AccountController extends Controller
 {
     public function __construct()
     {
+        $this->setLayout('auth');
         $this->registerProtectedMethod('profile', [new LoggedIn()]);
     }
 
@@ -62,6 +63,7 @@ class AccountController extends Controller
 
     public function profile(Request $request, Response $response)
     {
+        $this->setLayout('main');
         return $this->render('profile');
     }
 }

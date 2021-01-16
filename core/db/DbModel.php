@@ -4,13 +4,14 @@ namespace app\core\db;
 
 use app\core\Application;
 use app\core\Model;
-use PDOException;
 
 abstract class DbModel extends Model
 {
+    public int $id = 0;
+
     abstract public static function tableName(): string;
 
-    public function save()
+    public function save($returnLastInsertId = false)
     {
         $tableName = static::tableName();
         $attributes = array_filter($this->attributes(), fn($attribute) => isset($this->{$attribute}));
@@ -22,10 +23,11 @@ abstract class DbModel extends Model
         foreach ($attributes as $attribute) {
             $statement->bindParam(":$attribute", $this->{$attribute});
         }
-        return $statement->execute();
+        $result = $statement->execute();
+        return $returnLastInsertId ? Application::$app->database->pdo->lastInsertId() : $result;
     }
 
-    public static function find(Array $whereConditions)
+    public static function find(Array $whereConditions, $fetchAll = false)
     {
         $tableName = static::tableName();
         $sql = "SELECT * FROM {$tableName} WHERE ";
@@ -41,6 +43,7 @@ abstract class DbModel extends Model
         $sql .= $whereClause;
         $statement = Application::$app->database->prepare($sql);
         $statement->execute();
-        return $statement->fetchObject(static::class);
+        $statement->setFetchMode(\PDO::FETCH_CLASS, static::class);
+        return $fetchAll ? $statement->fetchAll() : $statement->fetch();
     }
 }

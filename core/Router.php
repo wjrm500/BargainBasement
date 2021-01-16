@@ -47,15 +47,6 @@ class Router
                     }
                 }
             }
-            // $protectedMethods = $controller->getProtectedMethods();
-            // if (in_array($method, $protectedMethods)) {
-            //     $protectedMethod = $protectedMethods[$method];
-            //     foreach ($protectedMethod['middlewares'] as $middleware) {
-            //         if (!$middleware->execute()) {
-            //             throw $middleware->getException();
-            //         }   
-            //     }
-            // }
         }
         return call_user_func($callback, $this->request, $this->response);
     }

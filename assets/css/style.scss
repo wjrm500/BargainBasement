@@ -1,0 +1,63 @@
+@import 'colours'; 
+
+body {
+    min-width: 350px;
+}
+
+a {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+@media (max-width: 576px) {
+    #company-name {
+        text-align: center;
+    }
+}
+
+@media (min-width: 576px) {
+    #company-name {
+        text-align: left;
+    }
+}
+
+#secondary-navbar {
+    background: linear-gradient(to bottom, $white, $grey);
+    border: 2px solid black;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    position: relative;
+    top: -5px;
+
+    ul {
+        display: flex;
+        flex-direction: row;
+
+        li {
+            flex: 1;
+
+            a {
+                font-weight: bold;
+
+                &:hover {
+                    -webkit-transform: scale(1.1);
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    span.icon {display:none}
+    span.text {display:inline-block}
+}
+
+@media (max-width: 992px) {
+    span.icon {display:inline-block}
+    span.text {display:none}
+}
+
+.inversed {
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
+  }

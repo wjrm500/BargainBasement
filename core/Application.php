@@ -5,6 +5,7 @@ namespace app\core;
 use app\core\db\Database;
 use app\models\LoginForm;
 use app\models\RegisterForm;
+use app\models\User;
 use Exception;
 
 class Application
@@ -33,13 +34,13 @@ class Application
     public function login($userModel)
     {
         if ($userModel instanceof RegisterForm) {
-            $this->session->set('user', $userModel->username);
+            $this->session->set('user', $userModel->id);
         }
         if ($userModel instanceof LoginForm) {
             if ($dbUser = $userModel::find(['username' => $userModel->username])) {
                 $dbPassword = $dbUser->password;
                 if (password_verify($userModel->password, $dbPassword)) {
-                    $this->session->set('user', $userModel->username);
+                    $this->session->set('user', $dbUser->id);
                     return true;
                 } else {
                     $this->session->setFlashMessage('Password incorrect', 'danger');
@@ -59,7 +60,13 @@ class Application
 
     public function hasUser()
     {
-        return $this->session->has('user');
+        return $this->session->has('user') && $this->session->get('user') !== 0;
+    }
+
+    public function getUser()
+    {
+        $userId = $this->session->get('user');
+        return User::find(['id' => $userId]);
     }
 
     public function run()

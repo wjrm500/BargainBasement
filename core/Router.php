@@ -54,7 +54,7 @@ class Router
 
         // If no regex match, try direct match
 
-        if (!isset($matches)) {
+        if (!$matches) {
             $callback = $this->routes[$method][$path];
         }
 
@@ -79,7 +79,7 @@ class Router
 
         // Activate callback
 
-        if (isset($matches)) {
+        if ($matches) {
             return call_user_func($callback, $this->request, $this->response, ...$matches);
         }
         return call_user_func($callback, $this->request, $this->response);

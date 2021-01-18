@@ -61,3 +61,16 @@ a {
     -webkit-filter: invert(100%);
     filter: invert(100%);
   }
+
+table {
+    th, td {
+        width: 100%;
+    
+        a {
+            min-width: 40px;
+            padding: 0px !important;
+            width: 100%;
+            white-space: normal;
+        }
+    }   
+}

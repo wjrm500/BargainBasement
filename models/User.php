@@ -8,7 +8,7 @@ class User extends DbModel
 {
     public string $username = '';
     public string $password = '';
-    public bool $admin;
+    public int $country_id;
 
     public function labels(): array
     {
@@ -25,23 +25,23 @@ class User extends DbModel
         return 'users';
     }
 
-    public function attributes(): array
+    public static function attributes(): array
     {
-        return ['username', 'password'];
+        return ['username', 'password', 'country_id'];
     }
     
-    public function getAdminPermissions()
+    public function getPermissions()
     {
-        $adminUserPermissions = AdminUserPermission::find(['user_id' => $this->id], true);
-        $adminPermissions = array_map(
-            fn($aup) => AdminPermission::find(['id' => $aup->permission_id]),
-            $adminUserPermissions
+        $userPermissions = UserPermission::find(['user_id' => $this->id], true);
+        $permissions = array_map(
+            fn($up) => Permission::find(['id' => $up->permission_id]),
+            $userPermissions
         );
-        return $adminPermissions;
+        return $permissions;
     }
 
     public function isAdmin()
     {
-        return boolval($this->getAdminPermissions());
+        return boolval($this->getPermissions());
     }
 }

@@ -43,3 +43,11 @@ a:hover {
 .inversed {
   -webkit-filter: invert(100%);
   filter: invert(100%); }
+
+table th, table td {
+  width: 100%; }
+  table th a, table td a {
+    min-width: 40px;
+    padding: 0px !important;
+    width: 100%;
+    white-space: normal; }

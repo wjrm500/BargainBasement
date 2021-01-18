@@ -11,8 +11,8 @@ abstract class Model
     public const RULE_PASSWORD = 'passwordRule';
     public array $errors = [];
 
-    abstract public function attributes(): array;
-
+    abstract public static function attributes(): array;
+    
     abstract public function labels(): array;
 
     abstract public function rules(): array;
@@ -28,7 +28,7 @@ abstract class Model
 
     public function validate()
     {
-        $attributes = $this->attributes();
+        $attributes = static::attributes();
         $rules = $this->rules();
         foreach ($attributes as $attribute) {
             $rulesForAttribute = $rules[$attribute];

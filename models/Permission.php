@@ -4,7 +4,7 @@ namespace app\models;
 
 use app\core\db\DbModel;
 
-class AdminPermission extends DbModel
+class Permission extends DbModel
 {
     public string $name = '';
     public string $href = '';
@@ -21,10 +21,10 @@ class AdminPermission extends DbModel
 
     public static function tableName(): string
     {
-        return 'admin_permissions';
+        return 'permissions';
     }
 
-    public function attributes(): array
+    public static function attributes(): array
     {
         return ['name', 'href'];
     }

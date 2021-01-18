@@ -2,8 +2,12 @@
 
 namespace app\core;
 
+use app\core\utilities\RegexTrait;
+
 class Router
 {
+    use RegexTrait;
+
     public array $routes = [];
 
     public function __construct()
@@ -18,22 +22,46 @@ class Router
 
     public function get($path, $callback)
     {
-        $this->routes['GET'][$path] = $callback;
+        if (!isset($this->routes['GET'][$path])) {
+            $this->routes['GET'][$path] = $callback;
+        }
     }
 
     public function post($path, $callback)
     {
-        $this->routes['POST'][$path] = $callback;
+        if (!isset($this->routes['POST'][$path])) {
+            $this->routes['POST'][$path] = $callback;
+        }
     }
 
     public function resolve(Request $request, Response $response)
     {
         $method = $request->getMethod();
         $path = $request->getPath();
-        $callback = $this->routes[$method][$path];
+
+        // Check for regex matches
+
+        foreach ($this->routes[$method] as $existingPath => $existingCallback) {
+            if (preg_match('/{.*}/', $existingPath)) {
+                $routeRegexPattern = $this->convertPathToRegexPattern($existingPath);
+                if (preg_match($routeRegexPattern, $path, $matches)) {
+                    $matches = array_slice($matches, 1);
+                    $callback = $existingCallback;
+                    break;
+                }
+            }
+        }
+
+        // If no regex match, try direct match
+
+        if (!isset($matches)) {
+            $callback = $this->routes[$method][$path];
+        }
+
+        // Instantiate controller and execute relevant middlewares
+
         if (is_array($callback)) {
-            // Instantiate controller
-            $callback[0] = new $callback[0]();
+            $callback[0] = new $callback[0](); // Instantiate controller
             $controller = $callback[0];
             $method = $callback[1];
             if ($controller->hasProtectedMethods()) {
@@ -47,6 +75,12 @@ class Router
                     }
                 }
             }
+        }
+
+        // Activate callback
+
+        if (isset($matches)) {
+            return call_user_func($callback, $this->request, $this->response, ...$matches);
         }
         return call_user_func($callback, $this->request, $this->response);
     }

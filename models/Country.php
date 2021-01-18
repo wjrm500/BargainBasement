@@ -4,10 +4,9 @@ namespace app\models;
 
 use app\core\db\DbModel;
 
-class AdminUserPermission extends DbModel
+class Country extends DbModel
 {
-    public string $user_id = '';
-    public string $permission_id = '';
+    public string $name = '';
 
     public function labels(): array
     {
@@ -21,11 +20,11 @@ class AdminUserPermission extends DbModel
 
     public static function tableName(): string
     {
-        return 'admin_users_permissions';
+        return 'countries';
     }
 
-    public function attributes(): array
+    public static function attributes(): array
     {
-        return ['user_id', 'permission_id'];
+        return ['name'];
     }
 }

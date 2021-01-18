@@ -1,0 +1,35 @@
+/*
+
+Search results page with filters
+
+Individual product page
+
+Product category page - see all products belonging to a category
+
+Rename profile to account, can be home for edit details, previous orders
+
+Admin system
+
+- Super admin user to control admin permissions
+
+- Data visualisation dashboard on index page - stats like page views, products purchased,
+signups, revenue. Swap between tabs to see different aspects of the data
+
+- Adding, editing or deleting products. Adding images - host on Cloudinary? Add tags for categories
+
+- Add, edit or delete categories. View all products in a category
+
+- Special offers - discounts, buy one get one free
+
+- Product recall - suspend products, email users who bought the product
+
+- Respond to customer reviews on products - replies should appear below comments
+
+- Respond to feedback submitted via the contact form - maybe implement a basic
+CRM
+
+- Responding to job applications
+
+- On-site promos - uploading images, time duration, user details
+
+*/

@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\core\exceptions\RouteNotFoundException;
 use app\core\utilities\RegexTrait;
 
 class Router
@@ -38,25 +39,27 @@ class Router
     {
         $method = $request->getMethod();
         $path = $request->getPath();
+        
+        // Check for direct route match
 
-        // Check for regex matches
+        $callback = $this->routes[$method][$path] ?? null;
 
-        foreach ($this->routes[$method] as $existingPath => $existingCallback) {
-            if (preg_match('/{.*}/', $existingPath)) {
-                $routeRegexPattern = $this->convertPathToRegexPattern($existingPath);
-                if (preg_match($routeRegexPattern, $path, $matches)) {
-                    $matches = array_slice($matches, 1);
-                    $callback = $existingCallback;
-                    break;
+        // If no direct route match, check for regex matches
+        
+        if (!$callback) {
+            foreach ($this->routes[$method] as $existingPath => $existingCallback) {
+                if (preg_match('/{.*}/', $existingPath)) {
+                    $routeRegexPattern = $this->convertPathToRegexPattern($existingPath);
+                    if (preg_match($routeRegexPattern, $path, $matches)) {
+                        $matches = array_slice($matches, 1);
+                        $callback = $existingCallback;
+                        break;
+                    }
                 }
             }
         }
 
-        // If no regex match, try direct match
-
-        if (!$matches) {
-            $callback = $this->routes[$method][$path];
-        }
+        if (!$callback) throw new RouteNotFoundException();
 
         // Instantiate controller and execute relevant middlewares
 
@@ -79,7 +82,7 @@ class Router
 
         // Activate callback
 
-        if ($matches) {
+        if (isset($matches) && $matches) {
             return call_user_func($callback, $this->request, $this->response, ...$matches);
         }
         return call_user_func($callback, $this->request, $this->response);

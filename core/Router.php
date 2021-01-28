@@ -46,6 +46,7 @@ class Router
 
         // If no direct route match, check for regex matches
         
+        // Implement named params?
         if (!$callback) {
             foreach ($this->routes[$method] as $existingPath => $existingCallback) {
                 if (preg_match('/{.*}/', $existingPath)) {

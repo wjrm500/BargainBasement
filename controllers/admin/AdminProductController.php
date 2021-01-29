@@ -23,7 +23,14 @@ class AdminProductController extends AdminController
         $productAttributes = Product::attributes();
         $products = Product::findAll();
         $permissions = Application::$app->getUser()->getPermissions();
-        return $this->render('admin/product/new_home', compact('productAttributes', 'products', 'permissions'));
+        return $this->render(
+            'admin/permission_home',
+            [
+                'itemAttributes' => $productAttributes,
+                'items'          => $products,
+                'permissions'    => $permissions
+            ]
+        );
     }
 
     public function editProduct(Request $request, Response $response, $productId)

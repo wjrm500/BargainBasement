@@ -31,8 +31,6 @@ $session = Application::$app->session;
         </div>
     <?php endforeach; ?>
 <?php endif; ?>
-<!-- <?php include __DIR__ . '/../partials/navbar.php'; ?> -->
-<!-- <?php include __DIR__ . '/../partials/secondary_navbar.php'; ?> -->
-<?php include __DIR__ . '/../partials/new_navbar.php'; ?>
+<?php include __DIR__ . '/../partials/navbar.php'; ?>
     {{ content }}
 </body>

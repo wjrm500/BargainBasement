@@ -11,6 +11,8 @@ $session = Application::$app->session;
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/admin.css">
     <link rel="shortcut icon" href="#" />
     <script src="https://kit.fontawesome.com/3cd62817c9.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -30,11 +32,8 @@ $session = Application::$app->session;
         </div>
     <?php endforeach; ?>
 <?php endif; ?>
-<?php include __DIR__ . '/../partials/admin_navbar.php'; ?>
-    <div id="admin" class="bg-white container rounded mt-2">
-        <div class="row h3 py-2 bg-light rounded-top" style="padding-left: 30px">
-            Admin
-        </div>
+<?php include __DIR__ . '/../partials/navbar.php'; ?>
+    <div id="admin" class="px-5 mt-2">
         {{ content }}
     </div>
 </body>

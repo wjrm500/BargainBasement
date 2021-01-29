@@ -12,7 +12,7 @@ class RegisterForm extends User
         $this->countries = Country::findAll();
     }
 
-    public function attributes(): array
+    public static function attributes(): array
     {
         return array_merge(
             parent::attributes(),

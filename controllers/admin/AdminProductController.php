@@ -2,6 +2,7 @@
 
 namespace app\controllers\admin;
 
+use app\core\Application;
 use app\core\Request;
 use app\core\Response;
 use app\models\Permission;
@@ -21,7 +22,8 @@ class AdminProductController extends AdminController
     {
         $productAttributes = Product::attributes();
         $products = Product::findAll();
-        return $this->render('admin/product/home', compact('productAttributes', 'products'));
+        $permissions = Application::$app->getUser()->getPermissions();
+        return $this->render('admin/product/new_home', compact('productAttributes', 'products', 'permissions'));
     }
 
     public function editProduct(Request $request, Response $response, $productId)

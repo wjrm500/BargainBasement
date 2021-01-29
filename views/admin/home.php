@@ -1,5 +1,7 @@
-<?php foreach($permissions as $permission): ?>
-    <div class="row px-5">
-        <a class="btn" style="text-align: left" href="<?= $permission->href ?>"><?= $permission->name ?></a>
-    </div>
-<?php endforeach; ?>
+<ul>
+    <?php foreach($permissions as $permission): ?>
+        <li>
+            <a class="btn m-2 btn-secondary" href="<?= $permission->href ?>"><?= $permission->name ?></a>
+        </li>
+    <?php endforeach; ?>
+</ul>

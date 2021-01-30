@@ -1,20 +1,29 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 
-gulp.task('hello', function(done) {
-  console.log('Hello William');
-  done();
-});
+function buildCss() {
+  return gulp.src('assets/css/*.scss')
+    .pipe(sass())
+    .pipe(gulp.dest('public/css/'));
+}
 
-gulp.task('buildCss', function() {
-    return gulp.src('assets/css/*.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('public/css/'));
-});
-
-gulp.task('buildJs', function() {
+function buildJs() {
   return gulp.src('assets/js/*.js')
-      .pipe(gulp.dest('public/js/'));
-});
+    .pipe(gulp.dest('public/js/'));
+}
 
-gulp.task('build', gulp.series('buildCss', 'buildJs'));
+function build(done) {
+  buildCss();
+  buildJs();
+  done();
+}
+
+exports.watch = function() {
+  gulp.watch(
+    [
+      'assets/css/*.scss',
+      'assets/js/*.js'
+    ],
+    build
+  );
+}

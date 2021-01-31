@@ -26,6 +26,7 @@ class AdminProductController extends AdminController
         return $this->render(
             'admin/permission_home',
             [
+                'title'          => static::PERMISSION_NAME,
                 'itemAttributes' => $productAttributes,
                 'items'          => $products,
                 'permissions'    => $permissions

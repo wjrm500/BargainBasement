@@ -26,5 +26,25 @@ $(document).ready(
                 'background': 'linear-gradient(90deg, rgb(0,150,0), rgb(150,225,150), white)',
             })
         }
+
+        let firstPageButton = document.querySelector('[data-page-num="0"]');
+        $(firstPageButton).removeClass('btn-light');
+        $(firstPageButton).addClass('btn-success');
+
+        $('#admin-table-page-buttons').children().each(function() {
+            $(this).click(function() {
+                // debugger;
+                $(this).removeClass('btn-light');
+                $(this).addClass('btn-success');
+                $(this).siblings().removeClass('btn-success');
+                $(this).siblings().addClass('btn-light');
+                let pageNum = $(this).data('page-num');
+                let table = $('#admin-table-page-' + pageNum);
+                table.removeClass('d-none');
+                table.siblings().addClass('d-none');
+            });
+
+        });
     }
 )
+

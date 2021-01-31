@@ -1,3 +1,129 @@
+$(document).ready(function() {
+    // Highlight currently selected page in admin navbar
+
+    let listChildren = $('#admin-nav-list').children();
+    for (let listChild of listChildren) {
+        let button = $($(listChild).children()[0]);
+        if (button.attr('href') === window.location.pathname) {
+            applyCurrentlySelectedGlow(button);
+        }
+    }
+
+    function applyCurrentlySelectedGlow(button) {
+        button.css({
+            'color': 'white'
+        });
+        let buttonParent = $(button.parent());
+        buttonParent.css({
+            'background': 'linear-gradient(90deg, rgb(0,150,0), rgb(150,225,150), white)',
+        })
+    }
+});
+$(document).ready(function() {
+    let firstPageButton = document.querySelector('button[data-page-num="0"]');
+    highlightButton(firstPageButton);
+
+    $('#admin-table-page-buttons').children().each(function() {
+        $(this).click(function() {
+            let pageNum = $(this).data('page-num');
+            goToPage(pageNum);
+        });
+    });
+
+    $('#pagination-back-all').click(function() {
+        goToPage(0);
+    });
+
+    $('#pagination-forward-all').click(function() {
+        let maxPageNum = getMaxPageNum();
+        goToPage(maxPageNum);
+    });
+
+    $('#pagination-back-one').click(function() {
+        // debugger;
+        let currentPageNum = getCurrentPageNum();
+        if (currentPageNum !== 0) {
+            goToPage(currentPageNum - 1);
+        }
+    });
+
+    $('#pagination-forward-one').click(function() {
+        let currentPageNum = getCurrentPageNum();
+        if (currentPageNum !== getMaxPageNum()) {
+            goToPage(currentPageNum + 1);
+        }
+    });
+});
+
+function goToPage(pageNum) {
+    let button = getButtonByPageNum(pageNum);
+    highlightButton(button);
+    let table = getTableByPageNum(pageNum);
+    displayTable(table);
+}
+
+
+function highlightButton(button) {
+    if (!(button instanceof jQuery)) {
+        button = $(button);
+    }
+    button.attr('data-selected', 'true');
+    button.siblings().each(function() {
+        $(this).attr('data-selected', 'false')
+    });
+    button.removeClass('btn-light');
+    button.addClass('btn-success');
+    button.siblings().each(function() {
+        $(this).removeClass('btn-success');
+        $(this).addClass('btn-light');
+    });
+}
+
+function displayTable(table) {
+    if (!(table instanceof jQuery)) {
+        table = $(table);
+    }
+    table.attr('data-selected', 'true');
+    table.siblings().each(function() {
+        $(this).attr('data-selected', 'false')
+    });
+    table.removeClass('d-none');
+    table.siblings().addClass('d-none');
+}
+
+
+function getTableByPageNum(pageNum) {
+    let tables = document.querySelectorAll('.admin-table-page');
+    for (let table of tables) {
+        if (table.dataset.pageNum == pageNum) {
+            return table;
+        }
+    }
+}
+
+function getButtonByPageNum(pageNum) {
+    let buttons = document.querySelectorAll('.admin-table-page-button');
+    for (let button of buttons) {
+        if (button.dataset.pageNum == pageNum) {
+            return button;
+        }
+    }
+}
+
+function getMaxPageNum() {
+    let buttons = document.querySelectorAll('.admin-table-page-button');
+    let lastButton = buttons[buttons.length - 1];
+    return parseInt(lastButton.dataset.pageNum);
+}
+
+function getCurrentPageNum() {
+    let buttons = document.querySelectorAll('.admin-table-page-button');
+    for (let button of buttons) {
+        if (button.dataset.selected == 'true') {
+            return parseInt(button.dataset.pageNum);
+        }
+    }
+}
 $(document).ready(
     function() {
         // Add glowing border to current page in secondary navbar
@@ -7,44 +133,6 @@ $(document).ready(
         navItem.style.borderColor = 'dodgerblue';
         navItem.style.borderRadius = '5px';
         navItem.style.boxShadow = "0px 0px 5px 3px dodgerblue";
-        
-        // Highlight currently selected page in admin navbar
-        let listChildren = $('#admin-nav-list').children();
-        for (let listChild of listChildren) {
-            let button = $($(listChild).children()[0]);
-            if (button.attr('href') === window.location.pathname) {
-                applyCurrentlySelectedGlow(button);
-            }
-        }
-
-        function applyCurrentlySelectedGlow(button) {
-            button.css({
-                'color': 'white'
-            });
-            let buttonParent = $(button.parent());
-            buttonParent.css({
-                'background': 'linear-gradient(90deg, rgb(0,150,0), rgb(150,225,150), white)',
-            })
-        }
-
-        let firstPageButton = document.querySelector('[data-page-num="0"]');
-        $(firstPageButton).removeClass('btn-light');
-        $(firstPageButton).addClass('btn-success');
-
-        $('#admin-table-page-buttons').children().each(function() {
-            $(this).click(function() {
-                // debugger;
-                $(this).removeClass('btn-light');
-                $(this).addClass('btn-success');
-                $(this).siblings().removeClass('btn-success');
-                $(this).siblings().addClass('btn-light');
-                let pageNum = $(this).data('page-num');
-                let table = $('#admin-table-page-' + pageNum);
-                table.removeClass('d-none');
-                table.siblings().addClass('d-none');
-            });
-
-        });
     }
 )
 

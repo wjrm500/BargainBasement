@@ -24,7 +24,7 @@ class AdminProductController extends AdminController
         $products = Product::findAll();
         $permissions = Application::$app->getUser()->getPermissions();
         return $this->render(
-            'admin/permission_home',
+            'admin/item_home',
             [
                 'title'          => static::PERMISSION_NAME,
                 'itemAttributes' => $productAttributes,
@@ -32,6 +32,11 @@ class AdminProductController extends AdminController
                 'permissions'    => $permissions
             ]
         );
+    }
+
+    public function addProduct(Request $request, Response $response)
+    {
+        return $this->render('');
     }
 
     public function editProduct(Request $request, Response $response, $productId)

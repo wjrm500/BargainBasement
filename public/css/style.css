@@ -27,48 +27,48 @@
   position: relative; }
   #admin #admin-body #admin-header h2 {
     margin-bottom: 25px; }
-  #admin #admin-body #admin-header .admin-header-item {
-    width: 100%; }
-  #admin #admin-body #admin-header .admin-header-labelled-group {
-    position: relative;
-    top: -24px; }
   #admin #admin-body #admin-header span#admin-page-type {
     color: lightgrey; }
-  #admin #admin-body #admin-table-pages {
+  #admin #admin-body #admin-table #admin-table-header .admin-table-header-item {
+    width: 100%; }
+  #admin #admin-body #admin-table #admin-table-header .admin-table-header-labelled-group {
+    position: relative;
+    top: -24px; }
+  #admin #admin-body #admin-table #admin-table-pages {
     max-height: 70%;
     overflow: hidden;
     overflow-y: scroll; }
     @media (min-height: 400px) and (max-height: 500px) {
-      #admin #admin-body #admin-table-pages {
+      #admin #admin-body #admin-table #admin-table-pages {
         max-height: 40%; } }
     @media (min-height: 500px) and (max-height: 625px) {
-      #admin #admin-body #admin-table-pages {
+      #admin #admin-body #admin-table #admin-table-pages {
         max-height: 50%; } }
     @media (min-height: 625px) and (max-height: 750px) {
-      #admin #admin-body #admin-table-pages {
+      #admin #admin-body #admin-table #admin-table-pages {
         max-height: 60%; } }
-    #admin #admin-body #admin-table-pages .admin-table-page {
+    #admin #admin-body #admin-table #admin-table-pages .admin-table-page {
       margin: 0px; }
-      #admin #admin-body #admin-table-pages .admin-table-page tr {
+      #admin #admin-body #admin-table #admin-table-pages .admin-table-page tr {
         border-color: black; }
-        #admin #admin-body #admin-table-pages .admin-table-page tr:nth-child(even) {
+        #admin #admin-body #admin-table #admin-table-pages .admin-table-page tr:nth-child(even) {
           background: #CCC; }
-        #admin #admin-body #admin-table-pages .admin-table-page tr:nth-child(odd) {
+        #admin #admin-body #admin-table #admin-table-pages .admin-table-page tr:nth-child(odd) {
           background: #FFF; }
-      #admin #admin-body #admin-table-pages .admin-table-page td {
+      #admin #admin-body #admin-table #admin-table-pages .admin-table-page td {
         overflow-x: hidden;
         text-overflow: ellipsis;
         white-space: nowrap; }
-  #admin #admin-body #admin-table-pagination {
+  #admin #admin-body #admin-table #admin-table-pagination {
     position: absolute;
     bottom: 10px; }
-    #admin #admin-body #admin-table-pagination button {
+    #admin #admin-body #admin-table #admin-table-pagination button {
       height: 30px;
       width: 30px; }
-    #admin #admin-body #admin-table-pagination input {
+    #admin #admin-body #admin-table #admin-table-pagination input {
       height: 30px;
-      width: 100px; }
-    #admin #admin-body #admin-table-pagination #backward-pagination-icons i {
+      width: 50px; }
+    #admin #admin-body #admin-table #admin-table-pagination #backward-pagination-icons i {
       transform: rotate(180deg); }
 
 

@@ -1,10 +1,10 @@
-#admin ul {
+#admin-initial-menu ul {
   padding: 0px; }
-  #admin ul li {
+  #admin-initial-menu ul li {
     display: flex;
     justify-content: center;
     list-style: none; }
-    #admin ul li a {
+    #admin-initial-menu ul li a {
       width: 250px; }
 
 #admin #admin-nav {

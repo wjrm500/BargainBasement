@@ -15,28 +15,18 @@ class AdminProductController extends AdminController
     public function __construct()
     {
         $this->permissionId = Permission::find(['name' => self::PERMISSION_NAME])->id;
+        $this->setModel(Product::class);
         parent::__construct();
     }
 
     public function index()
     {
-        $productAttributes = Product::attributes();
-        $products = Product::findAll();
-        $permissions = Application::$app->getUser()->getPermissions();
-        return $this->render(
-            'admin/item_home',
-            [
-                'title'          => static::PERMISSION_NAME,
-                'itemAttributes' => $productAttributes,
-                'items'          => $products,
-                'permissions'    => $permissions
-            ]
-        );
+        return $this->render('admin/item_home');
     }
 
     public function addProduct(Request $request, Response $response)
     {
-        return $this->render('');
+        return $this->render('admin/item_add_form');
     }
 
     public function editProduct(Request $request, Response $response, $productId)

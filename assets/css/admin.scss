@@ -1,5 +1,4 @@
-#admin {
-
+#admin-initial-menu {
     ul {
         padding: 0px;
         
@@ -13,7 +12,9 @@
             }
         }
     }
+}
 
+#admin {
     #admin-nav {
         border: 2px solid lightgrey;
         height: 75vh;

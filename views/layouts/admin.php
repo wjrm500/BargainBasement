@@ -15,7 +15,6 @@ $session = Application::$app->session;
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="/js/script.js"></script>
-    
 </head>
 <body>
 <?php if ($session->isFlashy()): ?>
@@ -31,8 +30,18 @@ $session = Application::$app->session;
         </div>
     <?php endforeach; ?>
 <?php endif; ?>
-<?php include __DIR__ . '/../partials/navbar.php'; ?>
+<?php include Application::$root . '/views/partials/navbar.php'; ?>
     <div id="admin" class="px-5 mt-2">
-        {{ content }}
+        <div class="row">
+            <div class="col-lg-2 col-6">
+                <?php include Application::$root . '/views/admin/partials/admin-navbar.php' ?>
+            </div>
+            <div class="col-lg-10 col-6">
+                <div id="admin-body">
+                    <?php include Application::$root . '/views/admin/partials/admin-header.php' ?>
+                    {{ content }}
+                </div>
+            </div>
+        </div>
     </div>
 </body>

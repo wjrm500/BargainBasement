@@ -33,4 +33,20 @@ class Request
             return filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
         }
     }
+
+    private function getExplodedPath()
+    {
+        return explode('/', $_SERVER['REQUEST_URI']);
+    }
+
+    public function getPathElementCount()
+    {
+        return count($this->getExplodedPath());
+    }
+
+    public function getSlug()
+    {
+        $explodedPath = $this->getExplodedPath();
+        return $explodedPath[array_key_last($explodedPath)];
+    }
 }

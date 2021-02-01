@@ -14,7 +14,6 @@ class HomeController extends Controller
 
     public function adminIndex()
     {
-        $this->setLayout('admin');
         $permissions = Application::$app->getUser()->getPermissions();
         return $this->render('admin/home', compact('permissions'));
     }

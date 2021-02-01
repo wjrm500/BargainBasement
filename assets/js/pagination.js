@@ -2,6 +2,16 @@ $(document).ready(function() {
     let firstPageButton = document.querySelector('button[data-page-num="0"]');
     highlightButton(firstPageButton);
 
+    $('#pagination-direct').keypress(function(e) {
+        if (e.which === 13) {
+            let inputValue = $('#pagination-direct').val();
+            if (isNaN(inputValue)) {
+                return alert('Please enter a number');
+            }
+            goToPage(inputValue - 1);
+        }
+    });
+
     $('#pagination-back-all').click(function() {
         goToPage(0);
     });
@@ -30,16 +40,6 @@ $(document).ready(function() {
             let pageNum = $(this).data('page-num');
             goToPage(pageNum);
         });
-    });
-
-    $('#pagination-direct').keypress(function(e) {
-        if (e.which === 13) {
-            let inputValue = $('#pagination-direct').val();
-            if (isNaN(inputValue)) {
-                return alert('Please enter a number');
-            }
-            goToPage(inputValue - 1);
-        }
     });
 });
 

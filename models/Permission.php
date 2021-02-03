@@ -7,6 +7,7 @@ use app\core\db\DbModel;
 class Permission extends DbModel
 {
     public string $name = '';
+    public string $item_name = '';
     public string $href = '';
 
     public function labels(): array
@@ -26,6 +27,6 @@ class Permission extends DbModel
 
     public static function attributes(): array
     {
-        return ['name', 'href'];
+        return ['name', 'item_name', 'href'];
     }
 }

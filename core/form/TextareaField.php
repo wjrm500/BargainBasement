@@ -15,7 +15,8 @@ class TextareaField extends Field
         return $this->view->render(
             'partials/form/textarea_field',
             [
-                'type' => $this->type
+                'type' => $this->type,
+                'name' => $this->attribute
             ],
             null
         );

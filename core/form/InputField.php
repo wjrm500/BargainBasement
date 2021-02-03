@@ -14,7 +14,8 @@ abstract class InputField extends Field
         return $this->view->render(
             'partials/form/input_field',
             [
-                'type' => $this->type
+                'type' => $this->type,
+                'name' => $this->attribute
             ],
             null
         );

@@ -7,6 +7,8 @@ use app\core\db\DbModel;
 class Product extends DbModel
 {
     public string $name = '';
+    public string $image = '';
+    public string $description = '';
 
     public function labels(): array
     {

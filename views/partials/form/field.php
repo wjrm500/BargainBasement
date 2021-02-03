@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="form-group admin-form-group">
     <label for="">
         <?= $label ?>
     </label>

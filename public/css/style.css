@@ -13,6 +13,8 @@
   padding: 10px; }
   #admin #admin-nav button {
     width: 100%; }
+  #admin #admin-nav ul {
+    padding: 0px; }
   #admin #admin-nav li {
     display: flex;
     justify-content: left; }
@@ -25,10 +27,13 @@
   height: 75vh;
   padding: 10px;
   position: relative; }
-  #admin #admin-body #admin-header h2 {
-    margin-bottom: 25px; }
-  #admin #admin-body #admin-header span#admin-page-type {
-    color: lightgrey; }
+  #admin #admin-body #admin-header {
+    display: flex;
+    justify-content: space-between; }
+    #admin #admin-body #admin-header h2 {
+      margin-bottom: 25px; }
+    #admin #admin-body #admin-header span#admin-page-type {
+      color: lightgrey; }
   #admin #admin-body #admin-table #admin-table-header .admin-table-header-item {
     width: 100%; }
   #admin #admin-body #admin-table #admin-table-header .admin-table-header-labelled-group {
@@ -70,6 +75,8 @@
       width: 50px; }
     #admin #admin-body #admin-table #admin-table-pagination #backward-pagination-icons i {
       transform: rotate(180deg); }
+  #admin #admin-body #admin-form .admin-form-group {
+    padding-bottom: 10px; }
 
 
 #secondary-navbar {

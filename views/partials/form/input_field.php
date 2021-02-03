@@ -1,1 +1,1 @@
-<input type=<?= $type ?> class="form-control">
+<input type="<?= $type ?>" class="form-control" name="<?= $name ?>">

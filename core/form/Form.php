@@ -20,10 +20,15 @@ class Form {
     public function begin()
     {
         return sprintf(
-            '<form action="%s" method="%s">',
+            '<form action="%s" method="%s" id="admin-form">',
             $this->action,
             $this->method
         );
+    }
+
+    public function submit()
+    {
+        return '<input type="submit" class="btn btn-success">';
     }
 
     public function end()

@@ -10,7 +10,7 @@ class AdminCategoryController extends AdminController
 
     public function __construct()
     {
-        $this->permissionId = Permission::find(['name' => self::PERMISSION_NAME])->id;
+        $this->permission = Permission::find(['name' => self::PERMISSION_NAME]);
         parent::__construct();
     }
 }

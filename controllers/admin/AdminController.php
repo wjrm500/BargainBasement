@@ -11,13 +11,13 @@ abstract class AdminController extends Controller
 {
     public const PERMISSION_NAME = '';
 
-    public $permissionId;
+    public $permission;
     public $model;
 
     public function __construct()
     {
         $this->setLayout('admin');
-        $this->registerProtectedMethod('index', [new HasPermission($this->permissionId)]);
+        $this->registerProtectedMethod('index', [new HasPermission($this->permission->id)]);
     }
 
     protected function setModel($model)

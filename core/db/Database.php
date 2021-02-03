@@ -123,4 +123,19 @@ class Database
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
     }
+
+    public function getFieldType($table, $field)
+    {
+        $sql = "
+            SELECT DATA_TYPE
+            FROM information_schema.COLUMNS
+            WHERE TABLE_NAME = :tableName
+                AND COLUMN_NAME = :columnName;
+        ";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindParam(':tableName', $table, $this->pdo::PARAM_STR, 12);
+        $statement->bindParam(':columnName', $field, $this->pdo::PARAM_STR, 12);
+        $statement->execute();
+        return $statement->fetchColumn(0);
+    }
 }

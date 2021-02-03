@@ -7,8 +7,11 @@ class View
     public function render($view, $params = [], $layout = 'main')
     {
         $view = $this->getViewContent($view, $params);
-        $layout = $this->getLayoutContent($layout, $params);
-        return str_replace('{{ content }}', $view, $layout);
+        if ($layout) {
+            $layout = $this->getLayoutContent($layout, $params);
+            return str_replace('{{ content }}', $view, $layout);
+        }
+        return $view;
     }
     
     public function getViewContent($view, $params = [])
@@ -19,7 +22,7 @@ class View
             }
         }
         ob_start();
-        require_once __DIR__ . "/../views/{$view}.php";
+        require __DIR__ . "/../views/{$view}.php";
         return ob_get_clean();
     }
 

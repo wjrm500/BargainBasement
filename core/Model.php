@@ -123,4 +123,9 @@ abstract class Model
     }
 
     abstract public function save();
+
+    public function getLabel($attribute)
+    {
+        return $this->labels()[$attribute] ?? $attribute;
+    }
 }

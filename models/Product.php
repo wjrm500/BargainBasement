@@ -10,7 +10,11 @@ class Product extends DbModel
 
     public function labels(): array
     {
-        return [];
+        return [
+            'name'        => 'Name',
+            'image'       => 'Image',
+            'description' => 'Description'
+        ];
     }
 
     public function rules(): array

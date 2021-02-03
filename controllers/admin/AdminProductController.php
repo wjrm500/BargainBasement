@@ -26,7 +26,7 @@ class AdminProductController extends AdminController
 
     public function addProduct(Request $request, Response $response)
     {
-        return $this->render('admin/item_add_form');
+        return $this->render('admin/item_add_form', ['model' => $this->model]);
     }
 
     public function editProduct(Request $request, Response $response, $productId)

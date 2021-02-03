@@ -22,7 +22,7 @@ abstract class AdminController extends Controller
 
     protected function setModel($model)
     {
-        $this->model = $model;
+        $this->model = new $model();
     }
 
     protected function getDefaultParams()

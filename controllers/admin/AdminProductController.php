@@ -41,7 +41,7 @@ class AdminProductController extends AdminController
 
     public function editProduct(Request $request, Response $response, $productId)
     {
-       $this->model->load(['id' => $productId]);
+        $this->model->load(['id' => $productId]);
         if ($request->isPost()) {
             $this->model->bindData($request->getBody());
             if ($this->model->validate() && $this->model->update()) {
@@ -53,5 +53,17 @@ class AdminProductController extends AdminController
             }
         }
         return $this->render('admin/item_add_form', ['model' => $this->model]);
+    }
+
+    public function deleteProduct(Request $request, Response $response, $productId)
+    {
+        $this->model->load(['id' => $productId]);
+        if ($this->model->delete()) {
+            Application::$app->session->setFlashMessage(
+                "You successfully deleted {$this->model->name} from the {$this->model->tableName()} table!",
+                'danger'
+            );
+            return $response->redirect($this->permission->href);
+        };
     }
 }

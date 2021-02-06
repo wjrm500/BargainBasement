@@ -48,6 +48,13 @@ abstract class DbModel extends Model
         return $result;
     }
 
+    public function delete()
+    {
+        $tableName = static::tableName();
+        $sql = "DELETE FROM {$tableName} WHERE id = {$this->id}";
+        return $this->pdo->query($sql);
+    }
+
     public function bindAndSave($data, $returnLastInsertId = false)
     {
         $this->bindData($data);

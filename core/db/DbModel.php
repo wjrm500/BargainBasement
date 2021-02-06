@@ -54,7 +54,7 @@ abstract class DbModel extends Model
         return $this->save($returnLastInsertId);
     }
 
-    public static function find(Array $whereConditions, $fetchAll = false)
+    private static function getExecutedStatement(Array $whereConditions)
     {
         $tableName = static::tableName();
         $sql = "SELECT * FROM {$tableName} WHERE ";
@@ -70,6 +70,19 @@ abstract class DbModel extends Model
         $sql .= $whereClause;
         $statement = Application::$app->database->pdo->prepare($sql);
         $statement->execute();
+        return $statement;
+    }
+
+    public function load(Array $whereConditions)
+    {
+        $statement = self::getExecutedStatement($whereConditions);
+        $statement->setFetchMode(\PDO::FETCH_OBJ);
+        $this->bindData($statement->fetch());
+    }
+
+    public static function find(Array $whereConditions, $fetchAll = false)
+    {
+        $statement = self::getExecutedStatement($whereConditions);
         $statement->setFetchMode(\PDO::FETCH_CLASS, static::class);
         return $fetchAll ? $statement->fetchAll() : $statement->fetch();
     }

@@ -41,6 +41,17 @@ class AdminProductController extends AdminController
 
     public function editProduct(Request $request, Response $response, $productId)
     {
-        echo 'Hello';
+        $model = $this->model::find(['id' => $productId]);
+        if ($request->isPost()) {
+            $model->bindData($request->getBody());
+            if ($model->validate() && $model->update()) {
+                Application::$app->session->setFlashMessage(
+                    "You successfully updated {$model->name} in the {$this->model->tableName()} table!",
+                    'success'
+                );
+                return $response->redirect($this->permission->href);
+            }
+        }
+        return $this->render('admin/item_add_form', ['model' => $model]);
     }
 }

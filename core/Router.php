@@ -35,6 +35,12 @@ class Router
         }
     }
 
+    public function controller($path, $callback)
+    {
+        $this->get($path, $callback);
+        $this->post($path, $callback);
+    }
+
     public function resolve(Request $request, Response $response)
     {
         $method = $request->getMethod();

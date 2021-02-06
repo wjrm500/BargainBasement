@@ -23,11 +23,6 @@ class Database
         return $this->pdo->query($sql);
     }
 
-    public function prepare($sql)
-    {
-        return $this->pdo->prepare($sql);
-    }
-
     public function applyMigrations()
     {
         $this->createMigrationsTable();

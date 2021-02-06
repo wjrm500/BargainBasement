@@ -12,11 +12,9 @@ use app\controllers\HomeController;
 
 $app->router->get('/', [HomeController::class, 'index']);
 
-$app->router->get('/login', [AccountController::class, 'login']);
-$app->router->post('/login', [AccountController::class, 'login']);
+$app->router->controller('/login', [AccountController::class, 'login']);
 
-$app->router->get('/register', [AccountController::class, 'register']);
-$app->router->post('/register', [AccountController::class, 'register']);
+$app->router->controller('/register', [AccountController::class, 'register']);
 
 $app->router->get('/logout', [AccountController::class, 'logout']);
 
@@ -27,8 +25,6 @@ $app->router->get('/profile', [AccountController::class, 'profile']);
 $app->router->get('/admin', [HomeController::class, 'adminIndex']);
 
 $app->router->get('/admin/product', [AdminProductController::class, 'index']);
-$app->router->get('/admin/product/add', [AdminProductController::class, 'addProduct']);
-$app->router->post('/admin/product/add', [AdminProductController::class, 'addProduct']);
-$app->router->get('/admin/product/{id}/edit', [AdminProductController::class, 'editProduct']);
-$app->router->post('/admin/product/{id}/edit', [AdminProductController::class, 'saveEditProduct']);
+$app->router->controller('/admin/product/add', [AdminProductController::class, 'addProduct']);
+$app->router->controller('/admin/product/{id}/edit', [AdminProductController::class, 'editProduct']);
 $app->router->get('/admin/product/{id}/delete', [AdminProductController::class, 'deleteProduct']);

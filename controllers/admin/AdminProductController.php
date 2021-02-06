@@ -26,18 +26,17 @@ class AdminProductController extends AdminController
 
     public function addProduct(Request $request, Response $response)
     {
+        if ($request->isPost()) {
+            $this->model->bindData($request->getBody());
+            if ($this->model->validate() && $this->model->save()) {
+                Application::$app->session->setFlashMessage(
+                    "You successfully added {$this->model->name} to the {$this->model->tableName()} table!",
+                    'success'
+                );
+                return $response->redirect($this->permission->href);
+            }
+        }
         return $this->render('admin/item_add_form', ['model' => $this->model]);
-    }
-
-    public function saveAddProduct(Request $request, Response $response)
-    {
-        $this->model->bindData($request->getBody());
-        $this->model->save();
-        Application::$app->session->setFlashMessage(
-            "You successfully added {$this->model->name} to the {$this->model->tableName()} table!",
-            'success'
-        );
-        return $response->redirect($this->permission->href);
     }
 
     public function editProduct(Request $request, Response $response, $productId)

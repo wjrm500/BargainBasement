@@ -1,1 +1,1 @@
-<textarea class="form-control" name="<?= $name ?>"></textarea>
+<textarea class="form-control <?= $isInvalid ?>" name="<?= $name ?>"><?= $value ?></textarea>

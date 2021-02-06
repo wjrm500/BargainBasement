@@ -21,7 +21,11 @@ class Product extends DbModel
 
     public function rules(): array
     {
-        return [];
+        return [
+            'name'        => [self::RULE_REQUIRED],
+            'image'       => [self::RULE_REQUIRED],
+            'description' => [self::RULE_REQUIRED]
+        ];
     }
 
     public static function tableName(): string

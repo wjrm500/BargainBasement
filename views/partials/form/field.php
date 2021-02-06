@@ -3,7 +3,7 @@
         <?= $label ?>
     </label>
     <?= $input ?>
-    <div class="invalid-feedback">
+    <div class="text-danger">
         <?= $errorMessage ?>
     </div>
 </div>

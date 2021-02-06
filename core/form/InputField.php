@@ -4,18 +4,22 @@ namespace app\core\form;
 
 abstract class InputField extends Field
 {
-    public function __construct($model, $attribute)
+    public const VIEW_PATH = 'partials/form/input_field';
+
+    private function getInvalidText()
     {
-        parent::__construct($model, $attribute);
+        return $this->model->hasError($this->attribute) ? 'is-invalid' : '';
     }
 
     public function renderInput()
     {
         return $this->view->render(
-            'partials/form/input_field',
+            static::VIEW_PATH,
             [
-                'type' => $this->type,
-                'name' => $this->attribute
+                'type'      => $this->type,
+                'isInvalid' => $this->getInvalidText(),
+                'name'      => $this->attribute,
+                'value'     => $this->model->{$this->attribute}
             ],
             null
         );

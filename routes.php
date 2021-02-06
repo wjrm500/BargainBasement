@@ -28,7 +28,7 @@ $app->router->get('/admin', [HomeController::class, 'adminIndex']);
 
 $app->router->get('/admin/product', [AdminProductController::class, 'index']);
 $app->router->get('/admin/product/add', [AdminProductController::class, 'addProduct']);
-$app->router->post('/admin/product/add', [AdminProductController::class, 'saveAddProduct']);
+$app->router->post('/admin/product/add', [AdminProductController::class, 'addProduct']);
 $app->router->get('/admin/product/{id}/edit', [AdminProductController::class, 'editProduct']);
 $app->router->post('/admin/product/{id}/edit', [AdminProductController::class, 'saveEditProduct']);
 $app->router->get('/admin/product/{id}/delete', [AdminProductController::class, 'deleteProduct']);

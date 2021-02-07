@@ -13,24 +13,41 @@ use app\core\form\TextInputField;
 class FieldFactory
 {
     public Field $field;
+    public array $fieldsForCustomInputTypes;
+    public array $fieldsForDefaultDataTypes;
+
+    public function __construct()
+    {
+        $this->fieldsForCustomInputTypes = [
+            'file' => FileInputField::class
+        ];
+        $this->fieldsForDefaultDataTypes = [
+            'float'   => FloatInputField::class,
+            'int'     => IntInputField::class,
+            'text'    => TextInputField::class,
+            'varchar' => TextareaField::class
+        ];
+    }
 
     public function make($model, $attribute)
     {
-        $dataType = Application::$app->database->getFieldType($model->tableName(), $attribute);
         if ($model->hasCustomInputType($attribute)) {
-            $dataType = $model->attributeCustomInputTypes()[$attribute];
+            $inputType = $model->attributeCustomInputTypes()[$attribute];
+            $field = $this->getFieldForCustomInputType($inputType);
+        } else {
+            $dataType = Application::$app->database->getFieldType($model->tableName(), $attribute);
+            $field = $this->getFieldForDefaultDataType($dataType);
         }
-        switch ($dataType) {
-            case 'varchar':
-                return new TextInputField($model, $attribute);
-            case 'text':
-                return new TextareaField($model, $attribute);
-            case 'file':
-                return new FileInputField($model, $attribute);
-            case 'float':
-                return new FloatInputField($model, $attribute);
-            case 'int':
-                return new IntInputField($model, $attribute);
-        }
+        return new $field($model, $attribute);
+    }
+
+    private function getFieldForCustomInputType($inputType)
+    {
+        return $this->fieldsForCustomInputTypes[$inputType];
+    }
+
+    private function getFieldForDefaultDataType($dataType)
+    {
+       return $this->fieldsForDefaultDataTypes[$dataType];
     }
 }

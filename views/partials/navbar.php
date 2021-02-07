@@ -19,8 +19,8 @@ $isAdmin = $app->hasUser() && $app->getUser()->isAdmin();
         <div id="secondary-navbar" class="rounded">
             <ul class="nav">
                 <li id="nav-item-shop" class="text-center my-1 col-12 <?= $isAdmin ? 'col-md-4' : 'col-md-6' ?>">
-                    <span class="text"><a class="btn" href="#">Shop</a></span>
-                    <span class="icon"><a class="btn" href="#"><i class="fas fa-shopping-cart"></i></a></span>
+                    <span class="text"><a class="btn" href="/shop">Shop</a></span>
+                    <span class="icon"><a class="btn" href="/shop"><i class="fas fa-shopping-cart"></i></a></span>
                 </li>
                 <li id="nav-item-other" class="text-center my-1 col-12 <?= $isAdmin ? 'col-md-4' : 'col-md-6' ?>">
                     <span class="text"><a class="btn" href="#">Other</a></span>

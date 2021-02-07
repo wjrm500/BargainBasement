@@ -14,7 +14,7 @@ abstract class Model
     public const RULE_IMAGE_HEIGHT = 'imageHeightRule';
     public const RULE_IMAGE_WIDTH = 'imageWidthRule';
 
-    public const IMG_DIR = '/assets/images/';
+    public const IMG_DIR = '/public/images/';
 
     public array $errors = [];
 
@@ -28,6 +28,14 @@ abstract class Model
     {
         foreach ($data as $key => $value) {
             if (property_exists($this, $key)) {
+                switch (gettype($this->{$key})) {
+                    case 'double':
+                        $value = floatval($value);
+                        break;
+                    case 'integer':
+                        $value = intval($value);
+                        break;
+                }
                 $this->{$key} = $value;
             }
         }
@@ -97,8 +105,10 @@ abstract class Model
                             switch ($file['type']) {
                                 case 'image/jpeg':
                                     $image = imagecreatefromjpeg($file['tmp_name']);
+                                    break;
                                 case 'image/png':
                                     $image = imagecreatefrompng($file['tmp_name']);
+                                    break;
                             }
                             $resizedImage = imagescale($image, $specifiedHeight, $specifiedHeight);
                         }
@@ -131,8 +141,10 @@ abstract class Model
                     switch ($file['type']) {
                         case 'image/jpeg':
                             $image = imagejpeg($resizedImage, $targetLocation);
+                            break;
                         case 'image/png':
                             $image = imagepng($resizedImage, $targetLocation);
+                            break;
                     }
                 } else { // If the image has not been resized, we can just specify the location of the uploaded image in move_uploaded_file
                     $uploadLocation = $file['tmp_name'];

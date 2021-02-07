@@ -7,7 +7,7 @@ use app\core\Model;
 
 abstract class DbModel extends Model
 {
-    public int $id;
+    public int $id = 0;
     public \PDO $pdo;
 
     abstract public static function tableName(): string;

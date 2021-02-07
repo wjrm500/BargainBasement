@@ -7,6 +7,7 @@
 use app\controllers\AccountController;
 use app\controllers\admin\AdminProductController;
 use app\controllers\HomeController;
+use app\controllers\ShopController;
 
 // Customer routes
 
@@ -19,6 +20,8 @@ $app->router->controller('/register', [AccountController::class, 'register']);
 $app->router->get('/logout', [AccountController::class, 'logout']);
 
 $app->router->get('/profile', [AccountController::class, 'profile']);
+
+$app->router->get('/shop', [ShopController::class, 'index']);
 
 // Admin routes
 

@@ -13,10 +13,9 @@ class ShopController extends Controller
         $products = Product::findAll();
         $productWidgets = array_map(
             function($product) {
-                return Application::$app->view->render(
+                return $this->renderViewOnly(
                     'partials/shop/product_widget',
-                    ['product' => $product],
-                    null
+                    ['product' => $product]
                 );
             },
             $products

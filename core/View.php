@@ -7,14 +7,16 @@ class View
     public function render($view, $params = [], $layout = 'main')
     {
         $view = $this->getViewContent($view, $params);
-        if ($layout) {
-            $layout = $this->getLayoutContent($layout, $params);
-            return str_replace('{{ content }}', $view, $layout);
-        }
-        return $view;
+        $layout = $this->getLayoutContent($layout, $params);
+        return str_replace('{{ content }}', $view, $layout);
+    }
+
+    public function renderViewOnly($view, $params = [])
+    {
+        return $this->getViewContent($view, $params);
     }
     
-    public function getViewContent($view, $params = [])
+    private function getViewContent($view, $params = [])
     {
         if (!empty($params)) {
             foreach ($params as $key => $value) {
@@ -26,7 +28,7 @@ class View
         return ob_get_clean();
     }
 
-    public function getLayoutContent($layout, $params)
+    private function getLayoutContent($layout, $params)
     {
         if (!empty($params)) {
             foreach ($params as $key => $value) {

@@ -8,5 +8,6 @@ class FileInputField extends InputField
     {
         parent::__construct($model, $attribute);
         $this->setType(static::TYPE_FILE);
+        $this->addExtraProperty('access', 'image/jpeg, image/png');
     }
 }

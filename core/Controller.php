@@ -2,8 +2,6 @@
 
 namespace app\core;
 
-use app\core\middlewares\BaseMiddleware;
-
 class Controller
 {
     protected string $layout = 'main';
@@ -12,6 +10,11 @@ class Controller
     public function setLayout($layout)
     {
         $this->layout = $layout;
+    }
+
+    public function renderViewOnly($view, $params = [])
+    {
+        return Application::$app->view->renderViewOnly($view, $params);
     }
 
     public function render($view, $params = [])

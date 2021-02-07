@@ -24,8 +24,8 @@ class FieldFactory
         $this->fieldsForDefaultDataTypes = [
             'float'   => FloatInputField::class,
             'int'     => IntInputField::class,
-            'text'    => TextInputField::class,
-            'varchar' => TextareaField::class
+            'text'    => TextareaField::class,
+            'varchar' => TextInputField::class
         ];
     }
 

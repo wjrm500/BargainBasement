@@ -16,11 +16,11 @@ abstract class InputField extends Field
         return $this->view->render(
             static::VIEW_PATH,
             [
-                'field'     => $this,
-                'type'      => $this->type,
-                'isInvalid' => $this->getInvalidText(),
-                'name'      => $this->attribute,
-                'value'     => $this->model->{$this->attribute}
+                'extraProperties' => $this->extraProperties,
+                'isInvalid'       => $this->getInvalidText(),
+                'name'            => $this->attribute,
+                'type'            => $this->type,
+                'value'           => $this->model->{$this->attribute}
             ],
             null
         );

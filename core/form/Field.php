@@ -14,13 +14,14 @@ abstract class Field
 
     public Model $model;
     public string $attribute;
+    public array $extraProperties;
     public string $type;
 
     public function __construct($model, $attribute)
     {
         $this->model = $model;
         $this->attribute = $attribute;
-        $this->view = Application::$app->view;
+        $this->extraProperties = [];
     }
 
     protected function setType($type)
@@ -32,14 +33,18 @@ abstract class Field
 
     public function __toString()
     {
-        return $this->view->render(
+        return Application::$app->view->renderViewOnly(
             'partials/form/field',
             [
                 'label'         => $this->model->getLabel($this->attribute),
                 'input'         => $this->renderInput(),
                 'errorMessage'  => $this->model->getFirstError($this->attribute)
-            ],
-            null
+            ]
         );
+    }
+
+    protected function addExtraProperty($key, $value)
+    {
+        $this->extraProperties[$key] = $value;
     }
 }

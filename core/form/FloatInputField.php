@@ -8,5 +8,6 @@ class FloatInputField extends InputField
     {
         parent::__construct($model, $attribute);
         $this->setType(static::TYPE_NUMBER);
+        $this->addExtraProperty('step', '0.01');
     }
 }

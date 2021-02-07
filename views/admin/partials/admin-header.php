@@ -18,6 +18,8 @@ $permission = Permission::find(['name' => $permissionName]);
             <a href="<?= $permission->href . '/' . $model->id ?>/delete" class="btn btn-danger admin-table-header-item">
                 Delete <?= $permission->item_name ?>
             </a>
+        <?php endif; ?>
+        <?php if ($request->getPath() !== $permission->href): ?>
             <a href="<?= $permission->href ?>" class="btn btn-secondary admin-table-header-item">
                 Back to <?= $permissionName ?>
             </a>

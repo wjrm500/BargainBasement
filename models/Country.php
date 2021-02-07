@@ -27,4 +27,9 @@ class Country extends DbModel
     {
         return ['name'];
     }
+
+    public function attributeCustomInputTypes(): array
+    {
+        return [];
+    }
 }

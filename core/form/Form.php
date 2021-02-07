@@ -20,7 +20,7 @@ class Form {
     public function begin()
     {
         return sprintf(
-            '<form action="%s" method="%s" id="admin-form">',
+            '<form action="%s" method="%s" id="admin-form" enctype="multipart/form-data">',
             $this->action,
             $this->method
         );

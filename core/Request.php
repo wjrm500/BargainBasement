@@ -30,7 +30,11 @@ class Request
             return filter_input_array(INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS);
         }
         if ($this->isPost()) {
-            return filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+            $filesInput = array_combine(array_keys($_FILES), array_column($_FILES, 'name'));
+            return array_merge(
+                filter_var_array($filesInput, FILTER_SANITIZE_SPECIAL_CHARS),
+                filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS)
+            );
         }
     }
 
@@ -48,5 +52,10 @@ class Request
     {
         $explodedPath = $this->getExplodedPath();
         return $explodedPath[array_key_last($explodedPath)];
+    }
+
+    public function getFile($key)
+    {
+        return $_FILES[$key];
     }
 }

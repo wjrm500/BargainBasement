@@ -23,7 +23,17 @@ class Product extends DbModel
     {
         return [
             'name'        => [self::RULE_REQUIRED],
-            'image'       => [self::RULE_REQUIRED],
+            'image'       => [
+                self::RULE_REQUIRED,
+                [
+                    self::RULE_IMAGE_MAX_SIZE,
+                    'maxSize' => 1000000
+                ],
+                [
+                    self::RULE_IMAGE_SQUARE,
+                    'height' => 1000
+                ]
+            ],
             'description' => [self::RULE_REQUIRED]
         ];
     }
@@ -36,5 +46,12 @@ class Product extends DbModel
     public static function attributes(): array
     {
         return ['name', 'image', 'description'];
+    }
+
+    public function attributeCustomInputTypes(): array
+    {
+        return [
+            'image' => 'file'
+        ];
     }
 }

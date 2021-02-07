@@ -28,4 +28,10 @@ class UserPermission extends DbModel
     {
         return ['user_id', 'permission_id'];
     }
+
+    
+    public function attributeCustomInputTypes(): array
+    {
+        return [];
+    }
 }

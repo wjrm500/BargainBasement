@@ -29,4 +29,10 @@ class Permission extends DbModel
     {
         return ['name', 'item_name', 'href'];
     }
+
+    
+    public function attributeCustomInputTypes(): array
+    {
+        return [];
+    }
 }

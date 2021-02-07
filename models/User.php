@@ -44,4 +44,10 @@ class User extends DbModel
     {
         return boolval($this->getPermissions());
     }
+
+    
+    public function attributeCustomInputTypes(): array
+    {
+        return [];
+    }
 }

@@ -1,10 +1,9 @@
 .product-widget {
-    border: 3px solid #0070C0;
+    border: 2px solid #0070C0;
     border-radius: 5px;
     color: white;
     font-weight: bold;
     margin: 10px;
-    width: 200px;
 
     * {
         text-align: center;
@@ -33,6 +32,7 @@
     .product-widget-add {
         background-color: #5B9BD5;
         display: flex;
+        font-size: 0.75em;
         justify-content: space-evenly;
     }
 
@@ -52,13 +52,24 @@
 
     .product-widget-component{
         display: flex;
-        flex: 1;
         justify-content: center;
 
         input {
             width: 75%;
         }
     }
+
+    .product-widget-add-component {
+        @extend .product-widget-component;
+        flex: 1;
+    }
+}
+
+#products, #basket {
+    border: 2px solid lightgrey;
+    height: 75vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .product-row {

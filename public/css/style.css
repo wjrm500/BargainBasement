@@ -178,12 +178,11 @@ table th, table td {
     white-space: normal; }
 
 .product-widget {
-  border: 3px solid #0070C0;
+  border: 2px solid #0070C0;
   border-radius: 5px;
   color: white;
   font-weight: bold;
-  margin: 10px;
-  width: 200px; }
+  margin: 10px; }
   .product-widget * {
     text-align: center; }
   .product-widget .product-widget-row {
@@ -201,6 +200,7 @@ table th, table td {
   .product-widget .product-widget-add {
     background-color: #5B9BD5;
     display: flex;
+    font-size: 0.75em;
     justify-content: space-evenly; }
   .product-widget .product-widget-add-button {
     background: linear-gradient(#DFF3E3, #8FDEA0);
@@ -209,12 +209,19 @@ table th, table td {
     width: 75%; }
     .product-widget .product-widget-add-button:hover {
       background: linear-gradient(#bae5c3, #68d27f); }
-  .product-widget .product-widget-component {
+  .product-widget .product-widget-component, .product-widget .product-widget-add-component {
     display: flex;
-    flex: 1;
     justify-content: center; }
-    .product-widget .product-widget-component input {
+    .product-widget .product-widget-component input, .product-widget .product-widget-add-component input {
       width: 75%; }
+  .product-widget .product-widget-add-component {
+    flex: 1; }
+
+#products, #basket {
+  border: 2px solid lightgrey;
+  height: 75vh;
+  overflow-x: hidden;
+  overflow-y: scroll; }
 
 .product-row {
   display: flex; }

@@ -60,4 +60,9 @@ class Product extends DbModel
             'image' => 'file'
         ];
     }
+
+    public function getPricePerKg()
+    {
+        return $this->price / $this->weight * 1000;
+    }
 }

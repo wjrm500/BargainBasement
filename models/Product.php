@@ -35,7 +35,7 @@ class Product extends DbModel
                 ],
                 [
                     self::RULE_IMAGE_SQUARE,
-                    'height'  => 1000
+                    'height'  => 200
                 ]
             ],
             'description'     => [self::RULE_REQUIRED],

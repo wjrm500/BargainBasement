@@ -176,3 +176,45 @@ table th, table td {
     padding: 0px !important;
     width: 100%;
     white-space: normal; }
+
+.product-widget {
+  border: 3px solid #0070C0;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  margin: 10px;
+  width: 200px; }
+  .product-widget * {
+    text-align: center; }
+  .product-widget .product-widget-row {
+    padding: 5px 0px; }
+  .product-widget .product-widget-image {
+    display: flex;
+    justify-content: center; }
+    .product-widget .product-widget-image img {
+      width: 100%; }
+  .product-widget .product-widget-name {
+    background-color: #0070C0;
+    font-size: 1.1em;
+    justify-content: center; }
+  .product-widget .product-widget-detail,
+  .product-widget .product-widget-add {
+    background-color: #5B9BD5;
+    display: flex;
+    justify-content: space-evenly; }
+  .product-widget .product-widget-add-button {
+    background: linear-gradient(#DFF3E3, #8FDEA0);
+    border: 2px solid black;
+    border-radius: 5px;
+    width: 75%; }
+    .product-widget .product-widget-add-button:hover {
+      background: linear-gradient(#bae5c3, #68d27f); }
+  .product-widget .product-widget-component {
+    display: flex;
+    flex: 1;
+    justify-content: center; }
+    .product-widget .product-widget-component input {
+      width: 75%; }
+
+.product-row {
+  display: flex; }

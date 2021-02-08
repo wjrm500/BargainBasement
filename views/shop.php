@@ -1,8 +1,8 @@
 <div class="container">
     <div class="row">
-        <div id="products" class="col-8 container-fluid">
+        <div id="products" class="col-8">
             <?php foreach (array_chunk($productWidgets, 4) as $productWidgetRow): ?>
-                <div class="row">
+                <div class="product-row">
                     <?php foreach ($productWidgetRow as $productWidget): ?>
                         <?= $productWidget ?>
                     <?php endforeach; ?>

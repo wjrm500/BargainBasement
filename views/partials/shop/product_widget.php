@@ -1,32 +1,28 @@
-<?php
-
-use app\core\Application;
-
-?>
-
-<div class="container border border-dark">
-    <div class="row product-widget-image">
+<div class="product-widget">
+    <div class="product-widget-row product-widget-image">
         <img src="/images/<?= $product->image ?>">
     </div>
-    <div class="row product-widget-name bg-primary">
+    <div class="product-widget-row product-widget-name">
         <?= $product->name ?>
     </div>
-    <div class="row product-widget-details bg-secondary">
-        <div class="col-4">
-            <?= $product->price ?>
+    <div class="product-widget-row product-widget-detail">
+        <div class="product-widget-component">
+            £<?= $product->price ?>
         </div>
-        <div class="col-4">
-            <?= $product->weight ?>
+        <div class="product-widget-component">
+            <?= $product->weight ?>g
         </div>
-        <div class="col-4">
+        <div class="product-widget-component">
         </div>
     </div>
-    <div class="row product-widget-add bg-secondary">
-        <div class="col-6">
-            <input type="number">
+    <div class="product-widget-row product-widget-add">
+        <div class="product-widget-component">
+            <input type="number" class="form-control">
         </div>
-        <div class="col-6">
-            <button data-product-id="<?= $product->id ?>" class="btn btn-success product-add">
+        <div class="product-widget-component">
+            <button data-product-id="<?= $product->id ?>" class="product-widget-add-button">
+                Add
+            </button>
         </div>
     </div>
 </div>

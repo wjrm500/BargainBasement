@@ -48,6 +48,9 @@ class FieldFactory
 
     private function getFieldForDefaultDataType($dataType)
     {
-       return $this->fieldsForDefaultDataTypes[$dataType];
+        if ($dataType === 'text') {
+            $a = 1;
+        }
+        return $this->fieldsForDefaultDataTypes[$dataType];
     }
 }

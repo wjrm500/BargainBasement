@@ -5,5 +5,5 @@ name="<?= $name ?>"
     <?= sprintf('%s="%s"', $key, $value) ?>
 <?php endforeach; ?>
 >
-    <?= $value ?>
+<?= $value ?>
 </textarea>

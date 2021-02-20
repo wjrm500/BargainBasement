@@ -1,0 +1,34 @@
+$green: #8FDEA0;
+$red: #D9534F;
+
+$light-green: lighten($green, 25%);
+$light-red: lighten($red, 25%);
+
+$green-gradient: linear-gradient($light-green, $green);
+$red-gradient: linear-gradient($light-red, $red);
+
+$dark-green-gradient: linear-gradient(darken($light-green, 10%), darken($green, 10%));
+$dark-red-gradient: linear-gradient(darken($light-red, 10%), darken($red, 10%));
+
+%button {
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+%green-button {
+    @extend %button;
+    background: $green-gradient;
+
+    &:hover {
+        background: $dark-green-gradient;
+    }
+}
+
+%red-button {
+    @extend %button;
+    background: $red-gradient;
+
+    &:hover {
+        background: $dark-red-gradient;
+    }
+}

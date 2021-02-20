@@ -1,15 +1,15 @@
 <div class="product-widget">
-    <div class="product-widget-row product-widget-image">
-        <img src="/images/<?= $product->image ?>">
+    <div class="product-widget-row product-widget-image-container">
+        <img src="/images/<?= $product->image ?>" class="product-widget-image">
     </div>
     <div class="product-widget-row product-widget-name">
         <?= $product->name ?>
     </div>
     <div class="product-widget-row product-widget-detail">
-        <div class="product-widget-component">
+        <div class="product-widget-component product-widget-price">
             £<?= number_format($product->price, 2, '.', '') ?>
         </div>
-        <div class="product-widget-component">
+        <div class="product-widget-component product-widget-weight">
             <?= $product->weight ?>g
         </div>
         <div class="product-widget-component">

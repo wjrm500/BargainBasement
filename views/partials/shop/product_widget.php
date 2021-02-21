@@ -1,4 +1,4 @@
-<div class="product-widget">
+<div class="product-widget" data-product-id="<?= $product->id?>">
     <div class="product-widget-row product-widget-image-container">
         <img src="/images/<?= $product->image ?>" class="product-widget-image">
     </div>
@@ -18,12 +18,21 @@
     </div>
     <div class="product-widget-row product-widget-add">
         <div class="product-widget-add-component">
-            <input type="number" class="form-control">
+            <input type="number" class="form-control" value="0">
         </div>
-        <div class="product-widget-add-component">
-            <button data-product-id="<?= $product->id ?>" class="product-widget-add-button">
-                Add
+        <div class="product-widget-add-component product-widget-zero">
+            <button class="product-widget-add-button product-widget-zero-add-button">
+                <i class="fas fa-plus"></i>
             </button>
+        </div>
+        <div class="product-widget-add-component product-widget-non-zero">
+            <button class="product-widget-add-button product-widget-non-zero-remove-button">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button class="product-widget-non-zero-add-button">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
         </div>
     </div>
 </div>

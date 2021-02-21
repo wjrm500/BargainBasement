@@ -2,7 +2,7 @@
 @import 'colours'; 
 
 .product-widget {
-    border: 3px solid #0070C0;
+    border: 3px solid $dark-blue;
     border-radius: 5px;
     color: white;
     font-weight: bold;
@@ -27,31 +27,44 @@
     }
 
     .product-widget-name {
-        background-color: #0070C0;
+        background-color: $dark-blue;
         font-size: 1.1em;
         justify-content: center;
     }
 
     .product-widget-detail,
     .product-widget-add {
-        background-color: #5B9BD5;
+        background-color: $blue;
         display: flex;
         font-size: 0.75em;
         justify-content: space-evenly;
     }
 
-    .product-widget-add-button {
-        background: linear-gradient(#DFF3E3, #8FDEA0);
-        border: 2px solid black;
-        border-radius: 5px;
+    .product-widget-non-zero {
+        display: none !important;
+        justify-content: space-between;
         width: 75%;
+    }
 
-        &:hover {
-            background: linear-gradient(
-                darken(#DFF3E3, 10%),
-                darken(#8FDEA0, 10%)
-            );
-        }
+    .product-widget-zero-add-button {
+        @extend %green-button;
+        height: 100%;
+        width: 75%;
+    }
+
+    %non-zero-button {
+        height: 100%;
+        width: 45%;
+    }
+
+    .product-widget-non-zero-add-button {
+        @extend %green-button;
+        @extend %non-zero-button;
+    }
+
+    .product-widget-non-zero-remove-button {
+        @extend %red-button;
+        @extend %non-zero-button;
     }
 
     .product-widget-component{

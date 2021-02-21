@@ -178,18 +178,18 @@ table th, table td {
     width: 100%;
     white-space: normal; }
 
-.product-widget .product-widget-zero-add-button, .product-widget .product-widget-non-zero-add-button, #basket #basket-items .basket-item .basket-item-modify .basket-item-add, #basket #basket-footer #basket-checkout, .product-widget .product-widget-non-zero-remove-button, #basket #basket-items .basket-item .basket-item-modify .basket-item-remove {
+.product-widget .product-widget-zero-add-button, .product-widget .product-widget-non-zero-add-button, #basket #basket-items .basket-widget .basket-widget-modify .basket-widget-add-button, #basket #basket-footer #basket-checkout, .product-widget .product-widget-non-zero-remove-button, #basket #basket-items .basket-widget .basket-widget-modify .basket-widget-remove-button {
   border: 2px solid black;
   border-radius: 5px; }
 
-.product-widget .product-widget-zero-add-button, .product-widget .product-widget-non-zero-add-button, #basket #basket-items .basket-item .basket-item-modify .basket-item-add, #basket #basket-footer #basket-checkout {
+.product-widget .product-widget-zero-add-button, .product-widget .product-widget-non-zero-add-button, #basket #basket-items .basket-widget .basket-widget-modify .basket-widget-add-button, #basket #basket-footer #basket-checkout {
   background: linear-gradient(#f1fbf4, #8FDEA0); }
-  .product-widget .product-widget-zero-add-button:hover, .product-widget .product-widget-non-zero-add-button:hover, #basket #basket-items .basket-item .basket-item-modify .basket-item-add:hover, #basket #basket-footer #basket-checkout:hover {
+  .product-widget .product-widget-zero-add-button:hover, .product-widget .product-widget-non-zero-add-button:hover, #basket #basket-items .basket-widget .basket-widget-modify .basket-widget-add-button:hover, #basket #basket-footer #basket-checkout:hover {
     background: linear-gradient(#caefd2, #68d27f); }
 
-.product-widget .product-widget-non-zero-remove-button, #basket #basket-items .basket-item .basket-item-modify .basket-item-remove {
+.product-widget .product-widget-non-zero-remove-button, #basket #basket-items .basket-widget .basket-widget-modify .basket-widget-remove-button {
   background: linear-gradient(#f0b9b8, #D9534F); }
-  .product-widget .product-widget-non-zero-remove-button:hover, #basket #basket-items .basket-item .basket-item-modify .basket-item-remove:hover {
+  .product-widget .product-widget-non-zero-remove-button:hover, #basket #basket-items .basket-widget .basket-widget-modify .basket-widget-remove-button:hover {
     background: linear-gradient(#e7908e, #c9302c); }
 
 .product-widget {
@@ -220,21 +220,19 @@ table th, table td {
     justify-content: space-evenly; }
   .product-widget .product-widget-non-zero {
     display: none !important;
-    justify-content: space-between;
-    width: 75%; }
+    justify-content: space-between !important; }
   .product-widget .product-widget-zero-add-button {
     height: 100%;
-    width: 75%; }
+    width: 100%; }
   .product-widget .product-widget-non-zero-add-button, .product-widget .product-widget-non-zero-remove-button {
     height: 100%;
     width: 45%; }
   .product-widget .product-widget-component, .product-widget .product-widget-add-component {
     display: flex;
     justify-content: center; }
-    .product-widget .product-widget-component input, .product-widget .product-widget-add-component input {
-      width: 75%; }
   .product-widget .product-widget-add-component {
-    flex: 1; }
+    flex: 1;
+    padding: 10px; }
 
 #products, #basket {
   border: 2px solid lightgrey;
@@ -256,45 +254,46 @@ table th, table td {
     margin: 15px;
     padding: 5px;
     text-align: center; }
-  #basket #basket-items .basket-item {
+  #basket #basket-items .basket-widget {
     background-color: white;
     border: 2px solid #7d7d7d;
     border-radius: 5px;
     display: flex;
     height: 75px;
     margin: 15px; }
-    #basket #basket-items .basket-item .basket-item-image-container {
+    #basket #basket-items .basket-widget .basket-widget-image-container {
       display: flex;
       flex: 3;
       justify-content: center; }
-      #basket #basket-items .basket-item .basket-item-image-container .basket-item-image {
+      #basket #basket-items .basket-widget .basket-widget-image-container .basket-item-image {
         object-fit: contain;
         width: 40%; }
-    #basket #basket-items .basket-item .basket-item-main {
+    #basket #basket-items .basket-widget .basket-widget-main {
       display: flex;
       flex: 7;
       flex-direction: column;
       justify-content: space-evenly; }
-      #basket #basket-items .basket-item .basket-item-main .basket-item-name, #basket #basket-items .basket-item .basket-item-main .basket-item-details {
+      #basket #basket-items .basket-widget .basket-widget-main .basket-item-name, #basket #basket-items .basket-widget .basket-widget-main .basket-widget-details {
         display: flex;
         flex-direction: column;
         height: 50%; }
-      #basket #basket-items .basket-item .basket-item-main .basket-item-name {
+      #basket #basket-items .basket-widget .basket-widget-main .basket-item-name {
         font-size: 20px;
         font-weight: bold;
         justify-content: flex-end; }
-      #basket #basket-items .basket-item .basket-item-main hr {
+      #basket #basket-items .basket-widget .basket-widget-main hr {
         margin: 0px; }
-      #basket #basket-items .basket-item .basket-item-main .basket-item-details {
+      #basket #basket-items .basket-widget .basket-widget-main .basket-widget-details {
         color: #afafaf;
-        font-size: 13px;
-        justify-content: flex-start; }
-    #basket #basket-items .basket-item .basket-item-modify {
+        flex-direction: row; }
+        #basket #basket-items .basket-widget .basket-widget-main .basket-widget-details .basket-widget-detail {
+          padding-right: 10px; }
+    #basket #basket-items .basket-widget .basket-widget-modify {
       display: flex;
       flex: 2;
       flex-direction: column;
       justify-content: space-evenly; }
-      #basket #basket-items .basket-item .basket-item-modify .basket-item-add, #basket #basket-items .basket-item .basket-item-modify .basket-item-remove {
+      #basket #basket-items .basket-widget .basket-widget-modify .basket-widget-add-button, #basket #basket-items .basket-widget .basket-widget-modify .basket-widget-remove-button {
         margin: 0px 10px;
         height: 40%; }
   #basket #basket-footer {

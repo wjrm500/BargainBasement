@@ -18,7 +18,7 @@
     </div>
     <div class="product-widget-row product-widget-add">
         <div class="product-widget-add-component">
-            <input type="number" class="form-control" value="0">
+            <input type="number" class="product-widget-add-number form-control" value="0" disabled>
         </div>
         <div class="product-widget-add-component product-widget-zero">
             <button class="product-widget-add-button product-widget-zero-add-button">
@@ -26,10 +26,10 @@
             </button>
         </div>
         <div class="product-widget-add-component product-widget-non-zero">
-            <button class="product-widget-add-button product-widget-non-zero-remove-button">
+            <button class="product-widget-non-zero-remove-button">
                 <i class="fas fa-minus"></i>
             </button>
-            <button class="product-widget-non-zero-add-button">
+            <button class="product-widget-add-button product-widget-non-zero-add-button">
                 <i class="fas fa-plus"></i>
             </button>
         </div>

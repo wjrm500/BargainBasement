@@ -42,14 +42,13 @@
 
     .product-widget-non-zero {
         display: none !important;
-        justify-content: space-between;
-        width: 75%;
+        justify-content: space-between !important;
     }
 
     .product-widget-zero-add-button {
         @extend %green-button;
         height: 100%;
-        width: 75%;
+        width: 100%;
     }
 
     %non-zero-button {
@@ -70,15 +69,12 @@
     .product-widget-component{
         display: flex;
         justify-content: center;
-
-        input {
-            width: 75%;
-        }
     }
 
     .product-widget-add-component {
         @extend .product-widget-component;
         flex: 1;
+        padding: 10px;
     }
 }
 
@@ -108,7 +104,7 @@
     }
 
     #basket-items {
-        .basket-item {
+        .basket-widget {
             background-color: white;
             border: 2px solid $darkgrey;
             border-radius: 5px;
@@ -116,7 +112,7 @@
             height: 75px;
             margin: 15px;
     
-            .basket-item-image-container {
+            .basket-widget-image-container {
                 display: flex;
                 flex: 3;
                 justify-content: center;
@@ -127,20 +123,20 @@
                 }
             }
     
-            .basket-item-main {
+            .basket-widget-main {
                 display: flex;
                 flex: 7;
                 flex-direction: column;
                 justify-content: space-evenly;
     
-                %basket-item-main-item {
+                %basket-widget-main-item {
                     display: flex;
                     flex-direction: column;
                     height: 50%;
                 }
     
                 .basket-item-name {
-                    @extend %basket-item-main-item;
+                    @extend %basket-widget-main-item;
                     font-size: 20px;
                     font-weight: bold;
                     justify-content: flex-end;
@@ -150,15 +146,18 @@
                     margin: 0px;
                 }
     
-                .basket-item-details {
-                    @extend %basket-item-main-item;
+                .basket-widget-details {
+                    @extend %basket-widget-main-item;
                     color: $grey;
-                    font-size: 13px;
-                    justify-content: flex-start;
+                    flex-direction: row;
+
+                    .basket-widget-detail {
+                        padding-right: 10px;
+                    }
                 }
             }
     
-            .basket-item-modify {
+            .basket-widget-modify {
                 display: flex;
                 flex: 2;
                 flex-direction: column;
@@ -169,12 +168,12 @@
                     height: 40%;
                 }
         
-                .basket-item-add {
+                .basket-widget-add-button {
                     @extend %basket-item-modify-item;
                     @extend %green-button;
                 }
     
-                .basket-item-remove {
+                .basket-widget-remove-button {
                     @extend %basket-item-modify-item;
                     @extend %red-button;
                 }

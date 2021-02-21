@@ -150,22 +150,43 @@ $(document).ready(function() {
     // Check what is in user's cart - any products that are in the cart should have the number of items in the product widget with relevant buttons
     
     var basketData = {}; // Load basket data asynchronously from DB
+    const TYPE_ADD = 'add';
+    const TYPE_REMOVE = 'remove';
 
     // Loop over items in shopping window, any items in basket need non-zero buttons displayed
     let productWidgets = document.getElementsByClassName('product-widget');
     for (let productWidget of productWidgets) {
         let productId = productWidget.dataset.productId;
-        if (productId in basketData) {
-            showNonZeroButtons(productId);
-        }
+        toggleNonZeroButtons(productId);
     }
 
     // When user clicks add button on a product, add that number of products to cart and replace add button with - and +
     // Every time the user modifies their cart (and after a gap of maybe 5 seconds), make a post request to the back end to update their shopping cart in a table
     $('.product-widget .product-widget-add-button').click(function() {
         let productWidget = this.closest('.product-widget');
-        handleWidgetClick(productWidget);
+        handleWidgetClick(productWidget, TYPE_ADD);
     });
+
+    $('.product-widget .product-widget-non-zero-remove-button').click(function() {
+        let productWidget = this.closest('.product-widget');
+        handleWidgetClick(productWidget, TYPE_REMOVE);
+    });
+
+    function toggleNonZeroButtons(productId) {
+        if (productId in basketData && basketData[productId] > 0) {
+            showNonZeroButtons(productId);
+            return;
+        }
+        hideNonZeroButtons(productId);
+    }
+
+    function hideNonZeroButtons(productId) {
+        productWidget = getProductWidgetByProductId(productId);
+        let zeroButtons = productWidget.getElementsByClassName('product-widget-zero')[0];
+        let nonZeroButtons = productWidget.getElementsByClassName('product-widget-non-zero')[0];
+        zeroButtons.style.display = 'block';
+        nonZeroButtons.style.display = 'none';
+    }
 
     function showNonZeroButtons(productId) {
         productWidget = getProductWidgetByProductId(productId);
@@ -175,20 +196,24 @@ $(document).ready(function() {
         nonZeroButtons.style.setProperty('display', 'flex', 'important');
     }
 
-    function handleWidgetClick(widget) {
+    function handleWidgetClick(widget, type) {
         let productId = widget.dataset.productId;
         if (productId in basketData) {
-            basketData[productId] ++;
-            addExtraToExistingBasketWidget(productId);
+            basketData[productId] += (type === TYPE_ADD ? 1 : -1);
+            modifyBasketWidgetItemNumber(productId);
+            if (basketData[productId] < 1) {
+                delete basketData[productId];
+                removeBasketWidget(productId);
+            }
         } else {
             basketData[productId] = 1;
-            showNonZeroButtons(productId);
             addBasketWidget(productId);
         }
-        incrementProductWidgetItemNumber(productId);
+        toggleNonZeroButtons(productId);
+        modifyProductWidgetItemNumber(productId, type);
     }
 
-    function addExtraToExistingBasketWidget(productId) {
+    function modifyBasketWidgetItemNumber(productId) {
         let basketWidget = getBasketWidgetByProductId(productId);
         basketWidget.getElementsByClassName('basket-item-number')[0].innerHTML = basketData[productId];
         let itemPrice = basketWidget.getElementsByClassName('basket-item-price')[0].innerHTML;
@@ -214,6 +239,14 @@ $(document).ready(function() {
             }
         }
     }
+    
+    // function toggleBasketWidget(productId) {
+    //     if (!(productId in basketData) || (productId in basketData && basketData[productId] < 1)) {
+    //         addBasketWidget(productId);
+    //         return;
+    //     }
+    //     removeBasketWidget(productId);
+    // }
 
     function addBasketWidget(productId) {
         let basketItems = document.getElementById('basket-items');
@@ -222,13 +255,22 @@ $(document).ready(function() {
         basketWidget.dataset.productId = productId;
         let productWidget = getProductWidgetByProductId(productId);
         basketWidget.innerHTML = getBasketItemHTML(productWidget);
-        basketWidget.onclick = function() {
-            handleWidgetClick(this);
+        let addButton = basketWidget.getElementsByClassName('basket-widget-add-button')[0];
+        let removeButton = basketWidget.getElementsByClassName('basket-widget-remove-button')[0];
+        addButton.onclick = function() {
+            handleWidgetClick(basketWidget, TYPE_ADD);
+        };
+        removeButton.onclick = function() {
+            handleWidgetClick(basketWidget, TYPE_REMOVE);
         };
         basketItems.append(basketWidget);
         if (overlapBetweenBasketItemsAndFooter()) {
             stickFooterToBasketBottom();
         }
+    }
+
+    function removeBasketWidget(productId) {
+        getBasketWidgetByProductId(productId).remove();
     }
 
     function getBasketItemHTML(productWidget) {
@@ -274,9 +316,11 @@ $(document).ready(function() {
         return markup.trim();
     }
 
-    function incrementProductWidgetItemNumber(productId) {
+    function modifyProductWidgetItemNumber(productId, type) {
         let productWidget = getProductWidgetByProductId(productId);
-        productWidget.getElementsByClassName('product-widget-add-number')[0].value ++;
+        let itemNumberElem = productWidget.getElementsByClassName('product-widget-item-number')[0];
+        let newItemNumber = Number(itemNumberElem.value) + (type === TYPE_ADD ? 1 : -1);
+        itemNumberElem.value = newItemNumber;
     }
 
     function getImageFromWidget(productWidget) {

@@ -95,7 +95,7 @@ $(document).ready(function() {
     function modifyProductWidgetItemNumber(productId) {
         let productWidget = getProductWidgetByProductId(productId);
         let itemNumberElem = productWidget.getElementsByClassName('product-widget-item-number')[0];
-        let newItemNumber = basketData[productId];
+        let newItemNumber = basketData[productId] ?? 0;
         itemNumberElem.value = newItemNumber;
     }
 

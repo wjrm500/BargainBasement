@@ -150,15 +150,23 @@ $(document).ready(function() {
     // Check what is in user's cart - any products that are in the cart should have the number of items in the product widget with relevant buttons
     
     var basketData = {}; // Load basket data asynchronously from DB
+    var sendBasketData;
     const TYPE_ADD = 'add';
     const TYPE_REMOVE = 'remove';
 
-    // Loop over items in shopping window, any items in basket need non-zero buttons displayed
-    let productWidgets = document.getElementsByClassName('product-widget');
-    for (let productWidget of productWidgets) {
-        let productId = productWidget.dataset.productId;
-        toggleNonZeroButtons(productId);
-    }
+    // Get existing basket data for user and modify page accordingly
+    $.get(
+        window.location.href + '/getBasketData',
+        function(data) {
+            basketData = JSON.parse(data);
+            for (let productId in basketData) {
+                toggleNonZeroButtons(productId);
+                modifyProductWidgetItemNumber(productId);
+                addBasketWidget(productId);
+                modifyBasketWidgetItemNumber(productId);
+            }
+        }
+    );
 
     // When user clicks add button on a product, add that number of products to cart and replace add button with - and +
     // Every time the user modifies their cart (and after a gap of maybe 5 seconds), make a post request to the back end to update their shopping cart in a table
@@ -197,6 +205,7 @@ $(document).ready(function() {
     }
 
     function handleWidgetClick(widget, type) {
+        clearTimeout(sendBasketData);
         let productId = widget.dataset.productId;
         if (productId in basketData) {
             basketData[productId] += (type === TYPE_ADD ? 1 : -1);
@@ -210,7 +219,16 @@ $(document).ready(function() {
             addBasketWidget(productId);
         }
         toggleNonZeroButtons(productId);
-        modifyProductWidgetItemNumber(productId, type);
+        modifyProductWidgetItemNumber(productId);
+        sendBasketData = setTimeout(
+            function() {
+                $.post(
+                    window.location.href,
+                    basketData
+                );
+            },
+            2000
+        );
     }
 
     function modifyBasketWidgetItemNumber(productId) {
@@ -222,8 +240,16 @@ $(document).ready(function() {
         basketWidget.getElementsByClassName('basket-item-total-price')[0].innerHTML = `£${totalPrice}`;
     }
 
+    function modifyProductWidgetItemNumber(productId) {
+        let productWidget = getProductWidgetByProductId(productId);
+        let itemNumberElem = productWidget.getElementsByClassName('product-widget-item-number')[0];
+        let newItemNumber = basketData[productId];
+        itemNumberElem.value = newItemNumber;
+    }
+
     function getBasketWidgetByProductId(productId) {
         let basketWidgets = document.getElementsByClassName('basket-widget');
+        // Use Array.find()
         for (let basketWidget of basketWidgets) {
             if (basketWidget.dataset.productId === productId) {
                 return basketWidget;
@@ -233,6 +259,7 @@ $(document).ready(function() {
 
     function getProductWidgetByProductId(productId) {
         let productWidgets = document.getElementsByClassName('product-widget');
+        // Use Array.find()
         for (let productWidget of productWidgets) {
             if (productWidget.dataset.productId === productId) {
                 return productWidget;
@@ -240,14 +267,6 @@ $(document).ready(function() {
         }
     }
     
-    // function toggleBasketWidget(productId) {
-    //     if (!(productId in basketData) || (productId in basketData && basketData[productId] < 1)) {
-    //         addBasketWidget(productId);
-    //         return;
-    //     }
-    //     removeBasketWidget(productId);
-    // }
-
     function addBasketWidget(productId) {
         let basketItems = document.getElementById('basket-items');
         let basketWidget = document.createElement('div');
@@ -314,13 +333,6 @@ $(document).ready(function() {
             </div>
         `;
         return markup.trim();
-    }
-
-    function modifyProductWidgetItemNumber(productId, type) {
-        let productWidget = getProductWidgetByProductId(productId);
-        let itemNumberElem = productWidget.getElementsByClassName('product-widget-item-number')[0];
-        let newItemNumber = Number(itemNumberElem.value) + (type === TYPE_ADD ? 1 : -1);
-        itemNumberElem.value = newItemNumber;
     }
 
     function getImageFromWidget(productWidget) {

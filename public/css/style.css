@@ -192,6 +192,9 @@ table th, table td {
   .product-widget .product-widget-non-zero-remove-button:hover, #basket #basket-items .basket-widget .basket-widget-modify .basket-widget-remove-button:hover {
     background: linear-gradient(#e7908e, #c9302c); }
 
+#products-table {
+  display: grid; }
+
 .product-widget {
   border: 3px solid #0070C0;
   border-radius: 5px;

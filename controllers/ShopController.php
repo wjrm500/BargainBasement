@@ -5,11 +5,14 @@ namespace app\controllers;
 use app\core\Application;
 use app\core\Controller;
 use app\models\Product;
+use app\models\ShoppingCart;
+use app\models\ShoppingCartItem;
 
 class ShopController extends Controller
 {
     public function index()
     {
+        
         $products = Product::findAll();
         $productWidgets = array_map(
             function($product) {
@@ -24,5 +27,88 @@ class ShopController extends Controller
             'shop',
             ['productWidgets' => $productWidgets]
         );
+    }
+
+    public function getBasketData()
+    {
+        $app = Application::$app;
+        if ($app->hasUser()) {
+            $userId = $app->getUser()->id;
+            $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
+            if ($shoppingCart) {
+                $shoppingCartItems = $shoppingCart->getItems();
+                $basketData = [];
+                foreach ($shoppingCartItems as $shoppingCartItem) {
+                    $basketData[$shoppingCartItem->product_id] = $shoppingCartItem->quantity;
+                }
+                return json_encode($basketData);
+            }
+        }
+    }
+
+    public function persistBasket()
+    {
+        // Can some of this stuff be moved into the Model?
+        $app = Application::$app;
+        $basketData = $app->request->getBody();
+        if ($app->hasUser()) {
+            $userId = $app->getUser()->id;
+            $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
+            if ($shoppingCart) {
+                $shoppingCart->bindData([
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+                $shoppingCart->update();
+
+                $existingCartItems = $shoppingCart->getItems();
+                foreach ($existingCartItems as $existingCartItem) {
+                    $productId = $existingCartItem->product_id;
+                    if (array_key_exists($productId, $basketData)) {
+                        $existingCartItem->bindData([
+                            'quantity' => (int) $basketData[$productId]
+                        ]);
+                        $existingCartItem->update();
+                    } else {
+                        $existingCartItem->delete();
+                    }
+                }
+                $newCartItems = array_diff_key(
+                    $basketData,
+                    array_flip(
+                        array_column(
+                            $existingCartItems,
+                            'product_id'
+                        )
+                    )
+                );
+                foreach ($newCartItems as $productId => $quantity) {
+                    $shoppingCartItem = new ShoppingCartItem();
+                    $shoppingCartItem->bindData([
+                        'shopping_cart_id' => $shoppingCart->id,
+                        'product_id'       => $productId,
+                        'quantity'         => $quantity
+                    ]);
+                    $shoppingCartItem->save();
+                }
+            } else {
+                $shoppingCart = new ShoppingCart();
+                $shoppingCart->bindData([
+                    'user_id'    => $userId,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'paid'       => 0
+                ]);
+                $shoppingCartId = $shoppingCart->save(true);
+                foreach ($basketData as $productId => $quantity) {
+                    $shoppingCartItem = new ShoppingCartItem();
+                    $shoppingCartItem->bindData([
+                        'shopping_cart_id' => $shoppingCartId,
+                        'product_id'       => $productId,
+                        'quantity'         => $quantity
+                    ]);
+                    $shoppingCartItem->save();
+                }
+            }
+        }
     }
 }

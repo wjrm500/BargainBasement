@@ -22,6 +22,8 @@ $app->router->get('/logout', [AccountController::class, 'logout']);
 $app->router->get('/profile', [AccountController::class, 'profile']);
 
 $app->router->get('/shop', [ShopController::class, 'index']);
+$app->router->post('/shop', [ShopController::class, 'persistBasket']);
+$app->router->get('/shop/getBasketData', [ShopController::class, 'getBasketData']);
 
 // Admin routes
 

@@ -31,7 +31,7 @@ class Request
         }
         if ($this->isPost()) {
             $filesInput = array_combine(array_keys($_FILES), array_column($_FILES, 'name'));
-            return array_merge(
+            return array_replace(
                 filter_var_array($filesInput, FILTER_SANITIZE_SPECIAL_CHARS),
                 filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS)
             );

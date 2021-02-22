@@ -42,7 +42,7 @@ abstract class DbModel extends Model
         $sql = "UPDATE {$tableName} SET {$implodedValues} WHERE id = {$this->id}";
         $statement = $this->pdo->prepare($sql);
         foreach ($attributes as $attribute) {
-            $statement->bindParam(":$attribute", $this->{$attribute}, $this->pdo::PARAM_STR);
+            $statement->bindParam(":$attribute", $this->{$attribute});
         }
         $result = $statement->execute();
         return $result;

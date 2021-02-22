@@ -1,5 +1,9 @@
 @import 'buttons';
-@import 'colours'; 
+@import 'colours';
+
+#products-table {
+    display: grid;
+} 
 
 .product-widget {
     border: 3px solid $dark-blue;

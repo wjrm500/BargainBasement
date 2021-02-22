@@ -76,6 +76,7 @@ $(document).ready(function() {
 
     function getBasketWidgetByProductId(productId) {
         let basketWidgets = document.getElementsByClassName('basket-widget');
+        // Use Array.find()
         for (let basketWidget of basketWidgets) {
             if (basketWidget.dataset.productId === productId) {
                 return basketWidget;
@@ -85,6 +86,7 @@ $(document).ready(function() {
 
     function getProductWidgetByProductId(productId) {
         let productWidgets = document.getElementsByClassName('product-widget');
+        // Use Array.find()
         for (let productWidget of productWidgets) {
             if (productWidget.dataset.productId === productId) {
                 return productWidget;

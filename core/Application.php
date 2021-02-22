@@ -77,6 +77,5 @@ class Application
             $this->response->setStatusCode($exception->getCode());
             echo $this->view->render('_error', compact('exception'));
         }
-        exit();
     }
 }

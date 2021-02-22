@@ -4,7 +4,7 @@
     </div>
     <div class="product-widget-row product-widget-name">
         <?= $product->name ?>
-    </div>
+    </div>  
     <div class="product-widget-row product-widget-detail">
         <div class="product-widget-component product-widget-price">
             £<?= number_format($product->price, 2, '.', '') ?>
@@ -32,7 +32,6 @@
             <button class="product-widget-add-button product-widget-non-zero-add-button">
                 <i class="fas fa-plus"></i>
             </button>
-        </div>
         </div>
     </div>
 </div>

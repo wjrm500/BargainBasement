@@ -229,6 +229,20 @@ $(document).ready(function() {
             },
             2000
         );
+        enlargeBasketWidget(productId);
+    }
+
+    function enlargeBasketWidget(productId) {
+        let basketWidget = getBasketWidgetByProductId(productId);
+        basketWidget.style.transition = 'transform 0.1s linear';
+        basketWidget.style.transform = 'scale(1.02)';
+        setTimeout(
+            function() {
+                basketWidget.style.transition = 'transform 0.1s linear';
+                basketWidget.style.transform = 'scale(1.00)';
+            },
+            100
+        )
     }
 
     function modifyBasketWidgetItemNumber(productId) {

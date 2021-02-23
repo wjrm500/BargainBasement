@@ -248,17 +248,4 @@ $(document).ready(function() {
         }
         document.getElementById('basket-price-value').innerHTML = `£${totalPrice.toFixed(2)}`;
     }
-
-    function addCheckoutHandler() {
-        let checkoutButton = document.getElementById('basket-checkout');
-        $(checkoutButton).click(function() {
-            debugger;
-            let hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'basket-data');
-            hiddenInput.setAttribute('value', JSON.stringify(basketData));
-            document.getElementById('basket-checkout-form').append(hiddenInput);
-            return true;
-        });
-    }
 })

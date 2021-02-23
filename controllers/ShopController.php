@@ -116,10 +116,11 @@ class ShopController extends Controller
 
     public function checkout(Request $request, Response $response)
     {
-        if ($request->isGet()) {
-            return $response->redirect('/shop');
+        $app = Application::$app;
+        if ($app->hasUser()) {
+            $userId = $app->getUser()->id;
+            $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
+            $a = 1;
         }
-        $a = 1;
-        // Do we even need to post data to the back end?
     }
 }

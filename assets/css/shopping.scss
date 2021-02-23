@@ -213,7 +213,11 @@
         #basket-checkout {
             @extend %basket-footer-item;
             @extend %green-button;
+            color: black;
+            line-height: 2.2;
             margin: 0px 15px;
+            text-align: center;
+            text-decoration: none;
         }
     }
 }

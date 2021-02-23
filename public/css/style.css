@@ -318,4 +318,8 @@ table th, table td {
     #basket #basket-footer #basket-price {
       text-align: center; }
     #basket #basket-footer #basket-checkout {
-      margin: 0px 15px; }
+      color: black;
+      line-height: 2.2;
+      margin: 0px 15px;
+      text-align: center;
+      text-decoration: none; }

@@ -246,6 +246,9 @@ table th, table td {
 .product-row {
   display: flex; }
 
+.basket-widget-active {
+  margin: 0.65em !important; }
+
 #basket {
   background-color: #e1e1e1;
   position: relative; }
@@ -263,7 +266,8 @@ table th, table td {
     border-radius: 5px;
     display: flex;
     height: 75px;
-    margin: 15px; }
+    margin: 15px;
+    transition: all 0.05s ease-in-out; }
     #basket #basket-items .basket-widget .basket-widget-image-container {
       display: flex;
       flex: 3;

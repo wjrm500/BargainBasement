@@ -86,12 +86,10 @@ $(document).ready(function() {
 
     function enlargeBasketWidget(productId) {
         let basketWidget = getBasketWidgetByProductId(productId);
-        basketWidget.style.transition = 'transform 0.1s linear';
-        basketWidget.style.transform = 'scale(1.02)';
+        basketWidget.classList.add('basket-widget-active');
         setTimeout(
             function() {
-                basketWidget.style.transition = 'transform 0.1s linear';
-                basketWidget.style.transform = 'scale(1.00)';
+                basketWidget.classList.remove('basket-widget-active');
             },
             100
         )

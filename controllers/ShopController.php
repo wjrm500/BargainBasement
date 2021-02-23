@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
+use app\core\Request;
+use app\core\Response;
 use app\models\Product;
 use app\models\ShoppingCart;
 use app\models\ShoppingCartItem;
@@ -110,5 +112,14 @@ class ShopController extends Controller
                 }
             }
         }
+    }
+
+    public function checkout(Request $request, Response $response)
+    {
+        if ($request->isGet()) {
+            return $response->redirect('/shop');
+        }
+        $a = 1;
+        // Do we even need to post data to the back end?
     }
 }

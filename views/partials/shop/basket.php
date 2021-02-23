@@ -3,13 +3,13 @@
         My Basket
     </div>
     <div id="basket-items"></div>
+    <form id="basket-checkout-form" method="post" action="/shop/checkout">
     <div id="basket-footer">
         <div id="basket-price">
-            Total price:<br>
-            £3.00
+            <label id="basket-price-label">Total price:</label>
+            <div id="basket-price-value"></div>
         </div>
-        <button id="basket-checkout">
-            Checkout
-        </button>
+        <input id="basket-checkout" type="submit" href="/shop/checkout" value="Checkout">
     </div>
+    </form>
 </div>

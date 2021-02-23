@@ -151,8 +151,12 @@ $(document).ready(function() {
     
     var basketData = {}; // Load basket data asynchronously from DB
     var sendBasketData;
+
     const TYPE_ADD = 'add';
     const TYPE_REMOVE = 'remove';
+
+    const TYPE_PRICE = 'price';
+    const TYPE_TOTAL_PRICE = 'total-price';
 
     // Get existing basket data for user and modify page accordingly
     $.get(
@@ -164,6 +168,8 @@ $(document).ready(function() {
                 modifyProductWidgetItemNumber(productId);
                 addBasketWidget(productId);
                 modifyBasketWidgetItemNumber(productId);
+                updateTotalPrice();
+                addCheckoutHandler();
             }
         }
     );
@@ -210,6 +216,7 @@ $(document).ready(function() {
         if (productId in basketData) {
             basketData[productId] += (type === TYPE_ADD ? 1 : -1);
             modifyBasketWidgetItemNumber(productId);
+            enlargeBasketWidget(productId);
             if (basketData[productId] < 1) {
                 delete basketData[productId];
                 removeBasketWidget(productId);
@@ -220,6 +227,7 @@ $(document).ready(function() {
         }
         toggleNonZeroButtons(productId);
         modifyProductWidgetItemNumber(productId);
+        updateTotalPrice();
         sendBasketData = setTimeout(
             function() {
                 $.post(
@@ -229,7 +237,6 @@ $(document).ready(function() {
             },
             2000
         );
-        enlargeBasketWidget(productId);
     }
 
     function enlargeBasketWidget(productId) {
@@ -246,10 +253,17 @@ $(document).ready(function() {
     function modifyBasketWidgetItemNumber(productId) {
         let basketWidget = getBasketWidgetByProductId(productId);
         basketWidget.getElementsByClassName('basket-item-number')[0].innerHTML = basketData[productId];
-        let itemPrice = basketWidget.getElementsByClassName('basket-item-price')[0].innerHTML;
-        itemPrice = Number(itemPrice.replace(/[^0-9.-]+/g, ''));
+        let itemPrice = getNumericItemPriceFromBasketWidget(basketWidget, TYPE_PRICE);
         let totalPrice = (itemPrice * basketData[productId]).toFixed(2);
         basketWidget.getElementsByClassName('basket-item-total-price')[0].innerHTML = `£${totalPrice}`;
+    }
+
+    function getNumericItemPriceFromBasketWidget(basketWidget, type) {
+        if (![TYPE_PRICE, TYPE_TOTAL_PRICE].includes(type)) {
+            throw 'Type parameter must be either "price" or "total-price"';
+        }
+        let itemPrice = basketWidget.getElementsByClassName('basket-item-' + type)[0].innerHTML;
+        return Number(itemPrice.replace(/[^0-9.-]+/g, ''));
     }
 
     function modifyProductWidgetItemNumber(productId) {
@@ -372,5 +386,27 @@ $(document).ready(function() {
     function stickFooterToBasketBottom() {
         let basketFooter = document.getElementById('basket-footer');
         basketFooter.style.position = 'sticky';
+    }
+
+    function updateTotalPrice() {
+        let basketWidgets = document.getElementsByClassName('basket-widget');
+        let totalPrice = 0;
+        for (let basketWidget of basketWidgets) {
+            totalPrice += getNumericItemPriceFromBasketWidget(basketWidget, TYPE_TOTAL_PRICE);
+        }
+        document.getElementById('basket-price-value').innerHTML = `£${totalPrice.toFixed(2)}`;
+    }
+
+    function addCheckoutHandler() {
+        let checkoutButton = document.getElementById('basket-checkout');
+        $(checkoutButton).click(function() {
+            debugger;
+            let hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'basket-data');
+            hiddenInput.setAttribute('value', JSON.stringify(basketData));
+            document.getElementById('basket-checkout-form').append(hiddenInput);
+            return true;
+        });
     }
 })

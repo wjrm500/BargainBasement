@@ -247,7 +247,7 @@ table th, table td {
   display: flex; }
 
 .basket-widget-active {
-  margin: 0.65em !important; }
+  margin: 1em 0.65em !important; }
 
 #basket {
   background-color: #e1e1e1;

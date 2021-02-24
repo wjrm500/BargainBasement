@@ -10,6 +10,9 @@ $(document).ready(function() {
     const TYPE_PRICE = 'price';
     const TYPE_TOTAL_PRICE = 'total-price';
 
+    // Disable checkout button whilst page loads
+    disableCheckout();
+
     // Get existing basket data for user and modify page accordingly
     $.get(
         window.location.href + '/getBasketData',
@@ -20,9 +23,9 @@ $(document).ready(function() {
                 modifyProductWidgetItemNumber(productId);
                 addBasketWidget(productId);
                 modifyBasketWidgetItemNumber(productId);
-                updateTotalPrice();
-                addCheckoutHandler();
             }
+            updateTotalPrice();
+            enableCheckout();
         }
     );
 
@@ -63,6 +66,7 @@ $(document).ready(function() {
     }
 
     function handleWidgetClick(widget, type) {
+        disableCheckout();
         clearTimeout(sendBasketData);
         let productId = widget.dataset.productId;
         if (productId in basketData) {
@@ -82,9 +86,11 @@ $(document).ready(function() {
         updateTotalPrice();
         sendBasketData = setTimeout(
             function() {
+                window.localStorage.setItem('basketData', JSON.stringify(basketData));
                 $.post(
                     window.location.href,
-                    basketData
+                    basketData,
+                    enableCheckout
                 );
             },
             2000
@@ -126,23 +132,13 @@ $(document).ready(function() {
     }
 
     function getBasketWidgetByProductId(productId) {
-        let basketWidgets = document.getElementsByClassName('basket-widget');
-        // Use Array.find()
-        for (let basketWidget of basketWidgets) {
-            if (basketWidget.dataset.productId === productId) {
-                return basketWidget;
-            }
-        }
+        let basketWidgets = Array.from(document.getElementsByClassName('basket-widget'));
+        return basketWidgets.find((x) => x.dataset.productId === productId);
     }
 
     function getProductWidgetByProductId(productId) {
-        let productWidgets = document.getElementsByClassName('product-widget');
-        // Use Array.find()
-        for (let productWidget of productWidgets) {
-            if (productWidget.dataset.productId === productId) {
-                return productWidget;
-            }
-        }
+        let productWidgets = Array.from(document.getElementsByClassName('product-widget'));
+        return productWidgets.find((x) => x.dataset.productId === productId);
     }
     
     function addBasketWidget(productId) {
@@ -247,5 +243,19 @@ $(document).ready(function() {
             totalPrice += getNumericItemPriceFromBasketWidget(basketWidget, TYPE_TOTAL_PRICE);
         }
         document.getElementById('basket-price-value').innerHTML = `£${totalPrice.toFixed(2)}`;
+    }
+
+    function disableCheckout() {
+        let checkoutButton = document.getElementById('basket-checkout');
+        checkoutButton.style.pointerEvents = 'none';
+        checkoutButton.style.cursor = 'default';
+        checkoutButton.innerHTML = '<img src="images/spinner-unscreen.gif" height="100%">';
+    }
+
+    function enableCheckout() {
+        let checkoutButton = document.getElementById('basket-checkout');
+        checkoutButton.style.pointerEvents = 'auto';
+        checkoutButton.style.cursor = 'pointer';
+        checkoutButton.innerHTML = 'Checkout';
     }
 })

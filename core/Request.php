@@ -11,7 +11,11 @@ class Request
 
     public function getPath()
     {
-        return $_SERVER['REQUEST_URI'];
+        $requestUri = $_SERVER['REQUEST_URI'];
+        if ($qPosition = strpos($requestUri, '?')) {
+            return substr($requestUri, 0, $qPosition);
+        }
+        return $requestUri;
     }
 
     public function isGet()
@@ -57,5 +61,10 @@ class Request
     public function getFile($key)
     {
         return $_FILES[$key];
+    }
+
+    public function getRedirectUrl()
+    {
+        return $_GET['redirect-url'];
     }
 }

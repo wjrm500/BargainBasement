@@ -26,6 +26,10 @@ $app->router->post('/shop', [ShopController::class, 'persistBasket']);
 $app->router->get('/shop/getBasketData', [ShopController::class, 'getBasketData']);
 $app->router->controller('/shop/checkout', [ShopController::class, 'checkout']);
 
+// Image route
+
+$app->router->get('/images/{image}', '/images/{image}');
+
 // Admin routes
 
 $app->router->get('/admin', [HomeController::class, 'adminIndex']);

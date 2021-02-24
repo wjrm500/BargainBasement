@@ -9,9 +9,14 @@ class Response
         http_response_code($statusCode);
     }
 
-    public function redirect($location)
+    public function redirect($location, $redirectUrl = null)
     {
-        header("Location: {$location}");
+        if ($redirectUrl) {
+            $redirectUrl = urlencode($redirectUrl);
+            header("Location: {$location}?redirect-url={$redirectUrl}");
+        } else {
+            header("Location: {$location}");
+        }
         exit();
     }
 }

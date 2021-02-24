@@ -34,4 +34,14 @@ class ShoppingCartItem extends DbModel
     {
         return [];
     }
+
+    public function price()
+    {
+        return Product::find(['id' => $this->product_id])->price;
+    }
+
+    public function totalPrice()
+    {
+        return Product::find(['id' => $this->product_id])->price * $this->quantity;
+    }
 }

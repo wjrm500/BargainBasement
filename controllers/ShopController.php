@@ -120,7 +120,11 @@ class ShopController extends Controller
         if ($app->hasUser()) {
             $userId = $app->getUser()->id;
             $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
-            $a = 1;
+            return $this->render(
+                'checkout',
+                ['shoppingCart' => $shoppingCart]
+            );
         }
+        return $response->redirect('/login', '/shop/checkout');
     }
 }

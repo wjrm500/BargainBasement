@@ -27,7 +27,7 @@ class AccountController extends Controller
                     'You have successfully logged in!',
                     'success'
                 );
-                return $response->redirect('/');
+                return $response->redirect($request->getRedirectUrl() ?? '/');
             }
         }
         return $this->render('login', compact('loginForm'));

@@ -9,6 +9,13 @@ class ShoppingCartItem extends DbModel
     public int $shopping_cart_id = 0;
     public int $product_id = 0;
     public int $quantity = 0;
+    public Product $product;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->product = Product::find(['id' => $this->product_id]);
+    }
 
     public function labels(): array
     {
@@ -35,13 +42,18 @@ class ShoppingCartItem extends DbModel
         return [];
     }
 
+    public function name()
+    {
+        return $this->product->name;
+    }
+
     public function price()
     {
-        return Product::find(['id' => $this->product_id])->price;
+        return $this->product->price;
     }
 
     public function totalPrice()
     {
-        return Product::find(['id' => $this->product_id])->price * $this->quantity;
+        return $this->product->price * $this->quantity;
     }
 }

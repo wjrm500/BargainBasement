@@ -16,7 +16,6 @@ abstract class AdminController extends Controller
 
     public function __construct()
     {
-        $this->setLayout('admin');
         $this->registerProtectedMethod('index', [new HasPermission($this->permission->id)]);
     }
 
@@ -27,13 +26,14 @@ abstract class AdminController extends Controller
 
     protected function getDefaultParams()
     {
-        return [
-            'itemAttributes' => $this->model::attributes(),
-            'items'          => $this->model::findAll(),
-            'permissionName' => static::PERMISSION_NAME,
-            'permissions'    => Application::$app->getUser()->getPermissions(),
-            'request'        => Application::$app->request
-        ];
+        return array_merge(
+            parent::getDefaultParams(),
+            [
+                'itemAttributes' => $this->model::attributes(),
+                'items'          => $this->model::findAll(),
+                'permissionName' => static::PERMISSION_NAME,
+            ]
+        );
     }
 
     public function render($view, $params = [])

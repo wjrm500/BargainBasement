@@ -2,24 +2,32 @@
 
 namespace app\core;
 
+use app\consts\ViewConsts;
+
 class Controller
 {
     protected string $layout = 'main';
     protected array $protectedMethods = [];
 
-    public function setLayout($layout)
+    public function __construct()
     {
-        $this->layout = $layout;
+        $this->view = Application::$app->view;
+        $this->layoutTree = new LayoutTree([ViewConsts::VIEW_MAIN => LayoutTree::PLACEHOLDER]);
     }
 
-    public function renderViewOnly($view, $params = [])
+    protected function getDefaultParams()
     {
-        return Application::$app->view->renderViewOnly($view, $params);
+        return ['app' => Application::$app];
     }
 
-    public function render($view, $params = [])
+    public function renderViewOnly(Array $params = [])
     {
-        return Application::$app->view->render($view, $params, $this->layout);
+        return $this->view->renderViewOnly($this->layoutTree, $params);
+    }
+
+    public function render(Array $params = [])
+    {
+        return $this->view->render($this->layoutTree, array_merge($this->getDefaultParams(), $params));
     }
 
     public function registerProtectedMethod(string $method, array $middlewares)

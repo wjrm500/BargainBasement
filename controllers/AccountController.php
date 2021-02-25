@@ -2,8 +2,10 @@
 
 namespace app\controllers;
 
+use app\consts\ViewConsts;
 use app\core\Application;
 use app\core\Controller;
+use app\core\LayoutTree;
 use app\core\middlewares\LoggedIn;
 use app\core\Request;
 use app\core\Response;
@@ -14,7 +16,13 @@ class AccountController extends Controller
 {
     public function __construct()
     {
+        parent::__construct();
         $this->registerProtectedMethod('profile', [new LoggedIn()]);
+        $this->layoutTree->replacePlaceholder([
+            ViewConsts::VIEW_FLSH_MSGS,
+            ViewConsts::VIEW_NAVBAR,
+            LayoutTree::PLACEHOLDER,
+        ]);
     }
 
     public function login(Request $request, Response $response)
@@ -30,7 +38,8 @@ class AccountController extends Controller
                 return $response->redirect($request->getRedirectUrl() ?? '/');
             }
         }
-        return $this->render('login', compact('loginForm'));
+        $this->layoutTree->replacePlaceholder(ViewConsts::VIEW_LOGIN);
+        return $this->render(compact('loginForm'));
     }
 
     public function register(Request $request, Response $response)
@@ -47,7 +56,8 @@ class AccountController extends Controller
                 return $response->redirect('/');
             }
         }
-        return $this->render('register', compact('registerForm'));
+        $this->layoutTree->replacePlaceholder(ViewConsts::VIEW_REGISTER);
+        return $this->render(compact('registerForm'));
     }
 
     public function logout(Request $request, Response $response)
@@ -62,7 +72,7 @@ class AccountController extends Controller
 
     public function profile(Request $request, Response $response)
     {
-        $this->setLayout('main');
-        return $this->render('profile');
+        $layoutTree = new LayoutTree([ViewConsts::VIEW_MAIN => [ViewConsts::VIEW_PROFILE]]);
+        return $this->render($layoutTree);
     }
 }

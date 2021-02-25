@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\consts\ViewConsts;
 use app\core\db\Database;
 use app\models\LoginForm;
 use app\models\RegisterForm;
@@ -75,7 +76,8 @@ class Application
             echo $this->router->resolve($this->request, $this->response);
         } catch (Exception $exception) {
             $this->response->setStatusCode($exception->getCode());
-            echo $this->view->render('_error', compact('exception'));
+            $layoutTree = new LayoutTree([ViewConsts::VIEW_MAIN => [ViewConsts::VIEW_ERROR]]);
+            echo $this->view->render($layoutTree, compact('exception'));
         }
     }
 }

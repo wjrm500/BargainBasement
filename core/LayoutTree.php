@@ -4,14 +4,36 @@ namespace app\core;
 
 class LayoutTree
 {
+    public const PLACEHOLDER = ':placeholder';
+
     public Array $constructedViews;
     private Array $tree;
     private View $view;
 
-    public function __construct(Array $tree)
+    public function __construct(Array $tree = [])
     {
         if ($this->validateTree($tree)) $this->tree = $tree;
         $this->treeIndex = array_key_first($this->tree);
+    }
+
+    public function replacePlaceholder($replacement)
+    {
+        // Recurse through array until find placeholder, then replace
+        // Setting function to variable so it can be unset later to prevent redeclaration error
+        $recurseThroughTree = function(&$array, $replacement) use (&$recurseThroughTree) {
+            foreach ($array as &$value)  {
+                if (is_array($value)) {
+                    $recurseThroughTree($value, $replacement);
+                } else {
+                    if ($value === LayoutTree::PLACEHOLDER) {
+                        $value = $replacement;
+                        return;
+                    }
+                }
+            }
+        };
+        $recurseThroughTree($this->tree, $replacement);
+        unset($recurseThroughTree);
     }
 
     public function __invoke()
@@ -36,6 +58,7 @@ class LayoutTree
         }
         $constructedView = $this->view->getViewContent(array_key_first($tree));
         foreach ($views as $index => $view) {
+            // Need to count num instances of {{ content }} and make sure this matches the number of views
             if ($this->hasConstructedView($index)) {
                 $constructedView = preg_replace('/{{ content }}/', $this->getConstructedView($index), $constructedView, 1);
             } else {
@@ -51,6 +74,7 @@ class LayoutTree
         if (count(array_keys($tree)) !== 1) {
             return false;
         }
+        // All key-value pairs must be of form int => string or string => array
         return true;
     }
 

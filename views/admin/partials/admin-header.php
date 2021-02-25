@@ -10,7 +10,7 @@ $permission = Permission::find(['name' => $permissionName]);
     <div>
         <h2>
             <span id="admin-title"><?= $permissionName ?></span>
-            <span id="admin-page-type">|| <?= $request->getPathElementCount() > 3 ? ucfirst($request->getSlug()) : 'View' ?></span>
+            <span id="admin-page-type">|| <?= $app->request->getPathElementCount() > 3 ? ucfirst($app->request->getSlug()) : 'View' ?></span>
         </h2>
     </div>
     <div>

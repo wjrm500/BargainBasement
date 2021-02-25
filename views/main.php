@@ -1,10 +1,3 @@
-<?php
-
-use app\core\Application;
-
-$session = Application::$app->session;
-
-?>
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,19 +11,7 @@ $session = Application::$app->session;
 </head>
 </head>
 <body>
-<?php if ($session->isFlashy()): ?>
-    <?php foreach ($session->getFlashMessages() as $flashMessage): ?>
-        <div class="
-            container-fluid
-            text-white
-            bg-<?= $flashMessage['bootstrapColor'] ?>
-            font-weight-bold
-            text-center
-            ">
-            <?= $flashMessage['message'] ?>
-        </div>
-    <?php endforeach; ?>
-<?php endif; ?>
-<?php include __DIR__ . '/../partials/navbar.php'; ?>
+    {{ content }}
+    {{ content }}
     {{ content }}
 </body>

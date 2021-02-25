@@ -13,15 +13,6 @@ class View
 
     public function render(LayoutTree $layoutTree, Array $params = [])
     {
-        /* Example $layoutTree below...
-        'tree_main' => [
-                'tree_nav',
-                'tree_shop' => [
-                    'tree_products',
-                    'tree_basket'
-                ]
-            ]
-        */
         $this->setParams($params);
         $layoutTree->setView($this);
         $layoutTree->construct();

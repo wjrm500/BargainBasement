@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\core\utilities\ArrayUtils;
+
 class LayoutTree
 {
     public const PLACEHOLDER = ':placeholder';
@@ -16,17 +18,22 @@ class LayoutTree
         $this->treeIndex = array_key_first($this->tree);
     }
 
-    public function replacePlaceholder($replacement)
+    public function customise($replacement)
     {
         // Recurse through array until find placeholder, then replace
         // Setting function to variable so it can be unset later to prevent redeclaration error
         $recurseThroughTree = function(&$array, $replacement) use (&$recurseThroughTree) {
-            foreach ($array as &$value)  {
+            foreach ($array as $key => &$value)  {
                 if (is_array($value)) {
                     $recurseThroughTree($value, $replacement);
                 } else {
                     if ($value === LayoutTree::PLACEHOLDER) {
-                        $value = $replacement;
+                        if (is_array($replacement) && ArrayUtils::isAssoc($replacement)) {
+                            $array = ArrayUtils::changeKey($array, $key, array_key_first($replacement));
+                            $array[array_key_first($replacement)] = reset($replacement);
+                        } else {
+                            $value = $replacement;
+                        }
                         return;
                     }
                 }

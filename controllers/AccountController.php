@@ -18,9 +18,9 @@ class AccountController extends Controller
     {
         parent::__construct();
         $this->registerProtectedMethod('profile', [new LoggedIn()]);
-        $this->layoutTree->replacePlaceholder([
-            ViewConsts::VIEW_FLSH_MSGS,
-            ViewConsts::VIEW_NAVBAR,
+        $this->layoutTree->customise([
+            ViewConsts::FLASH_MESSAGES,
+            ViewConsts::NAVBAR,
             LayoutTree::PLACEHOLDER,
         ]);
     }
@@ -38,7 +38,7 @@ class AccountController extends Controller
                 return $response->redirect($request->getRedirectUrl() ?? '/');
             }
         }
-        $this->layoutTree->replacePlaceholder(ViewConsts::VIEW_LOGIN);
+        $this->layoutTree->customise(ViewConsts::LOGIN);
         return $this->render(compact('loginForm'));
     }
 
@@ -56,7 +56,7 @@ class AccountController extends Controller
                 return $response->redirect('/');
             }
         }
-        $this->layoutTree->replacePlaceholder(ViewConsts::VIEW_REGISTER);
+        $this->layoutTree->customise(ViewConsts::REGISTER);
         return $this->render(compact('registerForm'));
     }
 
@@ -72,7 +72,7 @@ class AccountController extends Controller
 
     public function profile(Request $request, Response $response)
     {
-        $layoutTree = new LayoutTree([ViewConsts::VIEW_MAIN => [ViewConsts::VIEW_PROFILE]]);
-        return $this->render($layoutTree);
+        $this->layoutTree->customise(ViewConsts::PROFILE);
+        return $this->render();
     }
 }

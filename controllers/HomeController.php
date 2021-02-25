@@ -11,22 +11,22 @@ class HomeController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->layoutTree->replacePlaceholder([
-            ViewConsts::VIEW_FLSH_MSGS,
-            ViewConsts::VIEW_NAVBAR,
+        $this->layoutTree->customise([
+            ViewConsts::FLASH_MESSAGES,
+            ViewConsts::NAVBAR,
             LayoutTree::PLACEHOLDER,
         ]);
     }
 
     public function index()
     {
-        $this->layoutTree->replacePlaceholder(ViewConsts::VIEW_HOME);
+        $this->layoutTree->customise(ViewConsts::HOME);
         return $this->render();
     }
 
     public function adminIndex()
     {
-        $this->layoutTree->replacePlaceholder(ViewConsts::VIEW_ADMIN_HM);
+        $this->layoutTree->customise(ViewConsts::ADMIN_HOME);
         return $this->render();
     }
 }

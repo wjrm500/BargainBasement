@@ -12,7 +12,7 @@ class Controller
     public function __construct()
     {
         $this->view = Application::$app->view;
-        $this->layoutTree = new LayoutTree([ViewConsts::VIEW_MAIN => LayoutTree::PLACEHOLDER]);
+        $this->layoutTree = new LayoutTree([ViewConsts::MAIN => LayoutTree::PLACEHOLDER]);
     }
 
     protected function getDefaultParams()
@@ -20,9 +20,9 @@ class Controller
         return ['app' => Application::$app];
     }
 
-    public function renderViewOnly(Array $params = [])
+    public function renderViewOnly(String $view, Array $params = [])
     {
-        return $this->view->renderViewOnly($this->layoutTree, $params);
+        return $this->view->renderViewOnly($view, $params);
     }
 
     public function render(Array $params = [])

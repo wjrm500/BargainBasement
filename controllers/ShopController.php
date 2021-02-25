@@ -2,8 +2,10 @@
 
 namespace app\controllers;
 
+use app\consts\ViewConsts;
 use app\core\Application;
 use app\core\Controller;
+use app\core\LayoutTree;
 use app\core\Request;
 use app\core\Response;
 use app\models\Product;
@@ -12,23 +14,27 @@ use app\models\ShoppingCartItem;
 
 class ShopController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->layoutTree->customise([
+            ViewConsts::FLASH_MESSAGES,
+            ViewConsts::NAVBAR,
+            LayoutTree::PLACEHOLDER,
+        ]);
+    }
+
     public function index()
     {
-        
         $products = Product::findAll();
         $productWidgets = array_map(
             function($product) {
-                return $this->renderViewOnly(
-                    'partials/shop/product_widget',
-                    ['product' => $product]
-                );
+                return $this->renderViewOnly(ViewConsts::SHOP_PROD_WIDGET, compact('product'));
             },
             $products
         );
-        return $this->render(
-            'shop',
-            ['productWidgets' => $productWidgets]
-        );
+        $this->layoutTree->customise([ViewConsts::SHOP => [ViewConsts::SHOP_PRODS, ViewConsts::SHOP_BASKET]]);
+        return $this->render(compact('productWidgets'));
     }
 
     public function getBasketData()

@@ -18,11 +18,6 @@ class AccountController extends Controller
     {
         parent::__construct();
         $this->registerProtectedMethod('profile', [new LoggedIn()]);
-        $this->layoutTree->customise([
-            ViewConsts::FLASH_MESSAGES,
-            ViewConsts::NAVBAR,
-            LayoutTree::PLACEHOLDER,
-        ]);
     }
 
     public function login(Request $request, Response $response)

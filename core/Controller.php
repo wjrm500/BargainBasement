@@ -3,29 +3,41 @@
 namespace app\core;
 
 use app\consts\ViewConsts;
+use ReflectionClass;
 
 class Controller
 {
-    protected string $layout = 'main';
+    protected View $view;
+    protected LayoutTree $layoutTree;
     protected array $protectedMethods = [];
 
     public function __construct()
     {
         $this->view = Application::$app->view;
-        $this->layoutTree = new LayoutTree([ViewConsts::MAIN => LayoutTree::PLACEHOLDER]);
+        $this->layoutTree = new LayoutTree([
+            ViewConsts::MAIN => [
+                ViewConsts::FLASH_MESSAGES,
+                ViewConsts::NAVBAR,
+                LayoutTree::PLACEHOLDER
+            ]
+        ]);
     }
 
     protected function getDefaultParams()
     {
-        return ['app' => Application::$app];
+        $title = str_replace('Controller', '', (new ReflectionClass($this))->getShortName());
+        return [
+            'app'   => Application::$app,
+            'title' => $title
+        ];
     }
 
-    public function renderViewOnly(String $view, Array $params = [])
+    public function renderViewOnly(string $view, array $params = [])
     {
         return $this->view->renderViewOnly($view, $params);
     }
 
-    public function render(Array $params = [])
+    public function render(array $params = [])
     {
         return $this->view->render($this->layoutTree, array_merge($this->getDefaultParams(), $params));
     }

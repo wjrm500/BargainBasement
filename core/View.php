@@ -4,14 +4,14 @@ namespace app\core;
 
 class View
 {
-    public Array $params;
+    public array $params;
 
-    public function setParams($params)
+    public function setParams(array $params)
     {
         $this->params = $params;
     }
 
-    public function render(LayoutTree $layoutTree, Array $params = [])
+    public function render(LayoutTree $layoutTree, array $params = [])
     {
         $this->setParams($params);
         $layoutTree->setView($this);
@@ -19,15 +19,14 @@ class View
         return $layoutTree();
     }
 
-    public function renderViewOnly(String $view, Array $params = [])
+    public function renderViewOnly(string $view, array $params = null)
     {
-        $this->setParams($params);
         return $this->getViewContent($view, $params);
     }
     
-    public function getViewContent($view)
+    public function getViewContent(string $view, array $params = null)
     {
-        foreach ($this->params as $key => $value) {
+        foreach ($params ?? $this->params as $key => $value) {
             $$key = $value;
         }
         ob_start();

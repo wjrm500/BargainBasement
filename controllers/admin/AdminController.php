@@ -2,9 +2,11 @@
 
 namespace app\controllers\admin;
 
+use app\consts\ViewConsts;
 use app\core\Application;
 use app\core\Controller;
 use app\core\db\DbModel;
+use app\core\LayoutTree;
 use app\core\middlewares\HasPermission;
 
 abstract class AdminController extends Controller
@@ -16,7 +18,16 @@ abstract class AdminController extends Controller
 
     public function __construct()
     {
+        parent::__construct();
         $this->registerProtectedMethod('index', [new HasPermission($this->permission->id)]);
+        $this->layoutTree->customise([
+            ViewConsts::ADMIN => [
+                ViewConsts::ADMIN_NAVBAR,
+                ViewConsts::ADMIN_HEADER,
+                LayoutTree::PLACEHOLDER
+            ]
+        ]);
+
     }
 
     protected function setModel($model)
@@ -34,14 +45,5 @@ abstract class AdminController extends Controller
                 'permissionName' => static::PERMISSION_NAME,
             ]
         );
-    }
-
-    public function render($view, $params = [])
-    {
-        $params = array_merge(
-            $this->getDefaultParams(),
-            $params
-        );
-        return parent::render($view, $params);
     }
 }

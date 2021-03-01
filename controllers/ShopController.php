@@ -14,16 +14,6 @@ use app\models\ShoppingCartItem;
 
 class ShopController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->layoutTree->customise([
-            ViewConsts::FLASH_MESSAGES,
-            ViewConsts::NAVBAR,
-            LayoutTree::PLACEHOLDER,
-        ]);
-    }
-
     public function index()
     {
         $products = Product::findAll();
@@ -126,10 +116,8 @@ class ShopController extends Controller
         if ($app->hasUser()) {
             $userId = $app->getUser()->id;
             $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
-            return $this->render(
-                'checkout',
-                ['shoppingCart' => $shoppingCart]
-            );
+            $this->layoutTree->customise(ViewConsts::CHECKOUT);
+            return $this->render(compact('shoppingCart'));
         }
         return $response->redirect('/login', '/shop/checkout');
     }

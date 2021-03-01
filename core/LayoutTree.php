@@ -38,6 +38,7 @@ class LayoutTree
                     }
                 }
             }
+            return 'No placeholders found';
         };
         $recurseThroughTree($this->tree, $replacement);
         unset($recurseThroughTree);

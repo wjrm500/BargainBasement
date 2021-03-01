@@ -19,6 +19,7 @@ $(document).ready(function() {
         })
     }
 });
+
 $(document).ready(function() {
     let firstPageButton = document.querySelector('button[data-page-num="0"]');
     highlightButton(firstPageButton);
@@ -165,6 +166,10 @@ $(document).ready(function() {
     $.get(
         window.location.href + '/getBasketData',
         function(data) {
+            // If the user has no basket data stored in the database, use locally stored basket data
+            if (!data) {
+                data = window.localStorage.basketData;
+            }
             basketData = JSON.parse(data);
             for (let productId in basketData) {
                 toggleNonZeroButtons(productId);

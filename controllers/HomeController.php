@@ -11,11 +11,6 @@ class HomeController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->layoutTree->customise([
-            ViewConsts::FLASH_MESSAGES,
-            ViewConsts::NAVBAR,
-            LayoutTree::PLACEHOLDER,
-        ]);
     }
 
     public function index()

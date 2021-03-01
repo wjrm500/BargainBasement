@@ -2,9 +2,12 @@
 
 namespace app\controllers\admin;
 
+use app\consts\ViewConsts;
 use app\core\Application;
+use app\core\LayoutTree;
 use app\core\Request;
 use app\core\Response;
+use app\core\View;
 use app\models\Permission;
 use app\models\Product;
 
@@ -21,7 +24,14 @@ class AdminProductController extends AdminController
 
     public function index()
     {
-        return $this->render('admin/item_home');
+        $this->layoutTree->customise([
+            ViewConsts::ADMIN_ITEM_HOME => [
+                ViewConsts::ADMIN_TABLE_HEADER,
+                ViewConsts::ADMIN_TABLE_PAGES,
+                ViewConsts::ADMIN_TABLE_PAGINATION
+            ]
+        ]);
+        return $this->render();
     }
 
     public function addProduct(Request $request, Response $response)
@@ -36,7 +46,8 @@ class AdminProductController extends AdminController
                 return $response->redirect($this->permission->href);
             }
         }
-        return $this->render('admin/item_add_form', ['model' => $this->model]);
+        $this->layoutTree->customise(ViewConsts::ADMIN_ITEM_ADD);
+        return $this->render(['model' => $this->model]);
     }
 
     public function editProduct(Request $request, Response $response, $productId)
@@ -52,7 +63,8 @@ class AdminProductController extends AdminController
                 return $response->redirect($this->permission->href);
             }
         }
-        return $this->render('admin/item_add_form', ['model' => $this->model]);
+        $this->layoutTree->customise(ViewConsts::ADMIN_ITEM_ADD);
+        return $this->render(['model' => $this->model]);
     }
 
     public function deleteProduct(Request $request, Response $response, $productId)

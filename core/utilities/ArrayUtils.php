@@ -17,4 +17,16 @@ class ArrayUtils
         $keys[array_search($oldKey, $keys)] = $newKey;
         return array_combine($keys, $array);
     }
+
+    public static function getAllKeyValuePairsFromNestedArray(array $arr, array $flatArray = null)
+    {
+        $flatArray = $flatArray ?? [];
+        foreach ($arr as $key => &$value)  {
+            $flatArray[] = [$key, $value];
+            if (is_array($value)) {
+                $flatArray = self::getAllKeyValuePairsFromNestedArray($value, $flatArray);
+            }
+        }
+        return $flatArray;
+    }
 }

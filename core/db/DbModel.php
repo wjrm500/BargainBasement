@@ -4,6 +4,7 @@ namespace app\core\db;
 
 use app\core\Application;
 use app\core\Model;
+use Exception;
 
 abstract class DbModel extends Model
 {
@@ -15,6 +16,17 @@ abstract class DbModel extends Model
     public function __construct()
     {
         $this->pdo = Application::$app->database->pdo;
+    }
+
+    public function __get($modelProperty)
+    {
+        try {
+            $modelClass = 'app\models\\' . ucfirst($modelProperty);
+            $model = new $modelClass();
+            return $model::find(['id' => $modelProperty . '_id']);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function save($returnLastInsertId = false)

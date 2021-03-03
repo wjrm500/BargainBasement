@@ -19,7 +19,20 @@ $(document).ready(function() {
         })
     }
 });
-
+$(document).ready(function() {
+    console.log($('#basket-items').html());
+});
+$(document).ready(
+    function() {
+        // Add glowing border to current page in secondary navbar
+        let beforeSlash = window.location.pathname.split('/')[1];
+        let navItem = document.getElementById('nav-item-' + beforeSlash);
+        navItem.style.border = '2px solid';
+        navItem.style.borderColor = 'dodgerblue';
+        navItem.style.borderRadius = '5px';
+        navItem.style.boxShadow = "0px 0px 5px 3px dodgerblue";
+    }
+)
 $(document).ready(function() {
     let firstPageButton = document.querySelector('button[data-page-num="0"]');
     highlightButton(firstPageButton);
@@ -134,19 +147,6 @@ function getCurrentPageNum() {
         }
     }
 }
-$(document).ready(
-    function() {
-        // Add glowing border to current page in secondary navbar
-        let beforeSlash = window.location.pathname.split('/')[1];
-        let navItem = document.getElementById('nav-item-' + beforeSlash);
-        navItem.style.border = '2px solid';
-        navItem.style.borderColor = 'dodgerblue';
-        navItem.style.borderRadius = '5px';
-        navItem.style.boxShadow = "0px 0px 5px 3px dodgerblue";
-    }
-)
-
-
 $(document).ready(function() {
     // Check what is in user's cart - any products that are in the cart should have the number of items in the product widget with relevant buttons
     

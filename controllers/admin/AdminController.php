@@ -19,6 +19,7 @@ abstract class AdminController extends Controller
     public function __construct()
     {
         parent::__construct();
+        $this->addScript('/js/admin.js');
         $this->registerProtectedMethod('index', [new HasPermission($this->permission->id)]);
         $this->layoutTree->customise([
             ViewConsts::ADMIN => [
@@ -27,7 +28,6 @@ abstract class AdminController extends Controller
                 LayoutTree::PLACEHOLDER
             ]
         ]);
-
     }
 
     protected function setModel($model)

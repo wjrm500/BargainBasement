@@ -9,4 +9,3 @@ $(document).ready(
         navItem.style.boxShadow = "0px 0px 5px 3px dodgerblue";
     }
 )
-

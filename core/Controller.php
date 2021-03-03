@@ -7,12 +7,14 @@ use ReflectionClass;
 
 class Controller
 {
+    protected array $scripts;
     protected View $view;
     protected LayoutTree $layoutTree;
     protected array $protectedMethods = [];
 
     public function __construct()
     {
+        $this->scripts = ['/js/main.js'];
         $this->view = Application::$app->view;
         $this->layoutTree = new LayoutTree([
             ViewConsts::MAIN => [
@@ -27,9 +29,20 @@ class Controller
     {
         $title = str_replace('Controller', '', (new ReflectionClass($this))->getShortName());
         return [
-            'app'   => Application::$app,
-            'title' => $title
+            'app'     => Application::$app,
+            'scripts' => $this->getScripts(),
+            'title'   => $title
         ];
+    }
+
+    protected function addScript($script)
+    {
+        $this->scripts[] =  $script;
+    }
+
+    protected function getScripts()
+    {
+        return $this->scripts;
     }
 
     public function renderViewOnly(string $view, array $params = [])

@@ -16,6 +16,7 @@ class ShopController extends Controller
 {
     public function index()
     {
+        $this->addScript('/js/shopping.js');
         $products = Product::findAll();
         $productWidgets = array_map(
             function($product) {
@@ -83,7 +84,7 @@ class ShopController extends Controller
                     $shoppingCartItem = new ShoppingCartItem();
                     $shoppingCartItem->bindData([
                         'shopping_cart_id' => $shoppingCart->id,
-                        'product_id'       => $productId,
+                        'product'          => $productId,
                         'quantity'         => $quantity
                     ]);
                     $shoppingCartItem->save();
@@ -112,12 +113,13 @@ class ShopController extends Controller
 
     public function checkout(Request $request, Response $response)
     {
+        $this->addScript('/js/checkout.js');
         $app = Application::$app;
         if ($app->hasUser()) {
             $userId = $app->getUser()->id;
             $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
             $this->layoutTree->customise(ViewConsts::CHECKOUT);
-            return $this->render(compact('shoppingCart'));
+            return $this->render(['shoppingCartExists' => boolval($shoppingCart)]);
         }
         return $response->redirect('/login', '/shop/checkout');
     }

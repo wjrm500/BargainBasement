@@ -24,6 +24,7 @@ class AdminProductController extends AdminController
 
     public function index()
     {
+        $this->addScript('/js/pagination.js');
         $this->layoutTree->customise([
             ViewConsts::ADMIN_ITEM_HOME => [
                 ViewConsts::ADMIN_TABLE_HEADER,

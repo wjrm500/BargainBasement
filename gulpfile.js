@@ -11,7 +11,7 @@ function buildCss() {
 
 function buildJs() {
   return gulp.src('assets/js/*.js')
-    .pipe(concat('script.js'))
+    // .pipe(concat('script.js'))
     .pipe(gulp.dest('public/js/'));
 }
 

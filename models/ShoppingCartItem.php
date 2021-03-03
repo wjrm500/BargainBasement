@@ -9,12 +9,10 @@ class ShoppingCartItem extends DbModel
     public int $shopping_cart_id = 0;
     public int $product_id = 0;
     public int $quantity = 0;
-    public Product $product;
 
     public function __construct()
     {
         parent::__construct();
-        $this->product = Product::find(['id' => $this->product_id]);
     }
 
     public function labels(): array

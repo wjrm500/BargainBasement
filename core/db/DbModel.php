@@ -23,7 +23,7 @@ abstract class DbModel extends Model
         try {
             $modelClass = 'app\models\\' . ucfirst($modelProperty);
             $model = new $modelClass();
-            return $model::find(['id' => $modelProperty . '_id']);
+            return $model::find(['id' => $this->{$modelProperty . '_id'}]);
         } catch (Exception $e) {
             return false;
         }

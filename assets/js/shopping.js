@@ -88,7 +88,6 @@ $(document).ready(function() {
         toggleNonZeroButtons(productId);
         modifyProductWidgetItemNumber(productId);
         updateTotalPrice();
-        debugger;
         sendBasketData = setTimeout(
             function() {
                 window.localStorage.setItem('basketData', JSON.stringify(basketData));

@@ -84,7 +84,7 @@ class ShopController extends Controller
                     $shoppingCartItem = new ShoppingCartItem();
                     $shoppingCartItem->bindData([
                         'shopping_cart_id' => $shoppingCart->id,
-                        'product'          => $productId,
+                        'product_id'       => $productId,
                         'quantity'         => $quantity
                     ]);
                     $shoppingCartItem->save();

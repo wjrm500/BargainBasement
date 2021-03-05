@@ -28,7 +28,7 @@ class ShopController extends Controller
         return $this->render(compact('productWidgets'));
     }
 
-    public function getBasketData()
+    public function getBasicBasketData()
     {
         $app = Application::$app;
         if ($app->hasUser()) {
@@ -39,6 +39,29 @@ class ShopController extends Controller
                 $basketData = [];
                 foreach ($shoppingCartItems as $shoppingCartItem) {
                     $basketData[$shoppingCartItem->product_id] = $shoppingCartItem->quantity;
+                }
+                return json_encode($basketData);
+            }
+        }
+    }
+
+    public function getDetailedBasketData()
+    {
+        $app = Application::$app;
+        if ($app->hasUser()) {
+            $userId = $app->getUser()->id;
+            $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
+            if ($shoppingCart) {
+                $shoppingCartItems = $shoppingCart->getItems();
+                $basketData = [];
+                foreach ($shoppingCartItems as $shoppingCartItem) {
+                    $basketData[$shoppingCartItem->product_id] = [
+                        'productImage'  => $shoppingCartItem->product->image,
+                        'productName'   => $shoppingCartItem->product->name,
+                        'productPrice'  => $shoppingCartItem->product->price,
+                        'productWeight' => $shoppingCartItem->product->weight,
+                        'quantity'      => $shoppingCartItem->quantity
+                    ];
                 }
                 return json_encode($basketData);
             }

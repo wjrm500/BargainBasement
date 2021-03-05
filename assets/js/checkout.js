@@ -1,26 +1,24 @@
 $(document).ready(function() {
-    let dbShoppingCartExists = $('#basket-items').html().trim();
+    let dbShoppingCartExists = $('#checkout').data('shoppingCartExists');
     let localShoppingCart = window.localStorage.basketData; 
     if (dbShoppingCartExists) {
         $.get(
             '/shop/getBasketData',
             function(dbShoppingCart) {
                 if (localShoppingCart !== dbShoppingCart) {
-                    whichBasketWouldYouLike();
+                    loadShoppingCart(localShoppingCart, document.getElementById('local-shopping-cart'));
+                    loadShoppingCart(dbShoppingCart, document.getElementById('db-shopping-cart'));
                 }
             }
         );
     }
 });
 
-function whichBasketWouldYouLike()
-{
-    $('#basket-items').html(
-        '<div>Your local and database baskets are different - which basket would you like to keep?</div>' +
-        '<select>' +
-        '<option value="local">Local</option>' +
-        '<option value="database">Database</option>' +
-        '</select>' +
-        '</div>'
-    );
+function loadShoppingCart(shoppingCart, div) {
+    for (let shoppingCartItem of shoppingCart) {
+        debugger;
+    }
+}
+
+function loadDbShoppingCart() {
 }

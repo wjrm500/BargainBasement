@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    let localShoppingCart = window.localStorage.basketData;
+    let localShoppingCart = JSON.parse(window.localStorage.basketData);
     $.post(
         '/shop/postDetailedBasketData',
         {
@@ -7,26 +7,51 @@ $(document).ready(function() {
         },
         function(parsedLocalShoppingCart) {
             localShoppingCart = parsedLocalShoppingCart;
-            createTableFromJSON(localShoppingCart, $('#local-cart-option-container .shopping-cart'));
             let dbShoppingCartExists = $('#checkout').data('shoppingCartExists');
             if (dbShoppingCartExists) {
                 $.get(
                     '/shop/getDetailedBasketData',
                     function(dbShoppingCart) {
                         $('#loading').addClass('d-none');
-                        // Also check that dbShoppingCart is not empty - if empty just use local
                         if (!(shoppingCartsEqual(localShoppingCart, dbShoppingCart))) {
                             $('#carts-not-equal').removeClass('d-none');
-                            createTableFromJSON(dbShoppingCart, $('#db-cart-option-container .shopping-cart'));
+                            $('#cart-save-local').click(function() {
+                                $('#carts-not-equal').remove();
+                                $('#cart-okay').removeClass('d-none');
+                                createTableFromJSON(localShoppingCart, $('#shopping-cart'));
+                            });
+                            $('#cart-save-db').click(function() {
+                                $('#carts-not-equal').remove();
+                                $('#cart-okay').removeClass('d-none');
+                                createTableFromJSON(dbShoppingCart, $('#shopping-cart'));
+                            });
+                            createTableFromJSON(localShoppingCart, $('#not-exists-local-shopping-cart'));
+                            createTableFromJSON(dbShoppingCart, $('#not-exists-db-shopping-cart'));
+                        } else {
+                            $('#loading').addClass('d-none');
+                            $('#cart-okay').removeClass('d-none');
+                            createTableFromJSON(localShoppingCart, $('#shopping-cart'));
                         }
                     }
                 );
+            } else {
+                // Create new shopping cart for user from local storage - post request
+                $.post(
+                    '/shop',
+                    {
+                        'basketData':  JSON.parse(window.localStorage.basketData)
+                    }
+                );
+                $('#loading').addClass('d-none');
+                $('#cart-okay').removeClass('d-none');
+                createTableFromJSON(localShoppingCart, $('#shopping-cart'));
             }
         }
-    ); 
+    );
 });
 
 function createTableFromJSON(json, container) {
+    // Add overall price on bottom row
     json = JSON.parse(json);
     let jsonArr = [];
     for (let obj in json) {

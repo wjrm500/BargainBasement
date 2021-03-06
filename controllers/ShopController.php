@@ -70,7 +70,7 @@ class ShopController extends Controller
     public function postDetailedBasketData()
     {
         $app = Application::$app;
-        $localBasketData = $app->request->getJson();
+        $localBasketData = $app->request->getBody();
         $basketData = [];
         foreach ($localBasketData['localShoppingCart'] as $productId => $quantity) {
             $product = Product::find(['id' => $productId]);
@@ -88,7 +88,7 @@ class ShopController extends Controller
     {
         // Can some of this stuff be moved into the Model?
         $app = Application::$app;
-        $basketData = $app->request->getBody();
+        $basketData = $app->request->getBody()['basketData'];
         if ($app->hasUser()) {
             $userId = $app->getUser()->id;
             $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
@@ -157,8 +157,9 @@ class ShopController extends Controller
         if ($app->hasUser()) {
             $userId = $app->getUser()->id;
             $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
+            $shoppingCartExists = $shoppingCart && $shoppingCart->getNumItems();
             $this->layoutTree->customise(ViewConsts::CHECKOUT);
-            return $this->render(['shoppingCartExists' => boolval($shoppingCart)]);
+            return $this->render(['shoppingCartExists' => $shoppingCartExists]);
         }
         return $response->redirect('/login', '/shop/checkout');
     }

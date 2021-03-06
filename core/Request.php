@@ -42,11 +42,6 @@ class Request
         }
     }
 
-    public function getJson()
-    {
-        return array_map(fn($x) => json_decode($x, true), $_POST);
-    }
-
     private function getExplodedPath()
     {
         return explode('/', $_SERVER['REQUEST_URI']);

@@ -18,10 +18,10 @@ $(document).ready(function() {
         window.location.href + '/getBasketData',
         function(data) {
             // If the user has no basket data stored in the database, use locally stored basket data
-            if (!data) {
-                data = window.localStorage.basketData;
+            data = JSON.parse(data);
+            if (data.length === 0) {
+                basketData = JSON.parse(window.localStorage.basketData) ?? {};
             }
-            basketData = JSON.parse(data);
             for (let productId in basketData) {
                 toggleNonZeroButtons(productId);
                 modifyProductWidgetItemNumber(productId);
@@ -93,7 +93,9 @@ $(document).ready(function() {
                 window.localStorage.setItem('basketData', JSON.stringify(basketData));
                 $.post(
                     window.location.href,
-                    basketData,
+                    {
+                        'basketData': basketData
+                    },
                     enableCheckout
                 );
             },

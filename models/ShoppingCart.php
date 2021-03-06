@@ -40,4 +40,9 @@ class ShoppingCart extends DbModel
     {
         return ShoppingCartItem::find(['shopping_cart_id' => $this->id], true);
     }
+
+    public function getNumItems()
+    {
+        return count($this->getItems());
+    }
 }

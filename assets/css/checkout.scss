@@ -5,7 +5,7 @@
     width: 100%;
 }
 
-#carts-not-equal-notice {
+.cart-notice {
     margin: 20px 0px;
     text-align: justify;
 }
@@ -15,7 +15,7 @@
     padding: 5px;
 }
 
-#local-cart-option-container {
+.cart-option-container#local-container {
     border-color: $lightgrey;
     border-radius: 5px;
 }

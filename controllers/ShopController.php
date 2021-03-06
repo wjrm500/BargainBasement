@@ -28,7 +28,7 @@ class ShopController extends Controller
         return $this->render(compact('productWidgets'));
     }
 
-    public function getBasicBasketData()
+    public function getBasketData()
     {
         $app = Application::$app;
         if ($app->hasUser()) {

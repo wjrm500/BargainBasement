@@ -7,16 +7,17 @@ $(document).ready(function() {
         },
         function(parsedLocalShoppingCart) {
             localShoppingCart = parsedLocalShoppingCart;
-            createTableFromJSON(localShoppingCart, document.getElementById('local-shopping-cart'));
+            createTableFromJSON(localShoppingCart, $('#local-cart-option-container .shopping-cart'));
             let dbShoppingCartExists = $('#checkout').data('shoppingCartExists');
             if (dbShoppingCartExists) {
                 $.get(
                     '/shop/getDetailedBasketData',
                     function(dbShoppingCart) {
+                        $('#loading').addClass('d-none');
                         // Also check that dbShoppingCart is not empty - if empty just use local
                         if (!(shoppingCartsEqual(localShoppingCart, dbShoppingCart))) {
                             $('#carts-not-equal').removeClass('d-none');
-                            createTableFromJSON(dbShoppingCart, document.getElementById('db-shopping-cart'));
+                            createTableFromJSON(dbShoppingCart, $('#db-cart-option-container .shopping-cart'));
                         }
                     }
                 );
@@ -54,7 +55,7 @@ function createTableFromJSON(json, container) {
             tabCell.innerHTML = jsonArr[i][col[j]];
         }
     }
-    container.appendChild(table);
+    container.append(table);
 }
 
 function shoppingCartsEqual(a, b) {

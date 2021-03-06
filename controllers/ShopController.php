@@ -56,16 +56,32 @@ class ShopController extends Controller
                 $basketData = [];
                 foreach ($shoppingCartItems as $shoppingCartItem) {
                     $basketData[$shoppingCartItem->product_id] = [
-                        'productImage'  => $shoppingCartItem->product->image,
-                        'productName'   => $shoppingCartItem->product->name,
-                        'productPrice'  => $shoppingCartItem->product->price,
-                        'productWeight' => $shoppingCartItem->product->weight,
-                        'quantity'      => $shoppingCartItem->quantity
+                        'Name'        => $shoppingCartItem->name(),
+                        'Price'       => $shoppingCartItem->price(true),
+                        'Quantity'    => $shoppingCartItem->quantity,
+                        'Total Price' => $shoppingCartItem->totalPrice(true)
                     ];
                 }
                 return json_encode($basketData);
             }
         }
+    }
+
+    public function postDetailedBasketData()
+    {
+        $app = Application::$app;
+        $localBasketData = $app->request->getJson();
+        $basketData = [];
+        foreach ($localBasketData['localShoppingCart'] as $productId => $quantity) {
+            $product = Product::find(['id' => $productId]);
+            $basketData[$productId] = [
+                'Name'        => $product->name,
+                'Price'       => '£' . (string) number_format($product->price, 2, '.', ''),
+                'Quantity'    => $quantity,
+                'Total Price' => '£' . (string) number_format($product->price * $quantity, 2, '.', '')
+            ];
+        }
+        return json_encode($basketData);
     }
 
     public function persistBasket()

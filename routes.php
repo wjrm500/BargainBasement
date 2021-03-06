@@ -24,7 +24,10 @@ $app->router->get('/profile', [AccountController::class, 'profile']);
 $app->router->get('/shop', [ShopController::class, 'index']);
 $app->router->post('/shop', [ShopController::class, 'persistBasket']);
 $app->router->get('/shop/getBasketData', [ShopController::class, 'getBasketData']);
+
+// For checkout
 $app->router->get('/shop/getDetailedBasketData', [ShopController::class, 'getDetailedBasketData']);
+$app->router->post('/shop/postDetailedBasketData', [ShopController::class, 'postDetailedBasketData']);
 $app->router->controller('/shop/checkout', [ShopController::class, 'checkout']);
 
 // Image route

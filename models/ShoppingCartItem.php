@@ -45,13 +45,15 @@ class ShoppingCartItem extends DbModel
         return $this->product->name;
     }
 
-    public function price()
+    public function price(bool $withPoundSign = false)
     {
-        return $this->product->price;
+        return ($withPoundSign ? '£' : '')
+            . (string) number_format($this->product->price, 2, '.', ''); 
     }
 
-    public function totalPrice()
+    public function totalPrice(bool $withPoundSign = false)
     {
-        return $this->product->price * $this->quantity;
+        return ($withPoundSign ? '£' : '')
+            . (string) number_format($this->product->price * $this->quantity, 2, '.', '');
     }
 }

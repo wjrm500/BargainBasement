@@ -1,44 +1,74 @@
 $(document).ready(function() {
-    let dbShoppingCartExists = $('#checkout').data('shoppingCartExists');
-    let localShoppingCart = window.localStorage.basketData; 
-    if (dbShoppingCartExists) {
-        $.get(
-            '/shop/getDetailedBasketData',
-            function(dbShoppingCart) {
-                if (localShoppingCart !== dbShoppingCart) {
-                    // loadShoppingCart(, document.getElementById('local-shopping-cart'));
-                    loadShoppingCart(dbShoppingCart, document.getElementById('db-shopping-cart'));
-                }
+    let localShoppingCart = window.localStorage.basketData;
+    $.post(
+        '/shop/postDetailedBasketData',
+        {
+            'localShoppingCart': localShoppingCart
+        },
+        function(parsedLocalShoppingCart) {
+            localShoppingCart = parsedLocalShoppingCart;
+            createTableFromJSON(localShoppingCart, document.getElementById('local-shopping-cart'));
+            let dbShoppingCartExists = $('#checkout').data('shoppingCartExists');
+            if (dbShoppingCartExists) {
+                $.get(
+                    '/shop/getDetailedBasketData',
+                    function(dbShoppingCart) {
+                        // Also check that dbShoppingCart is not empty - if empty just use local
+                        if (!(shoppingCartsEqual(localShoppingCart, dbShoppingCart))) {
+                            $('#carts-not-equal').removeClass('d-none');
+                            createTableFromJSON(dbShoppingCart, document.getElementById('db-shopping-cart'));
+                        }
+                    }
+                );
             }
-        );
-    }
+        }
+    ); 
 });
 
-function loadShoppingCart(shoppingCart, div) {
-    widgets = [];
-    shoppingCart = JSON.parse(shoppingCart);
-    for (let key in shoppingCart) {
-        let cartItem = shoppingCart[key];
-        let widget = $('<div>');
-        widget.addClass('basket-widget');
-        widget.html(cartItem.productName + ' - ' +  cartItem.quantity + ' thereof!');
-        widget.css({
-            'backgroundColor': 'white',
-            'border': '2px solid darkgrey',
-            'borderRadius': '5px',
-            'height': '25px',
-            'margin': '15px'
-        });
-        widgets.push(widget);
+function createTableFromJSON(json, container) {
+    json = JSON.parse(json);
+    let jsonArr = [];
+    for (let obj in json) {
+        jsonArr.push(json[obj]);
     }
-    for (let widget of widgets) {
-        $(div).append(widget);
+    let col = [];
+    for (let i = 0; i < jsonArr.length; i++) {
+        for (let key in jsonArr[i]) {
+            if (col.indexOf(key) === -1) {
+                col.push(key);
+            }
+        }
     }
+    let table = document.createElement("table");
+    ['table', 'shopping-cart-table'].forEach((x) => table.classList.add(x));
+    let tr = table.insertRow(-1);
+    for (let i = 0; i < col.length; i++) {
+        let th = document.createElement("th");
+        th.innerHTML = col[i];
+        tr.appendChild(th);
+    }
+    for (let i = 0; i < jsonArr.length; i++) {
+        tr = table.insertRow(-1);
+        for (let j = 0; j < col.length; j++) {
+            let tabCell = tr.insertCell(-1);
+            tabCell.innerHTML = jsonArr[i][col[j]];
+        }
+    }
+    container.appendChild(table);
 }
 
-// background-color: white;
-// border: 2px solid $darkgrey;
-// border-radius: 5px;
-// display: flex;
-// height: 75px;
-// margin: 15px;
+function shoppingCartsEqual(a, b) {
+    [a, b] = [a, b].map((x) => JSON.parse(x));
+    if (Object.keys(a).length !== Object.keys(b).length) {
+        return false;
+    }
+    for (let key in a) {
+        if (!(key in b)) {
+            return false;
+        }
+        if (a[key].quantity !== b[key].quantity) {
+            return false;
+        }
+    }
+    return true;
+}

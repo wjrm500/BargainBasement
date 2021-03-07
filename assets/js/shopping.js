@@ -1,14 +1,12 @@
 $(document).ready(function() {
     // Check what is in user's cart - any products that are in the cart should have the number of items in the product widget with relevant buttons
     
+    var productData = $('#products').data('productData');
     var basketData = {}; // Load basket data asynchronously from DB
     var sendBasketData;
 
     const TYPE_ADD = 'add';
     const TYPE_REMOVE = 'remove';
-
-    const TYPE_PRICE = 'price';
-    const TYPE_TOTAL_PRICE = 'total-price';
 
     // Disable checkout button whilst page loads
     disableCheckout();
@@ -17,12 +15,13 @@ $(document).ready(function() {
     $.get(
         window.location.href + '/ajax/basket-data',
         function(data) {
-            debugger;
+            debugger
             // If the user has no basket data stored in the database, use locally stored basket data
             basketData = JSON.parse(data);
-            if (data.length === 0) {
-                basketData = JSON.parse(window.localStorage.basketData) ?? {};
+            if (basketData.length === 0 && window.localStorage.getItem('basketData')) {
+                basketData = JSON.parse(window.localStorage.basketData);
             }
+            // basketData = toObject(basketData);
             for (let productId in basketData) {
                 toggleNonZeroButtons(productId);
                 modifyProductWidgetItemNumber(productId);
@@ -33,6 +32,13 @@ $(document).ready(function() {
             enableCheckout();
         }
     );
+
+    function toObject(arr) {
+        var rv = {};
+        for (var i = 0; i < arr.length; ++i)
+          rv[i] = arr[i];
+        return rv;
+      }
 
     // When user clicks add button on a product, add that number of products to cart and replace add button with - and +
     // Every time the user modifies their cart (and after a gap of maybe 5 seconds), make a post request to the back end to update their shopping cart in a table
@@ -47,7 +53,7 @@ $(document).ready(function() {
     });
 
     function toggleNonZeroButtons(productId) {
-        if (productId in basketData && basketData[productId] > 0) {
+        if (productId in basketData && basketData[productId].quantity > 0) {
             showNonZeroButtons(productId);
             return;
         }
@@ -75,20 +81,28 @@ $(document).ready(function() {
         clearTimeout(sendBasketData);
         let productId = widget.dataset.productId;
         if (productId in basketData) {
-            basketData[productId] += (type === TYPE_ADD ? 1 : -1);
+            basketData[productId].quantity += (type === TYPE_ADD ? 1 : -1);
+            basketData[productId].totalPrice = convertCurrencyToFloat(basketData[productId].price) * basketData[productId].quantity;
             modifyBasketWidgetItemNumber(productId);
             enlargeBasketWidget(productId);
-            if (basketData[productId] < 1) {
+            if (basketData[productId].quantity < 1) {
                 delete basketData[productId];
                 removeBasketWidget(productId);
             }
         } else {
-            basketData[productId] = 1;
+            basketData[productId] = {
+                'image': productData[productId].image,
+                'name': productData[productId].name,
+                'price': productData[productId].price,
+                'quantity': 1,
+                'totalPrice': productData[productId].totalPrice
+            }
             addBasketWidget(productId);
         }
         toggleNonZeroButtons(productId);
         modifyProductWidgetItemNumber(productId);
         updateTotalPrice();
+        debugger;
         sendBasketData = setTimeout(
             function() {
                 window.localStorage.setItem('basketData', JSON.stringify(basketData));
@@ -117,24 +131,21 @@ $(document).ready(function() {
 
     function modifyBasketWidgetItemNumber(productId) {
         let basketWidget = getBasketWidgetByProductId(productId);
-        basketWidget.getElementsByClassName('basket-item-number')[0].innerHTML = basketData[productId];
-        let itemPrice = getNumericItemPriceFromBasketWidget(basketWidget, TYPE_PRICE);
-        let totalPrice = (itemPrice * basketData[productId]).toFixed(2);
+        basketWidget.getElementsByClassName('basket-item-number')[0].innerHTML = basketData[productId].quantity;
+        let itemPrice = convertCurrencyStringToFloat(basketData[productId].price);
+        let totalPrice = (itemPrice * basketData[productId].quantity).toFixed(2);
         basketWidget.getElementsByClassName('basket-item-total-price')[0].innerHTML = `£${totalPrice}`;
     }
 
-    function getNumericItemPriceFromBasketWidget(basketWidget, type) {
-        if (![TYPE_PRICE, TYPE_TOTAL_PRICE].includes(type)) {
-            throw 'Type parameter must be either "price" or "total-price"';
-        }
-        let itemPrice = basketWidget.getElementsByClassName('basket-item-' + type)[0].innerHTML;
-        return Number(itemPrice.replace(/[^0-9.-]+/g, ''));
+    function convertCurrencyStringToFloat(currencyString) {
+        return Number(currencyString.replace(/[^0-9.-]+/g, ''));
     }
 
     function modifyProductWidgetItemNumber(productId) {
+        debugger;
         let productWidget = getProductWidgetByProductId(productId);
         let itemNumberElem = productWidget.getElementsByClassName('product-widget-item-number')[0];
-        let newItemNumber = basketData[productId] ?? 0;
+        let newItemNumber = basketData[productId].quantity ?? 0;
         itemNumberElem.value = newItemNumber;
     }
 
@@ -153,8 +164,7 @@ $(document).ready(function() {
         let basketWidget = document.createElement('div');
         basketWidget.classList.add('basket-widget');
         basketWidget.dataset.productId = productId;
-        let productWidget = getProductWidgetByProductId(productId);
-        basketWidget.innerHTML = getBasketItemHTML(productWidget);
+        basketWidget.innerHTML = getBasketItemHTML(basketData[productId]);
         let addButton = basketWidget.getElementsByClassName('basket-widget-add-button')[0];
         let removeButton = basketWidget.getElementsByClassName('basket-widget-remove-button')[0];
         addButton.onclick = function() {
@@ -173,14 +183,14 @@ $(document).ready(function() {
         getBasketWidgetByProductId(productId).remove();
     }
 
-    function getBasketItemHTML(productWidget) {
+    function getBasketItemHTML(data) {
         let markup = `
             <div class="basket-widget-image-container">
-                <img src="${getImageFromWidget(productWidget)}" class="basket-item-image">
+                <img src="/images/${data.image}" class="basket-item-image">
             </div>
             <div class="basket-widget-main">
                 <div class="basket-item-name">
-                    ${getNameFromWidget(productWidget)}
+                    ${data.name}
                 </div>
                 <hr>
                 <div class="basket-widget-details">
@@ -194,13 +204,13 @@ $(document).ready(function() {
                         @
                     </span>
                     <span class="basket-widget-detail basket-item-price">
-                        ${getPriceFromWidget(productWidget)}
+                        ${data.price}
                     </span>
                     <span class="basket-widget-detail">
                         =
                     </span>
                     <span class="basket-widget-detail basket-item-total-price">
-                        ${getPriceFromWidget(productWidget)}
+                        ${data.totalPrice}
                     </span>
                 </div>
             </div>
@@ -214,18 +224,6 @@ $(document).ready(function() {
             </div>
         `;
         return markup.trim();
-    }
-
-    function getImageFromWidget(productWidget) {
-        return productWidget.getElementsByClassName('product-widget-image')[0].src;
-    }
-
-    function getNameFromWidget(productWidget) {
-        return productWidget.getElementsByClassName('product-widget-name')[0].textContent.trim();
-    }
-
-    function getPriceFromWidget(productWidget) {
-        return productWidget.getElementsByClassName('product-widget-price')[0].textContent.trim();
     }
 
     function overlapBetweenBasketItemsAndFooter() {
@@ -244,10 +242,9 @@ $(document).ready(function() {
     }
 
     function updateTotalPrice() {
-        let basketWidgets = document.getElementsByClassName('basket-widget');
         let totalPrice = 0;
-        for (let basketWidget of basketWidgets) {
-            totalPrice += getNumericItemPriceFromBasketWidget(basketWidget, TYPE_TOTAL_PRICE);
+        for (let productId in basketData) {
+            totalPrice += convertCurrencyStringToFloat(basketData[productId].totalPrice);
         }
         document.getElementById('basket-price-value').innerHTML = `£${totalPrice.toFixed(2)}`;
     }

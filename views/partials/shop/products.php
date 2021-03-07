@@ -1,4 +1,4 @@
-<div id="products">
+<div id="products" data-product-data=<?= $productData ?>>
     <table id="products-table">
         <?php foreach (array_chunk($productWidgets, 4) as $productWidgetRow): ?>
             <tr class="product-row">

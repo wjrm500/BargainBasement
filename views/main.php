@@ -12,7 +12,7 @@
         <?php endforeach; ?>
     <?php endif; ?>
     <title>
-        <?= $title ?>
+        <?= $title ?? 'Error' ?>
     </title>
 </head>
 <body>

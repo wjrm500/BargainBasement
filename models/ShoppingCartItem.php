@@ -40,6 +40,11 @@ class ShoppingCartItem extends DbModel
         return [];
     }
 
+    public function image()
+    {
+        return $this->product->image;
+    }
+
     public function name()
     {
         return $this->product->name;

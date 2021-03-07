@@ -20,14 +20,25 @@ class ShopController extends Controller
     {
         $this->addScript('/js/shopping.js');
         $products = Product::findAll();
+        $productData = [];
+        foreach ($products as $product) {
+            $productData[$product->id] = [
+                'image'       => $product->image,
+                'name'        => str_replace(' ', '-', $product->name),
+                'price'       => '£' . (string) number_format($product->price, 2, '.', ''),
+                'quantity'    => 1,
+                'totalPrice'  => '£' . (string) number_format($product->price, 2, '.', '')
+            ];
+        }
         $productWidgets = array_map(
-            function($product) {
-                return $this->renderViewOnly(ViewConsts::SHOP_PROD_WIDGET, compact('product'));
-            },
+            fn($product) => $this->renderViewOnly(ViewConsts::SHOP_PROD_WIDGET, compact('product')),
             $products
         );
         $this->layoutTree->customise([ViewConsts::SHOP => [ViewConsts::SHOP_PRODS, ViewConsts::SHOP_BASKET]]);
-        return $this->render(compact('productWidgets'));
+        return $this->render([
+            'productData'    => json_encode($productData),
+            'productWidgets' => $productWidgets
+        ]);
     }
 
     public function getBasketData()
@@ -40,10 +51,11 @@ class ShopController extends Controller
                 $basketData = [];
                 foreach ($shoppingCartItems as $shoppingCartItem) {
                     $basketData[$shoppingCartItem->product_id] = [
-                        'Name'        => $shoppingCartItem->name(),
-                        'Price'       => $shoppingCartItem->price(true),
-                        'Quantity'    => $shoppingCartItem->quantity,
-                        'Total Price' => $shoppingCartItem->totalPrice(true)
+                        'image'       => $shoppingCartItem->image(),
+                        'name'        => $shoppingCartItem->name(),
+                        'price'       => $shoppingCartItem->price(true),
+                        'quantity'    => $shoppingCartItem->quantity,
+                        'totalPrice'  => $shoppingCartItem->totalPrice(true)
                     ];
                 }
                 return json_encode($basketData);
@@ -58,10 +70,11 @@ class ShopController extends Controller
         foreach ($localBasketData['localShoppingCart'] as $productId => $quantity) {
             $product = Product::find(['id' => $productId]);
             $basketData[$productId] = [
-                'Name'        => $product->name,
-                'Price'       => '£' . (string) number_format($product->price, 2, '.', ''),
-                'Quantity'    => $quantity,
-                'Total Price' => '£' . (string) number_format($product->price * $quantity, 2, '.', '')
+                'image'       => $product->image,
+                'name'        => $product->name,
+                'price'       => '£' . (string) number_format($product->price, 2, '.', ''),
+                'quantity'    => $quantity,
+                'totalPrice'  => '£' . (string) number_format($product->price * $quantity, 2, '.', '')
             ];
         }
         return json_encode($basketData);

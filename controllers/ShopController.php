@@ -45,7 +45,7 @@ class ShopController extends Controller
     {
         if ($this->app->hasUser()) {
             $userId = $this->app->getUser()->id;
-            $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
+            $shoppingCart = ShoppingCart::find(['user_id' => $userId, 'paid' => 0]);
             if ($shoppingCart) {
                 $shoppingCartItems = $shoppingCart->getItems();
                 $basketData = [];
@@ -58,26 +58,27 @@ class ShopController extends Controller
                         'totalPrice'  => $shoppingCartItem->totalPrice(true)
                     ];
                 }
-                return json_encode($basketData);
+                
             }
         }
+        return json_encode($basketData ?? []);
     }
 
     public function postBasketData()
     {
         $localBasketData = $this->app->request->getBody();
         $basketData = [];
-        foreach ($localBasketData['localShoppingCart'] as $productId => $quantity) {
+        foreach ($localBasketData['localShoppingCart'] as $productId => $itemData) {
             $product = Product::find(['id' => $productId]);
             $basketData[$productId] = [
                 'image'       => $product->image,
                 'name'        => $product->name,
                 'price'       => '£' . (string) number_format($product->price, 2, '.', ''),
-                'quantity'    => $quantity,
-                'totalPrice'  => '£' . (string) number_format($product->price * $quantity, 2, '.', '')
+                'quantity'    => $itemData['quantity'],
+                'totalPrice'  => '£' . (string) number_format($product->price * $itemData['quantity'], 2, '.', '')
             ];
         }
-        return json_encode($basketData);
+        return json_encode($basketData ?? []);
     }
 
     public function persistBasket()
@@ -86,19 +87,18 @@ class ShopController extends Controller
         $basketData = $this->app->request->getBody()['basketData'];
         if ($this->app->hasUser()) {
             $userId = $this->app->getUser()->id;
-            $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
+            $shoppingCart = ShoppingCart::find(['user_id' => $userId, 'paid' => 0]);
             if ($shoppingCart) {
                 $shoppingCart->bindData([
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
                 $shoppingCart->update();
-
                 $existingCartItems = $shoppingCart->getItems();
                 foreach ($existingCartItems as $existingCartItem) {
                     $productId = $existingCartItem->product_id;
                     if (array_key_exists($productId, $basketData)) {
                         $existingCartItem->bindData([
-                            'quantity' => (int) $basketData[$productId]
+                            'quantity' => (int) $basketData[$productId]['quantity']
                         ]);
                         $existingCartItem->update();
                     } else {
@@ -114,12 +114,12 @@ class ShopController extends Controller
                         )
                     )
                 );
-                foreach ($newCartItems as $productId => $quantity) {
+                foreach ($newCartItems as $productId => $itemData) {
                     $shoppingCartItem = new ShoppingCartItem();
                     $shoppingCartItem->bindData([
                         'shopping_cart_id' => $shoppingCart->id,
                         'product_id'       => $productId,
-                        'quantity'         => $quantity
+                        'quantity'         => $itemData['quantity']
                     ]);
                     $shoppingCartItem->save();
                 }
@@ -132,12 +132,12 @@ class ShopController extends Controller
                     'paid'       => 0
                 ]);
                 $shoppingCartId = $shoppingCart->save(true);
-                foreach ($basketData as $productId => $quantity) {
+                foreach ($basketData as $productId => $itemData) {
                     $shoppingCartItem = new ShoppingCartItem();
                     $shoppingCartItem->bindData([
                         'shopping_cart_id' => $shoppingCartId,
                         'product_id'       => $productId,
-                        'quantity'         => $quantity
+                        'quantity'         => $itemData['quantity']
                     ]);
                     $shoppingCartItem->save();
                 }
@@ -163,8 +163,15 @@ class ShopController extends Controller
 
     public function postCheckout(Request $request, Response $response)
     {
+        // Add payments table?
         (new Csrf())->checkToken();
-        $this->app->session->setFlashMessage('Your order has successfully been placed!', BootstrapColorConsts::SUCCESS);
-        return $response->redirect('/');
+        if ($this->app->hasUser()) {
+            $userId = $this->app->getUser()->id;
+            $shoppingCart = ShoppingCart::find(['user_id' => $userId, 'paid' => 0]);
+            if ($shoppingCart->bindUpdate(['paid' => 1])) {
+                $this->app->session->setFlashMessage('Your order has successfully been placed!', BootstrapColorConsts::SUCCESS);
+                return $response->redirect('/');
+            }   
+        }
     }
 }

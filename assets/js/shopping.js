@@ -15,13 +15,15 @@ $(document).ready(function() {
     $.get(
         window.location.href + '/ajax/basket-data',
         function(data) {
-            debugger
+            debugger;
             // If the user has no basket data stored in the database, use locally stored basket data
             basketData = JSON.parse(data);
             if (basketData.length === 0 && window.localStorage.getItem('basketData')) {
                 basketData = JSON.parse(window.localStorage.basketData);
             }
-            // basketData = toObject(basketData);
+            if (Array.isArray(basketData)) {
+                basketData = convertArrayToObject(basketData);
+            }
             for (let productId in basketData) {
                 toggleNonZeroButtons(productId);
                 modifyProductWidgetItemNumber(productId);
@@ -33,11 +35,11 @@ $(document).ready(function() {
         }
     );
 
-    function toObject(arr) {
-        var rv = {};
-        for (var i = 0; i < arr.length; ++i)
-          rv[i] = arr[i];
-        return rv;
+    function convertArrayToObject(arr) {
+        let obj = {};
+        for (let i = 0; i < arr.length; ++i)
+          obj[i] = arr[i];
+        return obj;
       }
 
     // When user clicks add button on a product, add that number of products to cart and replace add button with - and +
@@ -82,7 +84,7 @@ $(document).ready(function() {
         let productId = widget.dataset.productId;
         if (productId in basketData) {
             basketData[productId].quantity += (type === TYPE_ADD ? 1 : -1);
-            basketData[productId].totalPrice = convertCurrencyToFloat(basketData[productId].price) * basketData[productId].quantity;
+            basketData[productId].totalPrice = multiplyCurrencyString(basketData[productId].price, basketData[productId].quantity);
             modifyBasketWidgetItemNumber(productId);
             enlargeBasketWidget(productId);
             if (basketData[productId].quantity < 1) {
@@ -102,7 +104,6 @@ $(document).ready(function() {
         toggleNonZeroButtons(productId);
         modifyProductWidgetItemNumber(productId);
         updateTotalPrice();
-        debugger;
         sendBasketData = setTimeout(
             function() {
                 window.localStorage.setItem('basketData', JSON.stringify(basketData));
@@ -132,20 +133,27 @@ $(document).ready(function() {
     function modifyBasketWidgetItemNumber(productId) {
         let basketWidget = getBasketWidgetByProductId(productId);
         basketWidget.getElementsByClassName('basket-item-number')[0].innerHTML = basketData[productId].quantity;
-        let itemPrice = convertCurrencyStringToFloat(basketData[productId].price);
-        let totalPrice = (itemPrice * basketData[productId].quantity).toFixed(2);
-        basketWidget.getElementsByClassName('basket-item-total-price')[0].innerHTML = `£${totalPrice}`;
+        basketWidget.getElementsByClassName('basket-item-total-price')[0].innerHTML = multiplyCurrencyString(basketData[productId].price, basketData[productId].quantity);
     }
 
     function convertCurrencyStringToFloat(currencyString) {
         return Number(currencyString.replace(/[^0-9.-]+/g, ''));
     }
 
+    function convertFloatToCurrencyString(float) {
+        return `£${float.toFixed(2)}`;
+    }
+
+    function multiplyCurrencyString(currencyString, multiplier) {
+        let float = convertCurrencyStringToFloat(currencyString);
+        result = float * multiplier;
+        return convertFloatToCurrencyString(result);
+    }
+
     function modifyProductWidgetItemNumber(productId) {
-        debugger;
         let productWidget = getProductWidgetByProductId(productId);
         let itemNumberElem = productWidget.getElementsByClassName('product-widget-item-number')[0];
-        let newItemNumber = basketData[productId].quantity ?? 0;
+        let newItemNumber = basketData.hasOwnProperty(productId) ? basketData[productId].quantity : 0;
         itemNumberElem.value = newItemNumber;
     }
 

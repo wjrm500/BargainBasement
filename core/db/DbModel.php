@@ -67,10 +67,16 @@ abstract class DbModel extends Model
         return $this->pdo->query($sql);
     }
 
-    public function bindAndSave($data, $returnLastInsertId = false)
+    public function bindSave($data, $returnLastInsertId = false)
     {
         $this->bindData($data);
         return $this->save($returnLastInsertId);
+    }
+
+    public function bindUpdate($data)
+    {
+        $this->bindData($data);
+        return $this->update();
     }
 
     private static function getExecutedStatement(Array $whereConditions)

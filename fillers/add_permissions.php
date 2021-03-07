@@ -19,12 +19,12 @@ $superAdminUserId = User::find(['username' => 'wjrm500@gmail.com'])->id;
 $userPermission = new UserPermission();
 
 foreach ($permissionsToAdd as $permissionToAdd) {
-    $permissionId = $permission->bindAndSave([
+    $permissionId = $permission->bindSave([
         'name'      => $permissionToAdd['name'],
         'item_name' => $permissionToAdd['item_name'],
         'href'      => $permissionToAdd['href'],
     ], true);
-    $userPermission->bindAndSave([
+    $userPermission->bindSave([
         'user_id'       => $superAdminUserId,
         'permission_id' => $permissionId
     ]);

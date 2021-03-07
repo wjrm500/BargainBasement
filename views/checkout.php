@@ -9,7 +9,7 @@
         </div>
         <div id="shopping-cart"></div>
         <div class="d-flex justify-content-center">
-            <form method="post">
+            <form id="confirm-checkout" method="post">
                 <input type="hidden" name="<?= $csrfTokenName ?>" value="<?= $csrfTokenValue ?>">
                 <input type="submit" id="cart-save" class="mb-2 btn btn-secondary" value="Confirm">
             </form>

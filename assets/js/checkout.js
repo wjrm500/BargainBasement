@@ -1,5 +1,8 @@
 $(document).ready(function() {
     let localShoppingCart = JSON.parse(window.localStorage.basketData);
+    $('#confirm-checkout').submit(function() {
+        delete window.localStorage.basketData;
+    });
     $.post(
         '/shop/ajax/basket-data',
         {
@@ -70,7 +73,7 @@ function createTableFromJSON(json, container) {
     let tr = table.insertRow(-1);
     for (let i = 0; i < col.length; i++) {
         let th = document.createElement("th");
-        th.innerHTML = col[i];
+        th.innerHTML = camelCaseToWords(col[i]);
         tr.appendChild(th);
     }
     for (let i = 0; i < jsonArr.length; i++) {
@@ -92,9 +95,14 @@ function shoppingCartsEqual(a, b) {
         if (!(key in b)) {
             return false;
         }
-        if (a[key].quantity !== b[key].quantity) {
+        if (a[key].quantity != b[key].quantity) {
             return false;
         }
     }
     return true;
+}
+
+function camelCaseToWords(string) {
+    let result = string.replace(/([A-Z])/g, " $1");
+    return result.charAt(0).toUpperCase() + result.slice(1);
 }

@@ -22,13 +22,13 @@ $app->router->get('/logout', [AccountController::class, 'logout']);
 $app->router->get('/profile', [AccountController::class, 'profile']);
 
 $app->router->get('/shop', [ShopController::class, 'index']);
-$app->router->post('/shop', [ShopController::class, 'persistBasket']);
-$app->router->get('/shop/getBasketData', [ShopController::class, 'getBasketData']);
+$app->router->post('/shop/ajax/persist-basket', [ShopController::class, 'persistBasket']);
 
 // For checkout
-$app->router->get('/shop/getDetailedBasketData', [ShopController::class, 'getDetailedBasketData']);
-$app->router->post('/shop/postDetailedBasketData', [ShopController::class, 'postDetailedBasketData']);
-$app->router->controller('/shop/checkout', [ShopController::class, 'checkout']);
+$app->router->get('/shop/checkout', [ShopController::class, 'getCheckout']);
+$app->router->post('/shop/checkout', [ShopController::class, 'postCheckout']);
+$app->router->get('/shop/ajax/basket-data', [ShopController::class, 'getBasketData']);
+$app->router->post('/shop/ajax/basket-data', [ShopController::class, 'postBasketData']);
 
 // Image route
 

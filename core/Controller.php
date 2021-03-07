@@ -15,7 +15,7 @@ class Controller
     public function __construct()
     {
         $this->scripts = ['/js/main.js'];
-        $this->view = Application::$app->view;
+        $this->app = Application::$app;
         $this->layoutTree = new LayoutTree([
             ViewConsts::MAIN => [
                 ViewConsts::FLASH_MESSAGES,
@@ -29,7 +29,7 @@ class Controller
     {
         $title = str_replace('Controller', '', (new ReflectionClass($this))->getShortName());
         return [
-            'app'     => Application::$app,
+            'app'     => $this->app,
             'scripts' => $this->getScripts(),
             'title'   => $title
         ];
@@ -47,12 +47,12 @@ class Controller
 
     public function renderViewOnly(string $view, array $params = [])
     {
-        return $this->view->renderViewOnly($view, $params);
+        return $this->app->view->renderViewOnly($view, $params);
     }
 
     public function render(array $params = [])
     {
-        return $this->view->render($this->layoutTree, array_merge($this->getDefaultParams(), $params));
+        return $this->app->view->render($this->layoutTree, array_merge($this->getDefaultParams(), $params));
     }
 
     public function registerProtectedMethod(string $method, array $middlewares)

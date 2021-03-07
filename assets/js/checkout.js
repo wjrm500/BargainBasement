@@ -1,7 +1,7 @@
 $(document).ready(function() {
     let localShoppingCart = JSON.parse(window.localStorage.basketData);
     $.post(
-        '/shop/postDetailedBasketData',
+        '/shop/ajax/basket-data',
         {
             'localShoppingCart': localShoppingCart
         },
@@ -10,7 +10,7 @@ $(document).ready(function() {
             let dbShoppingCartExists = $('#checkout').data('shoppingCartExists');
             if (dbShoppingCartExists) {
                 $.get(
-                    '/shop/getDetailedBasketData',
+                    '/shop/ajax/basket-data',
                     function(dbShoppingCart) {
                         $('#loading').addClass('d-none');
                         if (!(shoppingCartsEqual(localShoppingCart, dbShoppingCart))) {

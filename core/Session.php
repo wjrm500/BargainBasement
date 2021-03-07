@@ -2,6 +2,9 @@
 
 namespace app\core;
 
+use app\consts\BootstrapColorConsts;
+use ReflectionClass;
+
 class Session
 {
     protected const FLASH_KEY = 'flash_messages';
@@ -50,10 +53,11 @@ class Session
         return $_SESSION[self::FLASH_KEY];
     }
 
-    public function setFlashMessage($message, $bootstrapColor = 'primary')
+    public function setFlashMessage($message, $bootstrapColor = null)
     {
-        if (!in_array($bootstrapColor, $this->getBootstrapColors())) {
-            $bootstrapColor = 'primary';
+        $ref = new ReflectionClass(BootstrapColorConsts::class);
+        if (!in_array($bootstrapColor, array_values($ref->getConstants()))) {
+            $bootstrapColor = BootstrapColorConsts::PRIMARY;
         }
         $_SESSION[self::FLASH_KEY][] = [
             'bootstrapColor' => $bootstrapColor,
@@ -70,21 +74,5 @@ class Session
                 return !$flashMessage['remove'];
             }
         );
-    }
-
-    private function getBootstrapColors()
-    {
-        return [
-            'primary', # blue
-            'secondary', # grey
-            'success', # green
-            'danger', # red
-            'warning', # yellow
-            'info', # teal
-            'light',
-            'dark',
-            'muted',
-            'white'
-        ];
     }
 }

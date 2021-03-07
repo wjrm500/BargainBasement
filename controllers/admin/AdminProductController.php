@@ -2,6 +2,7 @@
 
 namespace app\controllers\admin;
 
+use app\consts\BootstrapColorConsts;
 use app\consts\ViewConsts;
 use app\core\Application;
 use app\core\LayoutTree;
@@ -40,9 +41,9 @@ class AdminProductController extends AdminController
         if ($request->isPost()) {
             $this->model->bindData($request->getBody());
             if ($this->model->validate() && $this->model->save()) {
-                Application::$app->session->setFlashMessage(
+                $this->app->session->setFlashMessage(
                     "You successfully added {$this->model->name} to the {$this->model->tableName()} table!",
-                    'success'
+                    BootstrapColorConsts::SUCCESS
                 );
                 return $response->redirect($this->permission->href);
             }
@@ -57,9 +58,9 @@ class AdminProductController extends AdminController
         if ($request->isPost()) {
             $this->model->bindData($request->getBody());
             if ($this->model->validate() && $this->model->update()) {
-                Application::$app->session->setFlashMessage(
+                $this->app->session->setFlashMessage(
                     "You successfully updated {$this->model->name} in the {$this->model->tableName()} table!",
-                    'success'
+                    BootstrapColorConsts::SUCCESS
                 );
                 return $response->redirect($this->permission->href);
             }
@@ -72,9 +73,9 @@ class AdminProductController extends AdminController
     {
         $this->model->load(['id' => $productId]);
         if ($this->model->delete()) {
-            Application::$app->session->setFlashMessage(
+            $this->app->session->setFlashMessage(
                 "You successfully deleted {$this->model->name} from the {$this->model->tableName()} table!",
-                'danger'
+                BootstrapColorConsts::DANGER
             );
             return $response->redirect($this->permission->href);
         };

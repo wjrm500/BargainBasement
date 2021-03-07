@@ -9,9 +9,10 @@
         </div>
         <div id="shopping-cart"></div>
         <div class="d-flex justify-content-center">
-            <button id="cart-save" class="mb-2 btn btn-secondary">
-                Confirm
-            </button>
+            <form method="post">
+                <input type="hidden" name="<?= $csrfTokenName ?>" value="<?= $csrfTokenValue ?>">
+                <input type="submit" id="cart-save" class="mb-2 btn btn-secondary" value="Confirm">
+            </form>
         </div>
     </div>
     <div id="carts-not-equal" class="d-none">

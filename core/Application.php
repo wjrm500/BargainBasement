@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\consts\BootstrapColorConsts;
 use app\consts\ViewConsts;
 use app\core\db\Database;
 use app\models\LoginForm;
@@ -44,11 +45,11 @@ class Application
                     $this->session->set('user', $dbUser->id);
                     return true;
                 } else {
-                    $this->session->setFlashMessage('Password incorrect', 'danger');
+                    $this->session->setFlashMessage('Password incorrect', BootstrapColorConsts::DANGER);
                     return false;
                 }
             } else {
-                $this->session->setFlashMessage('No user with that email exists', 'danger');
+                $this->session->setFlashMessage('No user with that email exists', BootstrapColorConsts::DANGER);
                     return false;
             }
         }

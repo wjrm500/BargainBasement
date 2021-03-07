@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\consts\BootstrapColorConsts;
 use app\consts\ViewConsts;
 use app\core\Application;
 use app\core\Controller;
+use app\core\Csrf;
 use app\core\LayoutTree;
 use app\core\Request;
 use app\core\Response;
@@ -30,26 +32,8 @@ class ShopController extends Controller
 
     public function getBasketData()
     {
-        $app = Application::$app;
-        if ($app->hasUser()) {
-            $userId = $app->getUser()->id;
-            $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
-            if ($shoppingCart) {
-                $shoppingCartItems = $shoppingCart->getItems();
-                $basketData = [];
-                foreach ($shoppingCartItems as $shoppingCartItem) {
-                    $basketData[$shoppingCartItem->product_id] = $shoppingCartItem->quantity;
-                }
-                return json_encode($basketData);
-            }
-        }
-    }
-
-    public function getDetailedBasketData()
-    {
-        $app = Application::$app;
-        if ($app->hasUser()) {
-            $userId = $app->getUser()->id;
+        if ($this->app->hasUser()) {
+            $userId = $this->app->getUser()->id;
             $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
             if ($shoppingCart) {
                 $shoppingCartItems = $shoppingCart->getItems();
@@ -67,10 +51,9 @@ class ShopController extends Controller
         }
     }
 
-    public function postDetailedBasketData()
+    public function postBasketData()
     {
-        $app = Application::$app;
-        $localBasketData = $app->request->getBody();
+        $localBasketData = $this->app->request->getBody();
         $basketData = [];
         foreach ($localBasketData['localShoppingCart'] as $productId => $quantity) {
             $product = Product::find(['id' => $productId]);
@@ -87,10 +70,9 @@ class ShopController extends Controller
     public function persistBasket()
     {
         // Can some of this stuff be moved into the Model?
-        $app = Application::$app;
-        $basketData = $app->request->getBody()['basketData'];
-        if ($app->hasUser()) {
-            $userId = $app->getUser()->id;
+        $basketData = $this->app->request->getBody()['basketData'];
+        if ($this->app->hasUser()) {
+            $userId = $this->app->getUser()->id;
             $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
             if ($shoppingCart) {
                 $shoppingCart->bindData([
@@ -150,17 +132,26 @@ class ShopController extends Controller
         }
     }
 
-    public function checkout(Request $request, Response $response)
+    public function getCheckout(Request $request, Response $response)
     {
         $this->addScript('/js/checkout.js');
-        $app = Application::$app;
-        if ($app->hasUser()) {
-            $userId = $app->getUser()->id;
+        if ($this->app->hasUser()) {
+            $userId = $this->app->getUser()->id;
             $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
-            $shoppingCartExists = $shoppingCart && $shoppingCart->getNumItems();
             $this->layoutTree->customise(ViewConsts::CHECKOUT);
-            return $this->render(['shoppingCartExists' => $shoppingCartExists]);
+            return $this->render([
+                'csrfTokenName'      => Csrf::TOKEN_NAME,
+                'csrfTokenValue'     => (new Csrf())->getToken(),
+                'shoppingCartExists' => $shoppingCart && $shoppingCart->getNumItems()
+            ]);
         }
         return $response->redirect('/login', '/shop/checkout');
+    }
+
+    public function postCheckout(Request $request, Response $response)
+    {
+        (new Csrf())->checkToken();
+        $this->app->session->setFlashMessage('Your order has successfully been placed!', BootstrapColorConsts::SUCCESS);
+        return $response->redirect('/');
     }
 }

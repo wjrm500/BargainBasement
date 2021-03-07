@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\consts\BootstrapColorConsts;
 use app\consts\ViewConsts;
 use app\core\Application;
 use app\core\Controller;
@@ -26,9 +27,9 @@ class AccountController extends Controller
         if ($request->isPost()) {
             $loginForm->bindData($request->getBody());
             if ($loginForm->validate() && $loginForm->login()) {
-                Application::$app->session->setFlashMessage(
+                $this->app->session->setFlashMessage(
                     'You have successfully logged in!',
-                    'success'
+                    BootstrapColorConsts::SUCCESS
                 );
                 return $response->redirect($request->getRedirectUrl() ?? '/');
             }
@@ -43,11 +44,11 @@ class AccountController extends Controller
         if ($request->isPost()) {
             $registerForm->bindData($request->getBody());
             if ($registerForm->validate() && $registerForm->save()) {
-                Application::$app->session->setFlashMessage(
+                $this->app->session->setFlashMessage(
                     'You have successfully registered!',
-                    'success'
+                    BootstrapColorConsts::SUCCESS
                 );
-                Application::$app->login($registerForm);
+                $this->app->login($registerForm);
                 return $response->redirect('/');
             }
         }
@@ -57,10 +58,10 @@ class AccountController extends Controller
 
     public function logout(Request $request, Response $response)
     {
-        Application::$app->logout();
-        Application::$app->session->setFlashMessage(
+        $this->app->logout();
+        $this->session->setFlashMessage(
             'You have successfully logged out!',
-            'danger'
+            BootstrapColorConsts::DANGER
         );
         return $response->redirect('/');
     }

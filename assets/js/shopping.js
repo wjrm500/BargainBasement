@@ -15,10 +15,11 @@ $(document).ready(function() {
 
     // Get existing basket data for user and modify page accordingly
     $.get(
-        window.location.href + '/getBasketData',
+        window.location.href + '/ajax/basket-data',
         function(data) {
+            debugger;
             // If the user has no basket data stored in the database, use locally stored basket data
-            data = JSON.parse(data);
+            basketData = JSON.parse(data);
             if (data.length === 0) {
                 basketData = JSON.parse(window.localStorage.basketData) ?? {};
             }
@@ -92,7 +93,7 @@ $(document).ready(function() {
             function() {
                 window.localStorage.setItem('basketData', JSON.stringify(basketData));
                 $.post(
-                    window.location.href,
+                    window.location.href + '/ajax/persist-basket',
                     {
                         'basketData': basketData
                     },

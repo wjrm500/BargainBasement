@@ -15,7 +15,6 @@ $(document).ready(function() {
     $.get(
         window.location.href + '/ajax/basket-data',
         function(data) {
-            debugger;
             // If the user has no basket data stored in the database, use locally stored basket data
             basketData = JSON.parse(data);
             if (basketData.length === 0 && window.localStorage.getItem('basketData')) {
@@ -198,7 +197,7 @@ $(document).ready(function() {
             </div>
             <div class="basket-widget-main">
                 <div class="basket-item-name">
-                    ${data.name}
+                    ${data.name.replace('-', ' ')}
                 </div>
                 <hr>
                 <div class="basket-widget-details">

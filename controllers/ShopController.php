@@ -66,6 +66,7 @@ class ShopController extends Controller
 
     public function postBasketData()
     {
+        // Get correct product information from DB
         $localBasketData = $this->app->request->getBody();
         $basketData = [];
         foreach ($localBasketData['localShoppingCart'] as $productId => $itemData) {

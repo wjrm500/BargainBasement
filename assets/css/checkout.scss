@@ -5,6 +5,12 @@
     width: 100%;
 }
 
+.shopping-cart-table tr:last-child td:last-child {
+    color: limegreen;
+    font-weight: bold;
+    font-size: 2em;
+}
+
 .cart-notice {
     margin: 20px 0px;
     text-align: justify;

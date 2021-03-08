@@ -21,11 +21,13 @@ $(document).ready(function() {
                             $('#cart-save-local').click(function() {
                                 $('#carts-not-equal').remove();
                                 $('#cart-okay').removeClass('d-none');
+                                replaceDbBasketWithLocalBasket();
                                 createTableFromJSON(localShoppingCart, $('#shopping-cart'));
                             });
                             $('#cart-save-db').click(function() {
                                 $('#carts-not-equal').remove();
                                 $('#cart-okay').removeClass('d-none');
+                                delete window.localStorage.basketData;
                                 createTableFromJSON(dbShoppingCart, $('#shopping-cart'));
                             });
                             createTableFromJSON(localShoppingCart, $('#not-exists-local-shopping-cart'));
@@ -52,6 +54,17 @@ $(document).ready(function() {
         }
     );
 });
+
+function replaceDbBasketWithLocalBasket() {
+    var url = window.location.href.split('/');
+    url.pop();
+    $.post(
+        url.join('/') + '/ajax/persist-basket',
+        {
+            'basketData': JSON.parse(window.localStorage.basketData)
+        }
+    );
+}
 
 function createTableFromJSON(json, container) {
     // Add overall price on bottom row
@@ -83,6 +96,13 @@ function createTableFromJSON(json, container) {
             tabCell.innerHTML = jsonArr[i][col[j]];
         }
     }
+    tr = table.insertRow(-1);
+    tr.style.border = '5px solid black !important';
+    for (let i = 0; i < col.length - 1; i++) {
+        tr.insertCell(-1);
+    }
+    let overallPriceCell = tr.insertCell(-1);
+    overallPriceCell.innerHTML = getTotalPrice(json);
     container.append(table);
 }
 
@@ -102,7 +122,30 @@ function shoppingCartsEqual(a, b) {
     return true;
 }
 
+// Separate file for this
 function camelCaseToWords(string) {
     let result = string.replace(/([A-Z])/g, " $1");
     return result.charAt(0).toUpperCase() + result.slice(1);
+}
+
+// Separate file for this
+function convertObjectToArray(obj) {
+    let arr = [];
+    for (let i in obj)
+      arr.push(obj[i]);
+    return arr;
+  }
+
+// Duplicate of function inside shopping.js
+function convertCurrencyStringToFloat(currencyString) {
+    return Number(currencyString.replace(/[^0-9.-]+/g, ''));
+}
+
+// Duplicate of function inside shopping.js
+function convertFloatToCurrencyString(float) {
+    return `£${float.toFixed(2)}`;
+}
+
+function getTotalPrice(basket) {
+    return convertFloatToCurrencyString(convertObjectToArray(basket).reduce((carry, x) => carry + convertCurrencyStringToFloat(x.totalPrice), 0));
 }

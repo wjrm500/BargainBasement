@@ -3,15 +3,19 @@
         <p class="text-center">Loading...</p>
         <img id="loading-spinner" class="align-self-center" src="/images/spinner-cropped.gif" height="50px">
     </div>
-    <div id="cart-okay" class="d-none">      
+    <div id="cart-okay" class="d-none">
+        <div id="cart-okay-heading-container">
+            <div id="cart-okay-heading" class="loading">Almost there</div> 
+        </div>
         <div class="cart-notice">
-            Check that you are happy with your basket below and then hit the Confirm button!
+            Check that you are happy with your basket below and then hit the "Confirm Transaction" button!
         </div>
         <div id="shopping-cart"></div>
         <div class="d-flex justify-content-center">
-            <form id="confirm-checkout" method="post">
+            <a class="checkout-button mb-2 btn btn-secondary" href="/shop">Back to Shop</a>
+            <form id="confirm-checkout" class="checkout-button" method="post">
                 <input type="hidden" name="<?= $csrfTokenName ?>" value="<?= $csrfTokenValue ?>">
-                <input type="submit" id="cart-save" class="mb-2 btn btn-secondary" value="Confirm">
+                <input type="submit" id="cart-save" class="mb-2 btn btn-success" value="Confirm Transaction">
             </form>
         </div>
     </div>

@@ -67,15 +67,12 @@ function replaceDbBasketWithLocalBasket() {
 }
 
 function createTableFromJSON(json, container) {
-    // Add overall price on bottom row
     json = JSON.parse(json);
-    let jsonArr = [];
-    for (let obj in json) {
-        jsonArr.push(json[obj]);
-    }
+    let jsonArr = convertObjectToArray(json);
     let col = [];
     for (let i = 0; i < jsonArr.length; i++) {
         for (let key in jsonArr[i]) {
+            if (key === 'image') continue;
             if (col.indexOf(key) === -1) {
                 col.push(key);
             }

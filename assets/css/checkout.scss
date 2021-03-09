@@ -26,7 +26,16 @@
 
 .cart-notice {
     margin-bottom: 25px;
+}
+
+.cart-short-notice {
+    @extend .cart-notice;
     text-align: center;
+}
+
+.cart-long-notice {
+    @extend .cart-notice;
+    text-align: justify;
 }
 
 .cart-option-container {

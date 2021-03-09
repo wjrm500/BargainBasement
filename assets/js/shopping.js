@@ -23,6 +23,7 @@ $(document).ready(function() {
             if (Array.isArray(basketData)) {
                 basketData = convertArrayToObject(basketData);
             }
+            window.localStorage.setItem('basketData', JSON.stringify(basketData));
             for (let productId in basketData) {
                 toggleNonZeroButtons(productId);
                 modifyProductWidgetItemNumber(productId);
@@ -268,5 +269,8 @@ $(document).ready(function() {
         checkoutButton.style.pointerEvents = 'auto';
         checkoutButton.style.cursor = 'pointer';
         checkoutButton.innerHTML = 'Checkout';
+        $(checkoutButton).click(function() {
+            $(this).html('<img src="images/spinner-unscreen.gif" height="100%">');
+        });
     }
 })

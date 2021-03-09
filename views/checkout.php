@@ -7,7 +7,7 @@
         <div id="cart-okay-heading-container">
             <div id="cart-okay-heading" class="loading">Almost there</div> 
         </div>
-        <div class="cart-notice">
+        <div class="cart-short-notice">
             Check that you are happy with your basket below and then hit the "Confirm Transaction" button!
         </div>
         <div id="shopping-cart"></div>
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div id="carts-not-equal" class="d-none">
-        <div class="cart-notice">
+        <div class="cart-long-notice">
             We've noticed that the shopping cart you've just created is different to the one we have saved in our database. This can occur when you create a shopping cart as a non-signed in user and then sign in to an account on which a previously-created shopping cart was never checked out. Please select which one you want to checkout below - the other will be deleted.
         </div>
         <div class="row">

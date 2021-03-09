@@ -59,7 +59,7 @@ class AccountController extends Controller
     public function logout(Request $request, Response $response)
     {
         $this->app->logout();
-        $this->session->setFlashMessage(
+        $this->app->session->setFlashMessage(
             'You have successfully logged out!',
             BootstrapColorConsts::DANGER
         );

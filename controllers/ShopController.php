@@ -4,12 +4,11 @@ namespace app\controllers;
 
 use app\consts\BootstrapColorConsts;
 use app\consts\ViewConsts;
-use app\core\Application;
 use app\core\Controller;
 use app\core\Csrf;
-use app\core\LayoutTree;
 use app\core\Request;
 use app\core\Response;
+use app\models\Payment;
 use app\models\Product;
 use app\models\ShoppingCart;
 use app\models\ShoppingCartItem;
@@ -45,7 +44,7 @@ class ShopController extends Controller
     {
         if ($this->app->hasUser()) {
             $userId = $this->app->getUser()->id;
-            $shoppingCart = ShoppingCart::find(['user_id' => $userId, 'paid' => 0]);
+            $shoppingCart = ShoppingCart::findCurrent($userId);
             if ($shoppingCart) {
                 $shoppingCartItems = $shoppingCart->getItems();
                 $basketData = [];
@@ -88,7 +87,7 @@ class ShopController extends Controller
         $basketData = $this->app->request->getBody()['basketData'];
         if ($this->app->hasUser()) {
             $userId = $this->app->getUser()->id;
-            $shoppingCart = ShoppingCart::find(['user_id' => $userId, 'paid' => 0]);
+            $shoppingCart = ShoppingCart::findCurrent($userId);
             if ($shoppingCart) {
                 $shoppingCart->bindData([
                     'updated_at' => date('Y-m-d H:i:s')
@@ -129,8 +128,7 @@ class ShopController extends Controller
                 $shoppingCart->bindData([
                     'user_id'    => $userId,
                     'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'paid'       => 0
+                    'updated_at' => date('Y-m-d H:i:s')
                 ]);
                 $shoppingCartId = $shoppingCart->save(true);
                 foreach ($basketData as $productId => $itemData) {
@@ -151,7 +149,7 @@ class ShopController extends Controller
         $this->addScript('/js/checkout.js');
         if ($this->app->hasUser()) {
             $userId = $this->app->getUser()->id;
-            $shoppingCart = ShoppingCart::find(['user_id' => $userId]);
+            $shoppingCart = ShoppingCart::findCurrent($userId);
             $this->layoutTree->customise(ViewConsts::CHECKOUT);
             return $this->render([
                 'csrfTokenName'      => Csrf::TOKEN_NAME,
@@ -164,12 +162,17 @@ class ShopController extends Controller
 
     public function postCheckout(Request $request, Response $response)
     {
-        // Add payments table?
         (new Csrf())->checkToken();
         if ($this->app->hasUser()) {
             $userId = $this->app->getUser()->id;
-            $shoppingCart = ShoppingCart::find(['user_id' => $userId, 'paid' => 0]);
-            if ($shoppingCart->bindUpdate(['paid' => 1])) {
+            $shoppingCart = ShoppingCart::findCurrent($userId);
+            $payment = new Payment();
+            $payment->bindData([
+                'shopping_cart_id' => $shoppingCart->id,
+                'payment_made_at'  => date('Y-m-d H:i:s'),
+                'price_paid'       => $shoppingCart->getOverallPrice()
+            ]);
+            if ($payment->save()) {
                 $this->app->session->setFlashMessage('Your order has successfully been placed!', BootstrapColorConsts::SUCCESS);
                 return $response->redirect('/');
             }   

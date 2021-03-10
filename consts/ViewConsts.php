@@ -18,6 +18,7 @@ class ViewConsts
     public const SHOP_BASKET = 'partials/shop/basket';
     public const SHOP_PROD_WIDGET = 'partials/shop/product_widget';
     public const SHOP_PRODS = 'partials/shop/products';
+    public const SHOP_SEARCH = 'partials/shop/search';
     public const NAVBAR = 'partials/navbar';
     public const ADMIN_TABLE_HEADER = 'admin/partials/admin-table/admin-table-header';
     public const ADMIN_TABLE_PAGES ='admin/partials/admin-table/admin-table-pages';

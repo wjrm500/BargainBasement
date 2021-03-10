@@ -33,7 +33,13 @@ class ShopController extends Controller
             fn($product) => $this->renderViewOnly(ViewConsts::SHOP_PROD_WIDGET, compact('product')),
             $products
         );
-        $this->layoutTree->customise([ViewConsts::SHOP => [ViewConsts::SHOP_PRODS, ViewConsts::SHOP_BASKET]]);
+        $this->layoutTree->customise([
+            ViewConsts::SHOP => [
+                ViewConsts::SHOP_SEARCH,
+                ViewConsts::SHOP_PRODS,
+                ViewConsts::SHOP_BASKET
+            ]
+        ]);
         return $this->render([
             'productData'    => json_encode($productData),
             'productWidgets' => $productWidgets

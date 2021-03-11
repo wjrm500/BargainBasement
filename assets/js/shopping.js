@@ -9,8 +9,9 @@ $(document).ready(function() {
     const TYPE_REMOVE = 'remove';
 
     // Disable checkout button whilst page loads
-    disableCheckout();
 
+    disableCheckout();
+    
     // Get existing basket data for user and modify page accordingly
     $.get(
         window.location.href + '/ajax/basket-data',
@@ -34,6 +35,28 @@ $(document).ready(function() {
             enableCheckout();
         }
     );
+
+    $('#basket-minimise').click(minimiseBasket);
+    $('#basket-maximise').click(maximiseBasket);
+
+    function minimiseBasket() {
+        $('#shop-small-col').animate({width: '5%'});
+        $('#basket-header, #basket-items, #basket-footer').toggle();
+        $('#basket-footer').toggleClass('d-flex');
+        $('#basket').css({'overflow-x': 'hidden', 'overflow-y': 'hidden'});
+        $('#shop-large-col').animate({width: '95%'});
+        $('#basket-maximise').fadeToggle(400);
+    }
+    
+    function maximiseBasket() {
+        $('#shop-small-col').animate({width: '25%'});
+        $('#basket-header, #basket-items, #basket-footer').toggle();
+        $('#basket-footer').toggleClass('d-flex');
+        $('#basket').css({'overflow-x': 'scroll', 'overflow-y': 'scroll'});
+        $('#basket-maximise').toggle();
+        $('#shop-large-col').animate({width: '75%'});
+        stickFooterToBasketBottom();
+    }
 
     function convertArrayToObject(arr) {
         let obj = {};
@@ -168,6 +191,9 @@ $(document).ready(function() {
     }
     
     function addBasketWidget(productId) {
+        if (Object.keys(basketData).length === 1) {
+            maximiseBasket();
+        }
         let basketItems = document.getElementById('basket-items');
         let basketWidget = document.createElement('div');
         basketWidget.classList.add('basket-widget');
@@ -182,12 +208,13 @@ $(document).ready(function() {
             handleWidgetClick(basketWidget, TYPE_REMOVE);
         };
         basketItems.append(basketWidget);
-        if (overlapBetweenBasketItemsAndFooter()) {
-            stickFooterToBasketBottom();
-        }
+        stickFooterToBasketBottom();
     }
 
     function removeBasketWidget(productId) {
+        if (Object.keys(basketData).length === 0) {
+            minimiseBasket();
+        }
         getBasketWidgetByProductId(productId).remove();
     }
 
@@ -245,8 +272,15 @@ $(document).ready(function() {
     }
 
     function stickFooterToBasketBottom() {
-        let basketFooter = document.getElementById('basket-footer');
-        basketFooter.style.position = 'sticky';
+        $('#basket-footer').css({'bottom': '0px', 'position': 'absolute'});
+        setTimeout(
+            function () {
+                if (overlapBetweenBasketItemsAndFooter()) {
+                    $('#basket-footer').css('position', 'sticky');
+                }
+                
+            }, 400
+        );
     }
 
     function updateTotalPrice() {

@@ -13,11 +13,11 @@
 #shop-large-col {
     display: flex;
     flex-direction: column;
-    width: 75%;
+    width: 95%;
 }
 
 #shop-small-col {
-    width: 25%;
+    width: 5%;
 }
 
 #products-table {
@@ -117,7 +117,7 @@
     padding: 0px 0px 0px 5px;
 }
 
-#products, #basket {  
+#products {  
     overflow-x: scroll;
     overflow-y: scroll;
 }
@@ -259,7 +259,6 @@
         background-color: darken($lightgrey, 5%);
         border-top: 2px solid $grey;
         bottom: 0px;
-        display: flex;
         height: 75px;
         justify-content: center;
         padding: 15px 0px;
@@ -287,3 +286,30 @@
     }
 }
 
+%basket-min-max {
+    
+    cursor: pointer;
+}
+
+#basket-minimise {
+    @extend %basket-min-max;
+}
+
+#basket-maximise {
+    @extend %basket-min-max;
+    color: black;
+    // display: none;
+    font-size: 1.5em;
+    margin-top: 25px;
+    text-align: center;
+    width: 100%;
+}
+
+#basket-header, #basket-items, #basket-footer {
+    display: none;
+}
+
+#basket {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}

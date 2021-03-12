@@ -4,6 +4,7 @@ $(document).ready(function() {
     var productData = $('#products').data('productData');
     var basketData = {}; // Load basket data asynchronously from DB
     var sendBasketData;
+    var basketMaximised = false;
 
     const TYPE_ADD = 'add';
     const TYPE_REMOVE = 'remove';
@@ -40,15 +41,22 @@ $(document).ready(function() {
     $('#basket-maximise').click(maximiseBasket);
 
     function minimiseBasket() {
+        if (!basketMaximised) {
+            return;
+        }
         $('#shop-small-col').animate({width: '5%'});
         $('#basket-header, #basket-items, #basket-footer').toggle();
         $('#basket-footer').toggleClass('d-flex');
         $('#basket').css({'overflow-x': 'hidden', 'overflow-y': 'hidden'});
         $('#shop-large-col').animate({width: '95%'});
         $('#basket-maximise').fadeToggle(400);
+        basketMaximised = false;
     }
     
     function maximiseBasket() {
+        if (basketMaximised) {
+            return;
+        }
         $('#shop-small-col').animate({width: '25%'});
         $('#basket-header, #basket-items, #basket-footer').toggle();
         $('#basket-footer').toggleClass('d-flex');
@@ -56,6 +64,7 @@ $(document).ready(function() {
         $('#basket-maximise').toggle();
         $('#shop-large-col').animate({width: '75%'});
         stickFooterToBasketBottom();
+        basketMaximised = true;
     }
 
     function convertArrayToObject(arr) {
@@ -191,7 +200,7 @@ $(document).ready(function() {
     }
     
     function addBasketWidget(productId) {
-        if (Object.keys(basketData).length === 1) {
+        if (Object.keys(basketData).length > 0) {
             maximiseBasket();
         }
         let basketItems = document.getElementById('basket-items');

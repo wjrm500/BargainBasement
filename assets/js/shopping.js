@@ -9,6 +9,28 @@ $(document).ready(function() {
     const TYPE_ADD = 'add';
     const TYPE_REMOVE = 'remove';
 
+    $(window).resize(reformatProductGrid);
+    
+    String.prototype.interpolate = function(params) {
+        const names = Object.keys(params);
+        const vals = Object.values(params);
+        return new Function(...names, `return \`${this}\`;`)(...vals);
+    }
+    
+    var template;
+    
+    $.ajax({
+        url: '/shop/ajax/get-basket-widget-html',
+        type: 'get',
+        async: false,
+        success: function(html) {
+            template = html;
+            $('#products-loading').addClass('d-none');
+            $('#products-grid').removeClass('d-none');
+            reformatProductGrid();
+        }
+    });
+
     // Disable checkout button whilst page loads
 
     disableCheckout();
@@ -48,7 +70,7 @@ $(document).ready(function() {
         $('#basket-header, #basket-items, #basket-footer').toggle();
         $('#basket-footer').toggleClass('d-flex');
         $('#basket').css({'overflow-x': 'hidden', 'overflow-y': 'hidden'});
-        $('#shop-large-col').animate({width: '95%'});
+        $('#shop-large-col').animate({width: '95%'}).promise().done(() => reformatProductGrid());
         $('#basket-maximise').fadeToggle(400);
         basketMaximised = false;
     }
@@ -62,7 +84,7 @@ $(document).ready(function() {
         $('#basket-footer').toggleClass('d-flex');
         $('#basket').css({'overflow-x': 'scroll', 'overflow-y': 'scroll'});
         $('#basket-maximise').toggle();
-        $('#shop-large-col').animate({width: '75%'});
+        $('#shop-large-col').animate({width: '75%'}).promise().done(() => reformatProductGrid());;
         stickFooterToBasketBottom();
         basketMaximised = true;
     }
@@ -200,7 +222,7 @@ $(document).ready(function() {
     }
     
     function addBasketWidget(productId) {
-        if (Object.keys(basketData).length > 0) {
+        if ($('#basket-items').find('.basket-widget').length === 0) {
             maximiseBasket();
         }
         let basketItems = document.getElementById('basket-items');
@@ -221,53 +243,20 @@ $(document).ready(function() {
     }
 
     function removeBasketWidget(productId) {
-        if (Object.keys(basketData).length === 0) {
+        if ($('#basket-items').find('.basket-widget').length === 1) {
             minimiseBasket();
         }
         getBasketWidgetByProductId(productId).remove();
     }
 
     function getBasketItemHTML(data) {
-        let markup = `
-            <div class="basket-widget-image-container">
-                <img src="/images/${data.image}" class="basket-item-image">
-            </div>
-            <div class="basket-widget-main">
-                <div class="basket-item-name">
-                    ${data.name.replace('-', ' ')}
-                </div>
-                <hr>
-                <div class="basket-widget-details">
-                    <span class="basket-widget-detail">
-                        x
-                    </span>
-                    <span class="basket-widget-detail basket-item-number">
-                        1
-                    </span>
-                    <span class="basket-widget-detail">
-                        @
-                    </span>
-                    <span class="basket-widget-detail basket-item-price">
-                        ${data.price}
-                    </span>
-                    <span class="basket-widget-detail">
-                        =
-                    </span>
-                    <span class="basket-widget-detail basket-item-total-price">
-                        ${data.totalPrice}
-                    </span>
-                </div>
-            </div>
-            <div class="basket-widget-modify">
-                <button class="basket-widget-add-button">
-                    <i class="fas fa-plus"></i>
-                </button>
-                <button class="basket-widget-remove-button">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
-        `;
-        return markup.trim();
+        let markup = template.interpolate({
+            image: data.image,
+            name: data.name.replace('-', ' '),
+            price: data.price,
+            totalPrice: data.totalPrice,
+        });
+        return markup.trim().slice(1, -1);
     }
 
     function overlapBetweenBasketItemsAndFooter() {
@@ -317,3 +306,24 @@ $(document).ready(function() {
         });
     }
 })
+
+function reformatProductGrid() {
+    let gridWidth = $('#products-grid').width();
+    let productWidgetContainers = $('.product-widget-container')
+    if (gridWidth > 1000) {
+        productWidgetContainers.addClass('col-2');
+        productWidgetContainers.removeClass('col-3 col-4 col-6 col-12');
+    } else if (gridWidth > 800) {
+        productWidgetContainers.addClass('col-3');
+        productWidgetContainers.removeClass('col-2 col-4 col-6 col-12');
+    } else if (gridWidth > 600) {
+        productWidgetContainers.addClass('col-4');
+        productWidgetContainers.removeClass('col-2 col-3 col-6 col-12');
+    } else if (gridWidth > 400) {
+        productWidgetContainers.addClass('col-6');
+        productWidgetContainers.removeClass('col-2 col-3 col-4 col-12');
+    } else {
+        productWidgetContainers.addClass('col-12');
+        productWidgetContainers.removeClass('col-2 col-3 col-4 col-6');
+    }
+}

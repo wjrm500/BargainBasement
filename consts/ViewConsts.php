@@ -30,4 +30,6 @@ class ViewConsts
     public const ADMIN_ITEM_ADD = 'admin/item_add_form';
     public const ADMIN_ITEM_HOME = 'admin/item_home';
     public const FLASH_MESSAGES = 'partials/flash_messages';
+
+    public const BASKET_WIDGET_HTML = 'html/basket-widget.html';
 }

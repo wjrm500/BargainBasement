@@ -22,6 +22,7 @@ $app->router->get('/logout', [AccountController::class, 'logout']);
 $app->router->get('/profile', [AccountController::class, 'profile']);
 
 $app->router->get('/shop', [ShopController::class, 'index']);
+$app->router->get('/shop/ajax/get-basket-widget-html', [ShopController::class, 'getBasketWidgetHtml']);
 $app->router->post('/shop/ajax/persist-basket', [ShopController::class, 'persistBasket']);
 
 // For checkout

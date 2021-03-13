@@ -17,12 +17,13 @@
 }
 
 #shop-small-col {
+    min-width: 50px;
     width: 5%;
 }
 
-#products-table {
-    display: grid;
-} 
+#products-grid {
+    --bs-gutter-x: 0rem;
+}
 
 .product-widget {
     border: 3px solid $dark-blue;
@@ -103,7 +104,6 @@
 
 #search-container {
     padding: 0px 5px 5px 0px;
-    height: 75px;
 }
 
 #products-container {
@@ -134,6 +134,7 @@
 #search {
     align-items: center;
     background-color: $blue;
+    --bs-gutter-x: 0rem;
     display: flex;
     justify-content: space-evenly;
     padding: 5px 10px;
@@ -142,6 +143,7 @@
         align-items: center;
         display: flex;
         justify-content: center;
+        margin: 5px 0px;
         width: 400px;
     }
 

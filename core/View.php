@@ -30,7 +30,11 @@ class View
             $$key = $value;
         }
         ob_start();
-        require __DIR__ . "/../views/{$view}.php";
+        if (str_ends_with($view, '.html')) {
+            require __DIR__ . "/../views/{$view}";
+        } else {
+            require __DIR__ . "/../views/{$view}.php";
+        }
         return ob_get_clean();
     }
 }

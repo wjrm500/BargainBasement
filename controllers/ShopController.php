@@ -87,6 +87,11 @@ class ShopController extends Controller
         return json_encode($basketData ?? []);
     }
 
+    public function getBasketWidgetHtml()
+    {
+        return json_encode($this->renderViewOnly(ViewConsts::BASKET_WIDGET_HTML));
+    }
+
     public function persistBasket()
     {
         // Can some of this stuff be moved into the Model?

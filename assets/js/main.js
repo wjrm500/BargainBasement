@@ -9,3 +9,17 @@ $(document).ready(
         navItem.style.boxShadow = "0px 0px 5px 3px dodgerblue";
     }
 )
+
+function convertCurrencyStringToFloat(currencyString) {
+    return Number(currencyString.replace(/[^0-9.-]+/g, ''));
+}
+
+function convertFloatToCurrencyString(float) {
+    return `£${float.toFixed(2)}`;
+}
+
+function multiplyCurrencyString(currencyString, multiplier) {
+    let float = convertCurrencyStringToFloat(currencyString);
+    result = float * multiplier;
+    return convertFloatToCurrencyString(result);
+}

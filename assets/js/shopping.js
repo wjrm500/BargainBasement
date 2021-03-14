@@ -1,4 +1,5 @@
-var productData;
+var productData, basketWidgetTemplate, productModalTemplate;
+
 $(document).ready(function() {
     // Check what is in user's cart - any products that are in the cart should have the number of items in the product widget with relevant buttons
     
@@ -26,43 +27,16 @@ $(document).ready(function() {
         }
     );
 
-    $('.product-widget').click(function(e) {
-        if ($(e.target).hasClass('product-widget-button')) {
-            return;
-        }
-        let modal = document.createElement('div');
-        modal.innerHTML = getProductModalHtml(productData[$(this).data('productId')]);
-        $('body').append($(modal));
-        $('#modal-close i').hover(
-            function() {
-                $(this).removeClass('far');
-                $(this).addClass('fas');
-            },
-            function() {
-                $(this).removeClass('fas');
-                $(this).addClass('far');
-            }
-        );
-        $('#modal-close i').mousedown(function() {
-            $(this).closest('#modal').remove();
-        });
-        $('#modal').mousedown(function(e) {
-            if (e.target.id !== 'modal-box' &&
-                !$(e.target).parents('#modal-box').length) {
-                $(this).remove();
-            }
-        });
+    $(window).resize(function() {
+        reformatProductGrid(); 
+        stickFooterToBasketBottom();
     });
-
-    $(window).resize(reformatProductGrid);
     
     String.prototype.interpolate = function(params) {
         const names = Object.keys(params);
         const vals = Object.values(params);
         return new Function(...names, `return \`${this}\`;`)(...vals);
     }
-    
-    var basketWidgetTemplate, productModalTemplate;
     
     $.ajax({
         url: '/shop/ajax/get-templates',
@@ -199,7 +173,7 @@ $(document).ready(function() {
                 'name': productData[productId].name,
                 'price': productData[productId].price,
                 'quantity': 1,
-                'totalPrice': productData[productId].totalPrice
+                'totalPrice': productData[productId].price
             }
             addBasketWidget(productId);
         }
@@ -236,20 +210,6 @@ $(document).ready(function() {
         let basketWidget = getBasketWidgetByProductId(productId);
         basketWidget.getElementsByClassName('basket-item-number')[0].innerHTML = basketData[productId].quantity;
         basketWidget.getElementsByClassName('basket-item-total-price')[0].innerHTML = multiplyCurrencyString(basketData[productId].price, basketData[productId].quantity);
-    }
-
-    function convertCurrencyStringToFloat(currencyString) {
-        return Number(currencyString.replace(/[^0-9.-]+/g, ''));
-    }
-
-    function convertFloatToCurrencyString(float) {
-        return `£${float.toFixed(2)}`;
-    }
-
-    function multiplyCurrencyString(currencyString, multiplier) {
-        let float = convertCurrencyStringToFloat(currencyString);
-        result = float * multiplier;
-        return convertFloatToCurrencyString(result);
     }
 
     function modifyProductWidgetItemNumber(productId) {
@@ -300,22 +260,9 @@ $(document).ready(function() {
     function getBasketItemHtml(data) {
         let markup = basketWidgetTemplate.interpolate({
             image: data.image,
-            name: data.name.replace('-', ' '),
+            name: data.name.replace(/_/g, ' '),
             price: data.price,
             totalPrice: data.totalPrice,
-        });
-        return markup.trim();
-    }
-
-    function getProductModalHtml(data) {
-        let markup = productModalTemplate.interpolate({
-            name: data.image,
-            price: data.price,
-            weight: data.weight,
-            pricePerKg: data.price / data.weight,
-            description: data.description,
-            ingredients: data.ingredients,
-            nutrition: data.nutrition
         });
         return markup.trim();
     }

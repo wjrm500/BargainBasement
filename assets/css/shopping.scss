@@ -10,6 +10,7 @@
     width: 100%;
 
     #modal-close {
+        color: white;
         cursor: pointer;
         font-size: 1.5em;
         margin: 5px;
@@ -22,13 +23,98 @@
         background-color: white;
         border: 3px solid $dark-blue;
         border-radius: 8px;
-        height: 200px;
         left: 50%;
         margin-left: -250px;
-        margin-top: -100px;
         position: absolute;
         top: 50%;
         width: 500px;
+
+        #modal-name-container {
+            display: flex;
+            background-color: $dark-blue;
+            justify-content: center;
+
+            #modal-name {
+                color: white;
+                font-size: 1.1em;
+                font-weight: bold;
+                padding: 5px;
+            }
+        }
+
+        table {
+            margin: 10px;
+            table-layout: fixed;
+            width: 100%;
+
+            tr > td:first-child {
+                color: $grey;
+                padding-right: 5px;
+                text-align: right;
+            }
+
+            tr > td:last-child {
+                font-weight: bold;
+                padding-left: 5px;
+                text-align: left;
+            }
+        }
+        
+        hr {
+            border-top: 2px dotted $grey;
+            margin: 0px 25px;
+        }
+
+        #modal-description-container {
+            margin: 10px;
+            text-align: center;
+        }
+
+        #modal-nutrition-container {
+            margin: 10px;
+            text-align: center;
+        }
+
+        #modal-nutrition-blocks {
+            display: flex;
+            margin: 0px 20px;
+
+            .modal-nutrition-block {
+                background-color: $blue;
+                border: 2px solid $dark-blue;
+                border-radius: 5px;
+                color: white;
+                flex: 1;
+                margin: 5px;
+                text-align: center;
+
+                .modal-nutrition-block-heading {
+                    font-size: 0.7em;
+                    font-weight: bold;
+                }
+
+                .modal-nutrition-block-data-pct-container-container {
+                    display: flex;
+                    justify-content: center;
+                    padding-bottom: 2px;
+                }
+
+                .modal-nutrition-block-data-pct-container {
+                    align-items: center;
+                    background-color: white;
+                    border: 2px solid black;
+                    border-radius: 50%;
+                    display: flex;
+                    height: 50px;
+                    justify-content: center;
+                    width: 50px;
+
+                    .modal-nutrition-block-data-pct {
+                        color: black;
+                    }
+                }
+            }
+        }
     }
 }
 

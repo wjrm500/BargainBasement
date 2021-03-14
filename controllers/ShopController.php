@@ -19,15 +19,23 @@ class ShopController extends Controller
     {
         $this->addScript('/js/shopping.js');
         $this->addScript('/js/search_shop.js');
+        $this->addScript('/js/product_modal.js');
         $products = Product::findAll();
         $productData = [];
         foreach ($products as $product) {
             $productData[$product->id] = [
+                'description' => str_replace(' ', '_', $product->description),
                 'image'       => $product->image,
-                'name'        => str_replace(' ', '-', $product->name),
+                'name'        => str_replace(' ', '_', $product->name),
                 'price'       => '£' . (string) number_format($product->price, 2, '.', ''),
-                'quantity'    => 1,
-                'totalPrice'  => '£' . (string) number_format($product->price, 2, '.', '')
+                'weight'      => $product->weight,
+                'nutrition'   => [
+                    'energy'    => $product->energy_kcal,
+                    'fat'       => $product->fat_g,
+                    'saturates' => $product->saturates_g,
+                    'sugars'    => $product->sugars_g,
+                    'salt'      => $product->salt_g
+                ]
             ];
         }
         $productWidgets = array_map(

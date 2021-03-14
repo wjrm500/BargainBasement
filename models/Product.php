@@ -12,6 +12,12 @@ class Product extends DbModel
     public float $price = 0.00;
     public int $weight = 0;
 
+    public int $energy_kcal = 0;
+    public float $fat_g = 0.00;
+    public float $saturates_g = 0.00;
+    public float $sugars_g = 0.00;
+    public float $salt_g = 0.00;
+
     public function labels(): array
     {
         return [
@@ -51,7 +57,7 @@ class Product extends DbModel
 
     public static function attributes(): array
     {
-        return ['name', 'image', 'description', 'price', 'weight'];
+        return ['name', 'image', 'description', 'price', 'weight', 'energy_kcal', 'fat_g', 'saturates_g', 'sugars_g', 'salt_g'];
     }
 
     public function attributeCustomInputTypes(): array

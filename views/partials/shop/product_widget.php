@@ -13,9 +13,6 @@
         <div class="product-widget-component product-widget-weight">
             <?= $product->weight ?>g
         </div>
-        <!-- <div class="product-widget-component">
-            £<?= number_format($product->getPricePerKg(), 2, '.', '') ?> / kg
-        </div> -->
     </div>
     <div class="product-widget-row product-widget-add">
         <div class="product-widget-add-component">

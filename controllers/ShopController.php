@@ -18,6 +18,7 @@ class ShopController extends Controller
     public function index()
     {
         $this->addScript('/js/shopping.js');
+        $this->addScript('/js/search_shop.js');
         $products = Product::findAll();
         $productData = [];
         foreach ($products as $product) {

@@ -3,7 +3,7 @@
         <label>
             Search our range:
         </label>
-        <input type="text" class="form-control" name="search" placeholder="Enter product name here...">
+        <input id="search-shop" type="text" class="form-control" name="search" placeholder="Enter product name here...">
     </div>
     <div class="search-group col-md-6 col-12">
         <label>

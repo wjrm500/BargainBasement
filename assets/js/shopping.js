@@ -1,7 +1,8 @@
+var productData;
 $(document).ready(function() {
     // Check what is in user's cart - any products that are in the cart should have the number of items in the product widget with relevant buttons
     
-    var productData = $('#products').data('productData');
+    productData = $('#products').data('productData');
     var basketData = {}; // Load basket data asynchronously from DB
     var sendBasketData;
     var basketMaximised = false;

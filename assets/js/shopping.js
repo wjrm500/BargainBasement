@@ -10,6 +10,50 @@ $(document).ready(function() {
     const TYPE_ADD = 'add';
     const TYPE_REMOVE = 'remove';
 
+    // Highlight currently hovered product widget by fading colour of all others
+    $('.product-widget').hover(
+        function() {
+           let otherProductWidgets = $(this).closest('.product-widget-container').siblings('.product-widget-container').children('.product-widget');
+           otherProductWidgets.each(function() {
+               $(this).find('.product-widget-overlay').removeClass('d-none');
+           });
+        },
+        function() {
+            let otherProductWidgets = $(this).closest('.product-widget-container').siblings('.product-widget-container').children('.product-widget');
+            otherProductWidgets.each(function() {
+                $(this).find('.product-widget-overlay').addClass('d-none');
+            });
+        }
+    );
+
+    $('.product-widget').click(function(e) {
+        if ($(e.target).hasClass('product-widget-button')) {
+            return;
+        }
+        let modal = document.createElement('div');
+        modal.innerHTML = getProductModalHtml(productData[$(this).data('productId')]);
+        $('body').append($(modal));
+        $('#modal-close i').hover(
+            function() {
+                $(this).removeClass('far');
+                $(this).addClass('fas');
+            },
+            function() {
+                $(this).removeClass('fas');
+                $(this).addClass('far');
+            }
+        );
+        $('#modal-close i').mousedown(function() {
+            $(this).closest('#modal').remove();
+        });
+        $('#modal').mousedown(function(e) {
+            if (e.target.id !== 'modal-box' &&
+                !$(e.target).parents('#modal-box').length) {
+                $(this).remove();
+            }
+        });
+    });
+
     $(window).resize(reformatProductGrid);
     
     String.prototype.interpolate = function(params) {
@@ -18,14 +62,16 @@ $(document).ready(function() {
         return new Function(...names, `return \`${this}\`;`)(...vals);
     }
     
-    var template;
+    var basketWidgetTemplate, productModalTemplate;
     
     $.ajax({
-        url: '/shop/ajax/get-basket-widget-html',
+        url: '/shop/ajax/get-templates',
         type: 'get',
         async: false,
-        success: function(html) {
-            template = html;
+        success: function(data) {
+            data = JSON.parse(data);
+            basketWidgetTemplate = data.basketWidgetTemplate;
+            productModalTemplate = data.productModalTemplate;
             $('#products-loading').addClass('d-none');
             $('#products-grid').removeClass('d-none');
             reformatProductGrid();
@@ -100,6 +146,7 @@ $(document).ready(function() {
     // When user clicks add button on a product, add that number of products to cart and replace add button with - and +
     // Every time the user modifies their cart (and after a gap of maybe 5 seconds), make a post request to the back end to update their shopping cart in a table
     $('.product-widget .product-widget-add-button').click(function() {
+        // alert('Hello from line 130');
         let productWidget = this.closest('.product-widget');
         handleWidgetClick(productWidget, TYPE_ADD);
     });
@@ -230,7 +277,7 @@ $(document).ready(function() {
         let basketWidget = document.createElement('div');
         basketWidget.classList.add('basket-widget');
         basketWidget.dataset.productId = productId;
-        basketWidget.innerHTML = getBasketItemHTML(basketData[productId]);
+        basketWidget.innerHTML = getBasketItemHtml(basketData[productId]);
         let addButton = basketWidget.getElementsByClassName('basket-widget-add-button')[0];
         let removeButton = basketWidget.getElementsByClassName('basket-widget-remove-button')[0];
         addButton.onclick = function() {
@@ -250,14 +297,27 @@ $(document).ready(function() {
         getBasketWidgetByProductId(productId).remove();
     }
 
-    function getBasketItemHTML(data) {
-        let markup = template.interpolate({
+    function getBasketItemHtml(data) {
+        let markup = basketWidgetTemplate.interpolate({
             image: data.image,
             name: data.name.replace('-', ' '),
             price: data.price,
             totalPrice: data.totalPrice,
         });
-        return markup.trim().slice(1, -1);
+        return markup.trim();
+    }
+
+    function getProductModalHtml(data) {
+        let markup = productModalTemplate.interpolate({
+            name: data.image,
+            price: data.price,
+            weight: data.weight,
+            pricePerKg: data.price / data.weight,
+            description: data.description,
+            ingredients: data.ingredients,
+            nutrition: data.nutrition
+        });
+        return markup.trim();
     }
 
     function overlapBetweenBasketItemsAndFooter() {

@@ -88,9 +88,13 @@ class ShopController extends Controller
         return json_encode($basketData ?? []);
     }
 
-    public function getBasketWidgetHtml()
+    public function getTemplates()
     {
-        return json_encode($this->renderViewOnly(ViewConsts::BASKET_WIDGET_HTML));
+        $templates = [
+            'basketWidgetTemplate' => $this->renderViewOnly(ViewConsts::BASKET_WIDGET_HTML),
+            'productModalTemplate' => $this->renderViewOnly(ViewConsts::PRODUCT_MODAL_HTML)
+        ];
+        return json_encode($templates);
     }
 
     public function persistBasket()

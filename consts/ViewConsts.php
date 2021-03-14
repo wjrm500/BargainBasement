@@ -32,4 +32,5 @@ class ViewConsts
     public const FLASH_MESSAGES = 'partials/flash_messages';
 
     public const BASKET_WIDGET_HTML = 'html/basket-widget.html';
+    public const PRODUCT_MODAL_HTML = 'html/product-modal.html';
 }

@@ -8,6 +8,8 @@ $(document).ready(function() {
         let modal = document.createElement('div');
         modal.innerHTML = getProductModalHtml(productData[$(this).data('productId')]);
         $('body').append($(modal));
+        $('#modal-box').hide();
+        $('#modal-box').fadeIn();
         $('#modal-close i').hover(
             function() {
                 $(this).removeClass('far');
@@ -18,13 +20,29 @@ $(document).ready(function() {
                 $(this).addClass('far');
             }
         );
-        $('#modal-close i').mousedown(function() {
-            $(this).closest('#modal').remove();
+        $('#modal-close i').mousedown(function(e) {
+            if (e.which === 1) { // Left click only
+                $.when(
+                    $(this).closest('#modal').fadeOut()
+                ).then(
+                    function() {
+                        $(this).closest('#modal').remove();
+                    }
+                );
+            }
         });
         $('#modal').mousedown(function(e) {
             if (e.target.id !== 'modal-box' &&
                 !$(e.target).parents('#modal-box').length) {
-                $(this).remove();
+                if (e.which === 1) {
+                    $.when(
+                        $(this).fadeOut()
+                    ).then(
+                        function() {
+                            $(this).remove();
+                        }
+                    );
+                }
             }
         });
         let marginModalTop = -$('#modal-box').height() / 2;

@@ -334,4 +334,15 @@ function reformatProductGrid() {
         productWidgetContainers.addClass('col-12');
         productWidgetContainers.removeClass('col-2 col-3 col-4 col-6');
     }
+    // Resize product names to fit
+    $('.product-widget-name').each(function() {
+        console.log($(this)[0].scrollWidth);
+        console.log($(this).innerWidth());
+        console.log('');
+        while ($(this)[0].scrollWidth > $(this).innerWidth()) {
+            size = parseInt($(this).css('font-size'));
+            console.log('size');
+            $(this).css('font-size', size - 1 + 'px');
+        }
+    });
 }

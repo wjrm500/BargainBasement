@@ -81,7 +81,6 @@ $(document).ready(function() {
     );
 
     $('#basket-minimise').click(minimiseBasket);
-    $('#basket-maximise').click(maximiseBasket);
 
     function minimiseBasket() {
         if (!basketMaximised) {
@@ -91,7 +90,13 @@ $(document).ready(function() {
         $('#basket-header, #basket-items, #basket-footer').toggle();
         $('#basket-footer').toggleClass('d-flex');
         $('#basket').css({'overflow-x': 'hidden', 'overflow-y': 'hidden'});
-        $('#shop-large-col').animate({width: '95%'}).promise().done(() => reformatProductGrid());
+        $('#shop-large-col').animate({width: '95%'}).promise().done(
+            function() {
+                reformatProductGrid();
+                $('#basket').css('cursor', 'pointer');
+                $('#basket').click(maximiseBasket);
+            }
+        );
         $('#basket-maximise').fadeToggle(400);
         basketMaximised = false;
     }
@@ -101,12 +106,18 @@ $(document).ready(function() {
             return;
         }
         $('#shop-small-col').animate({width: '25%'});
-        $('#basket-header, #basket-items, #basket-footer').toggle();
-        $('#basket-footer').toggleClass('d-flex');
         $('#basket').css({'overflow-x': 'scroll', 'overflow-y': 'scroll'});
         $('#basket-maximise').toggle();
-        $('#shop-large-col').animate({width: '75%'}).promise().done(() => reformatProductGrid());;
-        stickFooterToBasketBottom();
+        $('#shop-large-col').animate({width: '75%'}).promise().done(
+            function() {
+                reformatProductGrid();
+                $('#basket-header, #basket-items, #basket-footer').fadeToggle();
+                $('#basket-footer').toggleClass('d-flex');
+                stickFooterToBasketBottom();
+            }
+        );
+        $('#basket').css('cursor', 'auto');
+        $('#basket').unbind();
         basketMaximised = true;
     }
 
@@ -336,13 +347,9 @@ function reformatProductGrid() {
     }
     // Resize product names to fit
     $('.product-widget-name').each(function() {
-        console.log($(this)[0].scrollWidth);
-        console.log($(this).innerWidth());
-        console.log('');
-        while ($(this)[0].scrollWidth > $(this).innerWidth()) {
+        if ($(this)[0].scrollWidth > $(this).innerWidth() + 1) {
             size = parseInt($(this).css('font-size'));
-            console.log('size');
-            $(this).css('font-size', size - 1 + 'px');
+            $(this).css('font-size', size - 2 + 'px');
         }
     });
 }

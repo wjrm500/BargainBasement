@@ -77,3 +77,28 @@ function getProductModalHtml(data) {
     });
     return markup.trim();
 }
+
+function colourNutritionLabels() {
+    var data = [
+        {metric: 'fat', upper: 17.5, lower: 3},
+        {metric: 'saturates', upper: 5, lower: 1.5},
+        {metric: 'sugars', upper: 22.5, lower: 5},
+        {metric: 'salt', upper: 1.5, lower: 0.3},
+    ];
+    for (let datum of data) {
+        var metric = datum.metric;
+        var upper = datum.upper;
+        var lower = datum.lower;
+        var value = parseFloat($('#data-actual-' + metric).html().replace('g', ''));
+        var pct = $('#data-actual-' + metric).siblings('.modal-nutrition-block-data-pct-container-container').find('.modal-nutrition-block-data-pct');
+        var fontColor;
+        if (value > upper) {
+            fontColor = 'red';
+        } else if (value <= lower) {
+            fontColor = 'limegreen';
+        } else {
+            fontColor = 'orange';
+        };
+        pct.css('color', fontColor);
+    }
+}

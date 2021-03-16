@@ -93,12 +93,17 @@
                 .modal-nutrition-block-heading {
                     font-size: 0.7em;
                     font-weight: bold;
+                    margin: 5px;
+                }
+
+                .modal-nutrition-block-data-actual {
+                    margin: 5px;
                 }
 
                 .modal-nutrition-block-data-pct-container-container {
                     display: flex;
                     justify-content: center;
-                    padding-bottom: 2px;
+                    margin: 5px;
                 }
 
                 .modal-nutrition-block-data-pct-container {
@@ -107,12 +112,13 @@
                     border: 2px solid black;
                     border-radius: 50%;
                     display: flex;
-                    height: 50px;
+                    height: 60px;
                     justify-content: center;
-                    width: 50px;
+                    width: 60px;
 
                     .modal-nutrition-block-data-pct {
                         color: black;
+                        font-weight: bold;
                     }
                 }
             }
@@ -377,6 +383,9 @@
                     font-size: 20px;
                     font-weight: bold;
                     justify-content: flex-end;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
     
                 hr {

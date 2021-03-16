@@ -29,6 +29,7 @@ $(document).ready(function() {
 
     $(window).resize(function() {
         reformatProductGrid(); 
+        reformatBasket();
         stickFooterToBasketBottom();
     });
     
@@ -93,6 +94,7 @@ $(document).ready(function() {
         $('#shop-large-col').animate({width: '95%'}).promise().done(
             function() {
                 reformatProductGrid();
+                reformatBasket();
                 $('#basket').css('cursor', 'pointer');
                 $('#basket').click(maximiseBasket);
             }
@@ -111,6 +113,7 @@ $(document).ready(function() {
         $('#shop-large-col').animate({width: '75%'}).promise().done(
             function() {
                 reformatProductGrid();
+                reformatBasket();
                 $('#basket-header, #basket-items, #basket-footer').fadeToggle();
                 $('#basket-footer').toggleClass('d-flex');
                 stickFooterToBasketBottom();
@@ -347,6 +350,16 @@ function reformatProductGrid() {
     }
     // Resize product names to fit
     $('.product-widget-name').each(function() {
+        if ($(this)[0].scrollWidth > $(this).innerWidth() + 1) {
+            size = parseInt($(this).css('font-size'));
+            $(this).css('font-size', size - 2 + 'px');
+        }
+    });
+}
+
+// Doesn't work
+function reformatBasket() {
+    $('.basket-item-name').each(function() {
         if ($(this)[0].scrollWidth > $(this).innerWidth() + 1) {
             size = parseInt($(this).css('font-size'));
             $(this).css('font-size', size - 2 + 'px');

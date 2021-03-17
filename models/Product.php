@@ -25,7 +25,12 @@ class Product extends DbModel
             'image'       => 'Image',
             'description' => 'Description',
             'price'       => 'Price (£)',
-            'weight'      => 'Weight (g)'
+            'weight'      => 'Weight (g)',
+            'energy_kcal' => 'Energy (kcal)',
+            'fat_g'       => 'Fat (g)',
+            'saturates_g' => 'Saturates (g)',
+            'sugars_g'    => 'Sugars (g)',
+            'salt_g'      => 'Salt (g)'
         ];
     }
 
@@ -46,7 +51,12 @@ class Product extends DbModel
             ],
             'description'     => [self::RULE_REQUIRED],
             'price'           => [self::RULE_REQUIRED],
-            'weight'          => [self::RULE_REQUIRED]
+            'weight'          => [self::RULE_REQUIRED],
+            'energy_kcal'           => [self::RULE_REQUIRED],
+            'fat_g'           => [self::RULE_REQUIRED],
+            'saturates_g'           => [self::RULE_REQUIRED],
+            'sugars_g'           => [self::RULE_REQUIRED],
+            'salt_g'           => [self::RULE_REQUIRED],
         ];
     }
 

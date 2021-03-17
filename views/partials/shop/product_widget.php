@@ -22,7 +22,7 @@
                 <input type="number" class="product-widget-item-number form-control" value="0" disabled>
             </div>
             <div class="product-widget-add-component product-widget-zero">
-                <button class="product-widget-button product-widget-add-button product-widget-zero-add-button">
+                <button class="widget-button product-widget-add-button product-widget-zero-add-button">
                     <i class="fas fa-plus"></i>
                 </button>
             </div>

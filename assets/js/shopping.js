@@ -257,6 +257,13 @@ $(document).ready(function() {
         removeButton.onclick = function() {
             handleWidgetClick(basketWidget, TYPE_REMOVE);
         };
+        basketWidget.onclick = function(e) {
+            // Don't show modal if user is trying to add items to or remove items from basket
+            if (e.target.tagName === 'I' || e.target.classList.contains('widget-button')) {
+                return;
+            }
+            addModal(productId);
+        }
         basketItems.append(basketWidget);
         stickFooterToBasketBottom();
     }

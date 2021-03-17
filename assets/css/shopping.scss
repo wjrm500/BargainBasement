@@ -352,6 +352,7 @@
             background-color: white;
             border: 2px solid $darkgrey;
             border-radius: 5px;
+            cursor: pointer;
             display: flex;
             height: 75px;
             margin: 15px;
@@ -383,13 +384,14 @@
                     min-width: 0;
         
                     .basket-item-name {
-                        font-size: 15px;
+                        font-size: 17px;
                         font-weight: bold;
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
 
                         @media (max-width: 1400px) {
+                            font-size: 15px;
                             white-space: unset;
                         }
                     }

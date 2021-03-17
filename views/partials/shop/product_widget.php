@@ -27,10 +27,10 @@
                 </button>
             </div>
             <div class="product-widget-add-component product-widget-non-zero">
-                <button class="product-widget-button product-widget-non-zero-remove-button">
+                <button class="widget-button product-widget-non-zero-remove-button">
                     <i class="fas fa-minus"></i>
                 </button>
-                <button class="product-widget-button product-widget-add-button product-widget-non-zero-add-button">
+                <button class="widget-button product-widget-add-button product-widget-non-zero-add-button">
                     <i class="fas fa-plus"></i>
                 </button>
             </div>

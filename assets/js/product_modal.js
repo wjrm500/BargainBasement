@@ -2,54 +2,58 @@ $(document).ready(function() {
     // Showing modal on product widget click
     $('.product-widget').click(function(e) {
         // Don't show modal if user is trying to add items to or remove items from basket
-        if (e.target.tagName === 'I' || e.target.classList.contains('product-widget-button')) {
+        if (e.target.tagName === 'I' || e.target.classList.contains('widget-button')) {
             return;
         }
-        let modal = document.createElement('div');
-        modal.innerHTML = getProductModalHtml(productData[$(this).data('productId')]);
-        $('body').append($(modal));
-        $('#modal-box').hide();
-        $('#modal-box').fadeIn();
-        $('#modal-close i').hover(
-            function() {
-                $(this).removeClass('far');
-                $(this).addClass('fas');
-            },
-            function() {
-                $(this).removeClass('fas');
-                $(this).addClass('far');
-            }
-        );
-        $('#modal-close i').mousedown(function(e) {
-            if (e.which === 1) { // Left click only
+        addModal($(this).data('productId'));
+    });
+});
+
+function addModal(productId) {
+    let modal = document.createElement('div');
+    modal.innerHTML = getProductModalHtml(productData[productId]);
+    $('body').append($(modal));
+    $('#modal-box').hide();
+    $('#modal-box').fadeIn();
+    $('#modal-close i').hover(
+        function() {
+            $(this).removeClass('far');
+            $(this).addClass('fas');
+        },
+        function() {
+            $(this).removeClass('fas');
+            $(this).addClass('far');
+        }
+    );
+    $('#modal-close i').mousedown(function(e) {
+        if (e.which === 1) { // Left click only
+            $.when(
+                $(this).closest('#modal').fadeOut()
+            ).then(
+                function() {
+                    $(this).closest('#modal').remove();
+                }
+            );
+        }
+    });
+    $('#modal').mousedown(function(e) {
+        if (e.target.id !== 'modal-box' &&
+            !$(e.target).parents('#modal-box').length) {
+            if (e.which === 1) {
                 $.when(
-                    $(this).closest('#modal').fadeOut()
+                    $(this).fadeOut()
                 ).then(
                     function() {
-                        $(this).closest('#modal').remove();
+                        $(this).remove();
                     }
                 );
             }
-        });
-        $('#modal').mousedown(function(e) {
-            if (e.target.id !== 'modal-box' &&
-                !$(e.target).parents('#modal-box').length) {
-                if (e.which === 1) {
-                    $.when(
-                        $(this).fadeOut()
-                    ).then(
-                        function() {
-                            $(this).remove();
-                        }
-                    );
-                }
-            }
-        });
-        let marginModalTop = -$('#modal-box').height() / 2;
-        $('#modal-box').css('margin-top', marginModalTop);
-        colourNutritionLabels();
+        }
     });
-});
+    let marginModalTop = -$('#modal-box').height() / 2;
+    $('#modal-box').css('margin-top', marginModalTop);
+    colourNutritionLabels();
+}
 
 function getProductModalHtml(data) {
     let energyPct = data.nutrition.energy / 2000 * 100;

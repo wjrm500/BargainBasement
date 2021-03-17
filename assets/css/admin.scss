@@ -60,17 +60,23 @@
             span#admin-page-type {
                 color: lightgrey;
             }
+
+            .admin-header-item {
+                width: 200px;
+            }
         }
 
         #admin-table {
             #admin-table-header {
-                .admin-table-header-item {
-                    width: 100%;
+                display: flex;
+
+                #search-admin-product-input {
+                    flex: 1;
+                    margin-right: 5px;
                 }
 
-                .admin-table-header-labelled-group {
-                    position: relative;
-                    top: -24px;
+                button {
+                    width: 200px;
                 }
             }
 
@@ -85,6 +91,7 @@
     
                 .admin-table-page {
                     margin: 0px;
+                    table-layout: fixed;
         
                     tr {
                         border-color: black;

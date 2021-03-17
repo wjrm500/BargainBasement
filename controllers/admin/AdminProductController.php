@@ -80,4 +80,12 @@ class AdminProductController extends AdminController
             return $response->redirect($this->permission->href);
         };
     }
+    
+    public function search(Request $request, Response $response)
+    {
+        $searchTerm = $request->getBody()['search_term'];
+        $items = $this->model::findAll();
+        $searchItems = array_filter($items, fn($item) => str_starts_with(strtolower($item->name), strtolower($searchTerm)));
+        return json_encode($this->renderViewOnly(ViewConsts::ADMIN_TABLE_PAGES, array_merge($this->getDefaultParams(), compact('searchItems'))));
+    }
 }

@@ -1,9 +1,11 @@
 <div id="admin-table-pages">
-    <?php foreach (array_chunk($items, 10) as $pageNum => $paginatedItems): ?>
+    <?php foreach (array_chunk($searchItems ?? $items, 10) as $pageNum => $paginatedItems): ?>
         <table class="table <?= $pageNum !== 0 ? 'd-none' : '' ?> admin-table-page" data-selected="<?= $pageNum === 0 ? 'true' : 'false' ?>" data-page-num="<?= $pageNum ?>">
             <tr class="d-flex">
                 <?php foreach ($itemAttributes as $itemAttribute): ?>
-                    <th><?= ucfirst($itemAttribute) ?></th>
+                    <?php if (!in_array($itemAttribute, ['energy_kcal', 'fat_g', 'saturates_g', 'sugars_g', 'salt_g'])): ?>
+                        <th><?= ucfirst($itemAttribute) ?></th>
+                    <?php endif; ?>
                 <?php endforeach; ?>
                 <th class="col-1"></th>
                 <th class="col-1"></th>
@@ -11,7 +13,21 @@
             <?php foreach ($paginatedItems as $item): ?>
                 <tr class="d-flex">
                     <?php foreach ($item::attributes() as $attribute): ?>
-                        <td><?= $item->{$attribute} ?></td>
+                        <?php if (!in_array($attribute, ['energy_kcal', 'fat_g', 'saturates_g', 'sugars_g', 'salt_g'])): ?>
+                            <td>
+                                <?php
+
+                                    if ($attribute === 'price') {
+                                        echo '£' . (string) number_format($item->{$attribute}, 2, '.', '');
+                                    } elseif ($attribute === 'weight') {
+                                        echo $item->{$attribute} . ' g';
+                                    } else {
+                                        echo $item->{$attribute};
+                                    }
+
+                                ?>
+                            </td>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                     <td class="col-1">
                         <a class="btn btn-primary" href="/admin/product/<?= $item->id ?>/edit">

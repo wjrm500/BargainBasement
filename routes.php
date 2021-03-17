@@ -43,3 +43,4 @@ $app->router->get('/admin/product', [AdminProductController::class, 'index']);
 $app->router->controller('/admin/product/add', [AdminProductController::class, 'addProduct']);
 $app->router->controller('/admin/product/{id}/edit', [AdminProductController::class, 'editProduct']);
 $app->router->get('/admin/product/{id}/delete', [AdminProductController::class, 'deleteProduct']);
+$app->router->post('/admin/product/search', [AdminProductController::class, 'search']);

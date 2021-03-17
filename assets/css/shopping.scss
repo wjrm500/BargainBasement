@@ -334,6 +334,8 @@
 #basket {
     background-color: $lightgrey;
     position: relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
 
     #basket-header {
         background-color: $dark-blue;
@@ -356,72 +358,84 @@
             transition: all 0.05s ease-in-out;
     
             .basket-widget-image-container {
+                align-items: center;
                 display: flex;
-                flex: 3;
                 justify-content: center;
+                margin: 5px;
+                width: 80px;
     
                 .basket-item-image {
+                    height: 90%;
                     object-fit: contain;
-                    width: 40%;
                 }
             }
-    
-            .basket-widget-main {
-                display: flex;
-                flex: 7;
-                flex-direction: column;
-                justify-content: space-evenly;
-    
-                %basket-widget-main-item {
-                    display: flex;
-                    flex-direction: column;
-                    height: 50%;
-                }
-    
-                .basket-item-name {
-                    @extend %basket-widget-main-item;
-                    font-size: 20px;
-                    font-weight: bold;
-                    justify-content: flex-end;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                }
-    
-                hr {
-                    margin: 0px;
-                }
-    
-                .basket-widget-details {
-                    @extend %basket-widget-main-item;
-                    color: $grey;
-                    flex-direction: row;
 
-                    .basket-widget-detail {
-                        padding-right: 10px;
+            .basket-widget-main-container {
+                display: flex;
+                flex: 1;
+                min-width: 0;
+
+                .basket-widget-details {
+                    display: flex;
+                    flex: 2;
+                    flex-direction: column;
+                    justify-content: space-evenly;
+                    min-width: 0;
+        
+                    .basket-item-name {
+                        font-size: 15px;
+                        font-weight: bold;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+
+                        @media (max-width: 1400px) {
+                            white-space: unset;
+                        }
+                    }
+        
+                    hr {
+                        margin: 0px;
+                    }
+        
+                    .basket-widget-extra-details {
+                        color: $grey;
+                        flex-direction: row;
+                        font-size: 13px;
+                        font-weight: 500;
+                        overflow: hidden;
+                        white-space: nowrap;
+
+                        @media (max-width: 1400px) {
+                            display: none;
+                        }
+    
+                        .basket-widget-extra-detail {
+                            padding-right: 2px;
+                        }
                     }
                 }
-            }
-    
-            .basket-widget-modify {
-                display: flex;
-                flex: 2;
-                flex-direction: column;
-                justify-content: space-evenly;
         
-                %basket-item-modify-item {
-                    margin: 0px 10px;
-                    height: 40%;
-                }
+                .basket-widget-modify {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-evenly;
+                    width: 50px;
+            
+                    %basket-item-modify-item {
+                        margin: 0px 10px;
+                        height: 40%;
+                    }
+            
+                    .basket-widget-add-button {
+                        @extend %basket-item-modify-item;
+                        @extend %green-button;
+                    }
         
-                .basket-widget-add-button {
-                    @extend %basket-item-modify-item;
-                    @extend %green-button;
-                }
-    
-                .basket-widget-remove-button {
-                    @extend %basket-item-modify-item;
-                    @extend %red-button;
+                    .basket-widget-remove-button {
+                        @extend %basket-item-modify-item;
+                        @extend %red-button;
+                    }
                 }
             }
         }
@@ -479,9 +493,4 @@
 
 #basket-header, #basket-items, #basket-footer {
     display: none;
-}
-
-#basket {
-    overflow-x: hidden;
-    overflow-y: hidden;
 }

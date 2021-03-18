@@ -11,6 +11,8 @@ $(document).ready(function() {
     const TYPE_ADD = 'add';
     const TYPE_REMOVE = 'remove';
 
+    $('#basket').click(maximiseBasket);
+
     // Highlight currently hovered product widget by fading colour of all others
     $('.product-widget').hover(
         function() {
@@ -257,6 +259,15 @@ $(document).ready(function() {
         removeButton.onclick = function() {
             handleWidgetClick(basketWidget, TYPE_REMOVE);
         };
+        // Highlight currently hovered basket widget by fading colour of all others
+        $(basketWidget).hover( 
+            function() {
+                basketWidgetOnHover($(this));
+            },
+            function() {
+                basketWidgetOffHover($(this));
+            }
+        );
         basketWidget.onclick = function(e) {
             // Don't show modal if user is trying to add items to or remove items from basket
             if (e.target.tagName === 'I' || e.target.classList.contains('widget-button')) {
@@ -359,5 +370,19 @@ function reformatProductGrid() {
             $(this).css('font-size', size - 2 + 'px');
             $(this).data('resized', true);
         }
+    });
+}
+
+function basketWidgetOnHover(widget) {
+    let otherBasketWidgets = widget.siblings('.basket-widget');
+    otherBasketWidgets.each(function() {
+        $(this).find('.basket-widget-overlay').removeClass('d-none');
+    });
+}
+
+function basketWidgetOffHover(widget) {
+    let otherBasketWidgets = widget.siblings('.basket-widget');
+    otherBasketWidgets.each(function() {
+        $(this).find('.basket-widget-overlay').addClass('d-none');
     });
 }

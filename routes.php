@@ -5,6 +5,7 @@
  */
 
 use app\controllers\AccountController;
+use app\controllers\admin\AdminProductCategoryController;
 use app\controllers\admin\AdminProductController;
 use app\controllers\HomeController;
 use app\controllers\ShopController;
@@ -44,3 +45,9 @@ $app->router->controller('/admin/product/add', [AdminProductController::class, '
 $app->router->controller('/admin/product/{id}/edit', [AdminProductController::class, 'editProduct']);
 $app->router->get('/admin/product/{id}/delete', [AdminProductController::class, 'deleteProduct']);
 $app->router->post('/admin/product/search', [AdminProductController::class, 'search']);
+
+$app->router->get('/admin/product-category', [AdminProductCategoryController::class, 'index']);
+$app->router->controller('/admin/product-category/add', [AdminProductCategoryController::class, 'addProductCategory']);
+$app->router->controller('/admin/product-category/{id}/edit', [AdminProductCategoryController::class, 'editProductCategory']);
+$app->router->get('/admin/product-category/{id}/delete', [AdminProductCategoryController::class, 'deleteProductCategory']);
+$app->router->post('/admin/product-category/search', [AdminProductCategoryController::class, 'search']);

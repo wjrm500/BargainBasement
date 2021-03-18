@@ -30,13 +30,13 @@
                         <?php endif; ?>
                     <?php endforeach; ?>
                     <td class="col-1">
-                        <a class="btn btn-primary" href="/admin/product/<?= $item->id ?>/edit">
+                        <a class="btn btn-primary" href="<?= $app->request->getPath() . '/' . $item->id ?>/edit">
                             <span class="text">Edit</span>
                             <span class="icon"><i class="fas fa-edit p-1"></i></span>
                         </a>
                     </td>
                     <td class="col-1">
-                        <a class="btn btn-danger" href="/admin/product/<?= $item->id ?>/delete">
+                        <a class="btn btn-danger" href="<?= $app->request->getPath() . '/' . $item->id ?>/delete">
                             <span class="text">Delete</span>
                             <span class="icon"><i class="fas fa-trash-alt p-1"></i></span>
                         </a>

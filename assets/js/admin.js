@@ -1,4 +1,12 @@
 $(document).ready(function() {
+    $('.admin-header-item').each(function() {
+        while ($(this)[0].scrollWidth > $(this).innerWidth()) {
+            let size = $(this).css('font-size').replace('px', '');
+            $(this).css('font-size', size - 1 + 'px');
+        }
+    });
+
+
     // Highlight currently selected page in admin navbar
 
     let listChildren = $('#admin-nav-list').children();
@@ -31,7 +39,7 @@ $(document).ready(function() {
         let btnHtml = btn.html();
         btn.html('<img src="/images/spinner-cropped.gif" height="25px">');
         $.post(
-            '/admin/product/search',
+            window.location.href + '/search',
             {
                 search_term: input
             },

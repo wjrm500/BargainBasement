@@ -7,16 +7,16 @@ use app\consts\ViewConsts;
 use app\core\Request;
 use app\core\Response;
 use app\models\Permission;
-use app\models\Product;
+use app\models\ProductCategory;
 
-class AdminProductController extends AdminController
+class AdminProductCategoryController extends AdminController
 {
-    public const PERMISSION_NAME = 'Products';
+    public const PERMISSION_NAME = 'Product Categories';
 
     public function __construct()
     {
         $this->permission = Permission::find(['name' => self::PERMISSION_NAME]);
-        $this->setModel(Product::class);
+        $this->setModel(ProductCategory::class);
         parent::__construct();
     }
 
@@ -33,7 +33,7 @@ class AdminProductController extends AdminController
         return $this->render();
     }
 
-    public function addProduct(Request $request, Response $response)
+    public function addProductCategory(Request $request, Response $response)
     {
         if ($request->isPost()) {
             $this->model->bindData($request->getBody());
@@ -49,7 +49,7 @@ class AdminProductController extends AdminController
         return $this->render(['model' => $this->model]);
     }
 
-    public function editProduct(Request $request, Response $response, $productId)
+    public function editProductCategory(Request $request, Response $response, $productId)
     {
         $this->model->load(['id' => $productId]);
         if ($request->isPost()) {
@@ -66,7 +66,7 @@ class AdminProductController extends AdminController
         return $this->render(['model' => $this->model]);
     }
 
-    public function deleteProduct(Request $request, Response $response, $productId)
+    public function deleteProductCategory(Request $request, Response $response, $productId)
     {
         $this->model->load(['id' => $productId]);
         if ($this->model->delete()) {

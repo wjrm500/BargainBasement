@@ -2,12 +2,12 @@
 
 use app\core\Migration;
 
-class m0007_create_products_categories_table extends Migration
+class m0007_create_products_product_categories_table extends Migration
 {
     public function up()
     {
         $sql = "
-            CREATE TABLE IF NOT EXISTS products_categories
+            CREATE TABLE IF NOT EXISTS products_product_categories
                 (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     product_id INT,
@@ -19,7 +19,7 @@ class m0007_create_products_categories_table extends Migration
 
     public function down()
     {
-        $sql = "DROP TABLE IF EXISTS products_categories";
+        $sql = "DROP TABLE IF EXISTS products_product_categories";
         $this->database->query($sql);
     }
 }

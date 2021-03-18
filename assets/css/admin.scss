@@ -62,6 +62,10 @@
             }
 
             .admin-header-item {
+                height: 38px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
                 width: 200px;
             }
         }

@@ -11,6 +11,7 @@ abstract class Field
     public const TYPE_TEXTAREA = 'textarea';
     public const TYPE_FILE = 'file';
     public const TYPE_NUMBER = 'number';
+    public const TYPE_SELECT = 'select';
 
     public Model $model;
     public string $attribute;

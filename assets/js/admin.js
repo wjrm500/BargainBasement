@@ -6,7 +6,6 @@ $(document).ready(function() {
         }
     });
 
-
     // Highlight currently selected page in admin navbar
 
     let listChildren = $('#admin-nav-list').children();

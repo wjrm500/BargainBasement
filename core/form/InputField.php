@@ -22,7 +22,7 @@ abstract class InputField extends Field
                 'isInvalid'       => $this->getInvalidText(),
                 'name'            => $this->attribute,
                 'type'            => $this->type,
-                'value'           => $this->model->{$this->attribute}
+                'value'           => !is_array($this->model->{$this->attribute}) ? $this->model->{$this->attribute} : null
             ]
         );
     }

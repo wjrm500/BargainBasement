@@ -4,12 +4,8 @@ namespace app\models;
 
 class ProductCategoryForm extends ProductCategory
 {
-    public array $products = [];
-
-    public function __construct()
-    {
-        $this->products = Product::findAll();
-    }
+    public string $name = '';
+    public ?array $products = [];
 
     public static function attributes(): array
     {
@@ -22,21 +18,38 @@ class ProductCategoryForm extends ProductCategory
     public function labels(): array
     {
         return [
-            'products'        => 'Products',
+            'name'     => 'Name',
+            'products' => 'Products',
         ];
     }
 
     public function rules(): array
     {
         return [
-                'products' => [self::RULE_REQUIRED]
+            'name'     => [self::RULE_REQUIRED],
+            'products' => [self::RULE_REQUIRED]
+        ];
+    }
+
+    public function attributeCustomInputTypes(): array
+    {
+        return [
+            'products' => 'select'
         ];
     }
 
     public function save($returnLastInsertId = true)
     {
-        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-        unset($this->confirmPassword);
-        return $this->id = parent::save($returnLastInsertId);
+        $productIds = $this->products;
+        unset($this->products);
+        $this->id = parent::save($returnLastInsertId);
+        foreach ($productIds as $productId) {
+            $sql = "INSERT INTO products_product_categories (product_id, category_id) VALUES (:productId, :categoryId)";
+            $statement = $this->pdo->prepare($sql);
+            $statement->bindParam(':productId', $productId);
+            $statement->bindParam(':categoryId', $this->id);
+            $statement->execute();
+        }
+        return true;
     }
 }

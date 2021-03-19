@@ -8,6 +8,7 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Permission;
 use app\models\ProductCategory;
+use app\models\ProductCategoryForm;
 
 class AdminProductCategoryController extends AdminController
 {
@@ -35,47 +36,22 @@ class AdminProductCategoryController extends AdminController
 
     public function addProductCategory(Request $request, Response $response)
     {
+        $this->addScript('/js/select2.js');
+        $this->addScript('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js');
+        $this->addStylesheet('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
+        $model = new ProductCategoryForm();
         if ($request->isPost()) {
-            $this->model->bindData($request->getBody());
-            if ($this->model->validate() && $this->model->save()) {
+            $model->bindData($request->getBody());
+            if ($model->validate() && $model->save()) {
                 $this->app->session->setFlashMessage(
-                    "You successfully added {$this->model->name} to the {$this->model->tableName()} table!",
+                    "You successfully added {$model->name} to the {$model->tableName()} table!",
                     BootstrapColorConsts::SUCCESS
                 );
                 return $response->redirect($this->permission->href);
             }
         }
         $this->layoutTree->customise(ViewConsts::ADMIN_ITEM_ADD);
-        return $this->render(['model' => $this->model]);
-    }
-
-    public function editProductCategory(Request $request, Response $response, $productId)
-    {
-        $this->model->load(['id' => $productId]);
-        if ($request->isPost()) {
-            $this->model->bindData($request->getBody());
-            if ($this->model->validate() && $this->model->update()) {
-                $this->app->session->setFlashMessage(
-                    "You successfully updated {$this->model->name} in the {$this->model->tableName()} table!",
-                    BootstrapColorConsts::SUCCESS
-                );
-                return $response->redirect($this->permission->href);
-            }
-        }
-        $this->layoutTree->customise(ViewConsts::ADMIN_ITEM_ADD);
-        return $this->render(['model' => $this->model]);
-    }
-
-    public function deleteProductCategory(Request $request, Response $response, $productId)
-    {
-        $this->model->load(['id' => $productId]);
-        if ($this->model->delete()) {
-            $this->app->session->setFlashMessage(
-                "You successfully deleted {$this->model->name} from the {$this->model->tableName()} table!",
-                BootstrapColorConsts::DANGER
-            );
-            return $response->redirect($this->permission->href);
-        };
+        return $this->render(['model' => $model]);
     }
     
     public function search(Request $request, Response $response)

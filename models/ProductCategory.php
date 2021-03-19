@@ -20,9 +20,7 @@ class ProductCategory extends DbModel
 
     public function labels(): array
     {
-        return [
-            'name' => 'Name'
-        ];
+        return [];
     }
 
     public function rules(): array

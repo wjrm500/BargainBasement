@@ -4,7 +4,7 @@ namespace app\core\db;
 
 use app\core\Application;
 use app\core\Model;
-use Exception;
+use Error;
 
 abstract class DbModel extends Model
 {
@@ -24,8 +24,8 @@ abstract class DbModel extends Model
             $modelClass = 'app\models\\' . ucfirst($modelProperty);
             $model = new $modelClass();
             return $model::find(['id' => $this->{$modelProperty . '_id'}]);
-        } catch (Exception $e) {
-            return false;
+        } catch (Error $e) {
+            return null;
         }
     }
 
@@ -119,6 +119,16 @@ abstract class DbModel extends Model
         $statement = Application::$app->database->pdo->prepare($sql);
         $statement->execute();
         $statement->setFetchMode(\PDO::FETCH_CLASS, static::class);
+        return $statement->fetchAll();
+    }
+
+    public static function findAllFetchColumn($colNum)
+    {
+        $tableName = static::tableName();
+        $sql = "SELECT * FROM {$tableName}";
+        $statement = Application::$app->database->pdo->prepare($sql);
+        $statement->execute();
+        $statement->setFetchMode(\PDO::FETCH_COLUMN, $colNum);
         return $statement->fetchAll();
     }
 }

@@ -7,6 +7,7 @@ use app\core\form\Field;
 use app\core\form\FileInputField;
 use app\core\form\FloatInputField;
 use app\core\form\IntInputField;
+use app\core\form\SelectField;
 use app\core\form\TextareaField;
 use app\core\form\TextInputField;
 
@@ -19,7 +20,8 @@ class FieldFactory
     public function __construct()
     {
         $this->fieldsForCustomInputTypes = [
-            'file' => FileInputField::class
+            'file'   => FileInputField::class,
+            'select' => SelectField::class
         ];
         $this->fieldsForDefaultDataTypes = [
             'float'   => FloatInputField::class,

@@ -7,7 +7,8 @@ use ReflectionClass;
 
 class Controller
 {
-    protected array $scripts;
+    protected array $scripts = [];
+    protected array $stylesheets = [];
     protected View $view;
     protected LayoutTree $layoutTree;
     protected array $protectedMethods = [];
@@ -29,20 +30,31 @@ class Controller
     {
         $title = str_replace('Controller', '', (new ReflectionClass($this))->getShortName());
         return [
-            'app'     => $this->app,
-            'scripts' => $this->getScripts(),
-            'title'   => $title
+            'app'         => $this->app,
+            'scripts'     => $this->getScripts(),
+            'stylesheets' => $this->getStylesheets(),
+            'title'       => $title
         ];
     }
 
     protected function addScript($script)
     {
-        $this->scripts[] =  $script;
+        $this->scripts[] = $script;
     }
 
     protected function getScripts()
     {
         return $this->scripts;
+    }
+
+    protected function addStylesheet($stylesheet)
+    {
+        $this->stylesheets[] = $stylesheet;
+    }
+
+    protected function getStylesheets()
+    {
+        return $this->stylesheets;
     }
 
     public function renderViewOnly(string $view, array $params = [])

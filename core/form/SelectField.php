@@ -13,6 +13,7 @@ class SelectField extends InputField
         parent::__construct($model, $attribute);
         $this->setType(static::TYPE_SELECT);
         $this->addExtraProperty('multiple', 'multiple');
+        $this->addExtraProperty('data-value', implode(', ', $model->{$attribute}));
         $this->addExtraProperty('options', $model->optionsForAttribute($attribute));
     }
 }

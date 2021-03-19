@@ -52,4 +52,9 @@ class ProductCategoryForm extends ProductCategory
         }
         return true;
     }
+
+    public function optionsForAttribute()
+    {
+        return array_combine(Product::findAllFetchColumn(0), Product::findAllFetchColumn(1));
+    }
 }

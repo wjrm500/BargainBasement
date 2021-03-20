@@ -81,4 +81,16 @@ class Product extends DbModel
     {
         return $this->price / $this->weight * 1000;
     }
+
+    public function categories(): array
+    {
+        $allCategories = ProductCategory::findAll();
+        $categories = [];
+        foreach ($allCategories as $category) {
+            if (in_array($this, $category->products())) {
+                $categories[] = $category;
+            }
+        }
+        return $categories;
+    }
 }

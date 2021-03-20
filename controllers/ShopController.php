@@ -10,6 +10,7 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Payment;
 use app\models\Product;
+use app\models\ProductCategory;
 use app\models\ShoppingCart;
 use app\models\ShoppingCartItem;
 
@@ -35,7 +36,8 @@ class ShopController extends Controller
                     'saturates' => $product->saturates_g,
                     'sugars'    => $product->sugars_g,
                     'salt'      => $product->salt_g
-                ]
+                ],
+                'categories'  => $product->categories()
             ];
         }
         $productWidgets = array_map(
@@ -50,6 +52,7 @@ class ShopController extends Controller
             ]
         ]);
         return $this->render([
+            'productCategories' => ProductCategory::findAll(),
             'productData'    => json_encode($productData),
             'productWidgets' => $productWidgets
         ]);

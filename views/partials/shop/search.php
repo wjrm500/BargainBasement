@@ -9,7 +9,11 @@
         <label>
             Or filter by category:
         </label>
-        <select class="form-control" name="category-filter">
+        <select id="category-filter" class="form-control" name="category-filter">
+            <option value="all" selected>All categories</option>
+            <?php foreach ($productCategories as $productCategory): ?>
+                <option value="<?= $productCategory->id ?>"><?= $productCategory->name ?></option>
+            <?php endforeach; ?>
         </select>
     </div>
 </div>

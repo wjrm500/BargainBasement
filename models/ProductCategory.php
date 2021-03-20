@@ -37,10 +37,10 @@ class ProductCategory extends DbModel
 
     public function products()
     {
-        $statement = $this->pdo->prepare('SELECT product_id FROM products_categories WHERE category_id = :category_id');
+        $statement = $this->pdo->prepare('SELECT product_id FROM products_product_categories WHERE category_id = :category_id');
         $statement->bindParam(':category_id', $this->id);
         $statement->execute();
         $productIds = array_column($statement->fetchAll(), 'product_id');
-        return array_map(fn($productId) => Product::find($productId), $productIds);
+        return array_map(fn($productId) => Product::find(['id' => $productId]), $productIds);
     }
 }

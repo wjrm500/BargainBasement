@@ -10,8 +10,8 @@ class m0007_create_products_product_categories_table extends Migration
             CREATE TABLE IF NOT EXISTS products_product_categories
                 (
                     id INT AUTO_INCREMENT PRIMARY KEY,
+                    category_id INT,
                     product_id INT,
-                    category_id INT
                 )
             ";
         $this->database->query($sql);

@@ -330,6 +330,14 @@
         text-align: right;
         white-space: nowrap;
     }
+
+    select {
+        color: $darkgrey;
+
+        &:focus {
+            color: black;
+        }
+    }
 }
 
 .product-row {

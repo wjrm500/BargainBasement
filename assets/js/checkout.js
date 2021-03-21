@@ -1,5 +1,8 @@
 $(document).ready(function() {
-    let localShoppingCart = JSON.parse(window.localStorage.basketData);
+    let localShoppingCart = [];
+    if (window.localStorage.basketData) {
+        localShoppingCart = JSON.parse(window.localStorage.basketData);
+    }
     $('#confirm-checkout').submit(function() {
         delete window.localStorage.basketData;
     });
@@ -67,7 +70,11 @@ function replaceDbBasketWithLocalBasket() {
 }
 
 function createTableFromJSON(json, container) {
-    json = JSON.parse(json);
+    try {
+        json = JSON.parse(json);
+    } catch {
+        return false;
+    }
     let jsonArr = convertObjectToArray(json);
     let col = [];
     for (let i = 0; i < jsonArr.length; i++) {
@@ -94,17 +101,25 @@ function createTableFromJSON(json, container) {
         }
     }
     tr = table.insertRow(-1);
-    tr.style.border = '5px solid black !important';
-    for (let i = 0; i < col.length - 1; i++) {
-        tr.insertCell(-1);
-    }
     let overallPriceCell = tr.insertCell(-1);
-    overallPriceCell.innerHTML = getTotalPrice(json);
+    overallPriceCell.colSpan = 4;
+    overallPriceCell.style.textAlign = 'center';
+    let span1 = document.createElement('span');
+    span1.innerHTML = 'Final price: ';
+    span1.style.fontWeight = 'normal';
+    let span2 = document.createElement('span');
+    span2.innerHTML = getTotalPrice(json);
+    overallPriceCell.append(span1);
+    overallPriceCell.append(span2);
     container.append(table);
 }
 
 function shoppingCartsEqual(a, b) {
-    [a, b] = [a, b].map((x) => JSON.parse(x));
+    try {
+        [a, b] = [a, b].map((x) => JSON.parse(x));
+    } catch {
+        return false;
+    }
     if (Object.keys(a).length !== Object.keys(b).length) {
         return false;
     }

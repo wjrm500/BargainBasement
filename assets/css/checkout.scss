@@ -48,15 +48,19 @@
     border-radius: 5px;
 }
 
-#confirm-checkout {
-    margin-block-end: 0px;
+#checkout-buttons {
+    --bs-gutter-x: 0rem !important;
+    width: 500px;
+}
+
+#cart-save {
+    width: 100%;
 }
 
 .checkout-button {
-    margin: 5px;
     width: 200px;
 }
 
-.checkout-button input[type=submit] {
-    width: 100%;
+#confirm-checkout {
+    margin: 0px;
 }

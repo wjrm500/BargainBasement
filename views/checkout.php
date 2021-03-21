@@ -12,11 +12,13 @@
         </div>
         <div id="shopping-cart"></div>
         <div class="d-flex justify-content-center">
-            <a class="checkout-button mb-2 btn btn-secondary" href="/shop">Back to Shop</a>
-            <form id="confirm-checkout" class="checkout-button" method="post">
-                <input type="hidden" name="<?= $csrfTokenName ?>" value="<?= $csrfTokenValue ?>">
-                <input type="submit" id="cart-save" class="mb-2 btn btn-success" value="Confirm Transaction">
-            </form>
+            <div id="checkout-buttons" class="row justify-content-around">
+                <a class="col-12 col-md-6 mb-2 btn btn-secondary checkout-button" href="/shop">Back to Shop</a>
+                <form id="confirm-checkout" class="col-12 col-md-6 checkout-button" method="post">
+                    <input type="hidden" name="<?= $csrfTokenName ?>" value="<?= $csrfTokenValue ?>">
+                    <input type="submit" id="cart-save" class="mb-2 btn btn-success" value="Confirm Transaction">
+                </form>
+            </div>
         </div>
     </div>
     <div id="carts-not-equal" class="d-none">

@@ -1,4 +1,8 @@
-@import 'colours'; 
+@import 'colours';
+
+body {
+    min-width: 318px;
+}
 
 a {
     &:hover {

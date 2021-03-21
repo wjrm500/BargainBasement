@@ -37,7 +37,7 @@ class ShopController extends Controller
                     'sugars'    => $product->sugars_g,
                     'salt'      => $product->salt_g
                 ],
-                'categories'  => $product->categories()
+                'categories'  => array_map(fn($cat) => str_replace(' ', '_', $cat->name), $product->categories())
             ];
         }
         $productWidgets = array_map(

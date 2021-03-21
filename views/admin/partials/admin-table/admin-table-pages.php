@@ -7,8 +7,8 @@
                         <th><?= ucfirst($itemAttribute) ?></th>
                     <?php endif; ?>
                 <?php endforeach; ?>
-                <th class="col-1"></th>
-                <th class="col-1"></th>
+                <th></th>
+                <th></th>
             </tr>
             <?php foreach ($paginatedItems as $item): ?>
                 <tr class="d-flex">
@@ -16,14 +16,19 @@
                         <?php if (!in_array($attribute, ['energy_kcal', 'fat_g', 'saturates_g', 'sugars_g', 'salt_g'])): ?>
                             <td>
                                 <?php
-
-                                    if ($attribute === 'price') {
-                                        echo '£' . (string) number_format($item->{$attribute}, 2, '.', '');
-                                    } elseif ($attribute === 'weight') {
-                                        echo $item->{$attribute} . ' g';
+                                    if (is_array($item->{$attribute})) {
+                                        echo implode(', ', $item->{$attribute});
                                     } else {
                                         echo $item->{$attribute};
                                     }
+
+                                    // if ($attribute === 'price') {
+                                    //     echo '£' . (string) number_format($item->{$attribute}, 2, '.', '');
+                                    // } elseif ($attribute === 'weight') {
+                                    //     echo $item->{$attribute} . ' g';
+                                    // } else {
+                                    //     echo $item->{$attribute};
+                                    // }
 
                                 ?>
                             </td>

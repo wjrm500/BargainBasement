@@ -11,7 +11,7 @@ $(document).ready(function() {
     let listChildren = $('#admin-nav-list').children();
     for (let listChild of listChildren) {
         let button = $($(listChild).children()[0]);
-        if (button.attr('href') === window.location.pathname) {
+        if (button.attr('href') === '/' + window.location.pathname.split('/').slice(1, 3).join('/')) {
             applyCurrentlySelectedGlow(button);
         }
     }

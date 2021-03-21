@@ -7,6 +7,21 @@ class ProductCategoryForm extends ProductCategory
     public string $name = '';
     public ?array $products = [];
 
+    public function load(Array $whereConditions)
+    {
+        parent::load($whereConditions);
+        $this->products = array_map(fn($product) => $product->id, $this->products()) ?? [];
+    }
+
+    public static function findAll()
+    {
+        $productCategories = parent::findAll();
+        foreach ($productCategories as &$productCategory) {
+            $productCategory->products = array_map(fn($product) => $product->name, $productCategory->products()) ?? [];
+        }
+        return $productCategories;
+    }
+
     public static function attributes(): array
     {
         return array_merge(

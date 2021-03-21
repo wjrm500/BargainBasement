@@ -17,7 +17,7 @@ class AdminProductCategoryController extends AdminController
     public function __construct()
     {
         $this->permission = Permission::find(['name' => self::PERMISSION_NAME]);
-        $this->setModel(ProductCategory::class);
+        $this->setModel(ProductCategoryForm::class);
         parent::__construct();
     }
 
@@ -39,19 +39,51 @@ class AdminProductCategoryController extends AdminController
         $this->addScript('/js/select2.js');
         $this->addScript('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js');
         $this->addStylesheet('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
-        $model = new ProductCategoryForm();
         if ($request->isPost()) {
-            $model->bindData($request->getBody());
-            if ($model->validate() && $model->save()) {
+            $this->model->bindData($request->getBody());
+            if ($this->model->validate() && $this->model->save()) {
                 $this->app->session->setFlashMessage(
-                    "You successfully added {$model->name} to the {$model->tableName()} table!",
+                    "You successfully added {$this->model->name} to the {$this->model->tableName()} table!",
                     BootstrapColorConsts::SUCCESS
                 );
                 return $response->redirect($this->permission->href);
             }
         }
         $this->layoutTree->customise(ViewConsts::ADMIN_ITEM_ADD);
-        return $this->render(['model' => $model]);
+        return $this->render(['model' => $this->model]);
+    }
+
+    public function editProductCategory(Request $request, Response $response, $productCategoryId)
+    {
+        $this->addScript('/js/select2.js');
+        $this->addScript('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js');
+        $this->addStylesheet('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
+        $this->model = new ProductCategoryForm();
+        $this->model->load(['id' => $productCategoryId]);
+        if ($request->isPost()) {
+            $this->model->bindData($request->getBody());
+            if ($this->model->validate() && $this->model->update()) {
+                $this->app->session->setFlashMessage(
+                    "You successfully updated {$this->model->name} in the {$this->model->tableName()} table!",
+                    BootstrapColorConsts::SUCCESS
+                );
+                return $response->redirect($this->permission->href);
+            }
+        }
+        $this->layoutTree->customise(ViewConsts::ADMIN_ITEM_ADD);
+        return $this->render(['model' => $this->model]);
+    }
+
+    public function deleteProductCategory(Request $request, Response $response, $productCategoryId)
+    {
+        $this->model->load(['id' => $productCategoryId]);
+        if ($this->model->delete()) {
+            $this->app->session->setFlashMessage(
+                "You successfully deleted {$this->model->name} from the {$this->model->tableName()} table!",
+                BootstrapColorConsts::DANGER
+            );
+            return $response->redirect($this->permission->href);
+        };
     }
     
     public function search(Request $request, Response $response)

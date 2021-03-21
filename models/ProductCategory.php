@@ -8,6 +8,14 @@ class ProductCategory extends DbModel
 {
     public string $name = '';
 
+    public function delete()
+    {
+        $statement = $this->pdo->prepare('DELETE FROM products_product_categories WHERE category_id = :category_id');
+        $statement->bindParam(':category_id', $this->id);
+        $statement->execute();
+        return parent::delete();
+    }
+
     public static function tableName(): string
     {
         return 'product_categories';

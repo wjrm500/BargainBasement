@@ -339,7 +339,7 @@ $(document).ready(function() {
         for (let checkoutButton of checkoutButtons) {
             checkoutButton.style.pointerEvents = 'none';
             checkoutButton.style.cursor = 'default';
-            checkoutButton.innerHTML = '<img src="images/spinner-unscreen.gif" height="100%">';
+            checkoutButton.innerHTML = '<img src="images/spinner-unscreen.gif" height="100%" width="100%" style="object-fit: contain;">';
         }
     }
 
@@ -350,7 +350,7 @@ $(document).ready(function() {
             checkoutButton.style.cursor = 'pointer';
             checkoutButton.innerHTML = 'Checkout';
             $(checkoutButton).click(function() {
-                $(this).html('<img src="images/spinner-unscreen.gif" height="100%">');
+                $(this).html('<img src="images/spinner-unscreen.gif" height="100%" width="100%" style="object-fit: contain;">');
             });
         }
     }

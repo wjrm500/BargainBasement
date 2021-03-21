@@ -5,6 +5,8 @@ namespace app\controllers;
 use app\consts\ViewConsts;
 use app\core\Controller;
 use app\core\LayoutTree;
+use app\core\Request;
+use app\core\Response;
 
 class HomeController extends Controller
 {
@@ -13,10 +15,11 @@ class HomeController extends Controller
         parent::__construct();
     }
 
-    public function index()
+    public function index(Request $request, Response $response)
     {
-        $this->layoutTree->customise(ViewConsts::HOME);
-        return $this->render();
+        // $this->layoutTree->customise(ViewConsts::HOME);
+        // return $this->render();
+        $response->redirect('/shop');
     }
 
     public function adminIndex()

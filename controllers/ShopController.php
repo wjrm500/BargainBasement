@@ -47,6 +47,7 @@ class ShopController extends Controller
         $this->layoutTree->customise([
             ViewConsts::SHOP => [
                 ViewConsts::SHOP_SEARCH,
+                ViewConsts::SHOP_MINI_BASKET,
                 ViewConsts::SHOP_PRODS,
                 ViewConsts::SHOP_BASKET
             ]

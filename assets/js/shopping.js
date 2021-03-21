@@ -3,6 +3,8 @@ var productData, basketWidgetTemplate, productModalTemplate;
 $(document).ready(function() {
     // Check what is in user's cart - any products that are in the cart should have the number of items in the product widget with relevant buttons
     
+    swapBaskets();
+
     productData = $('#products').data('productData');
     var basketData = {}; // Load basket data asynchronously from DB
     var sendBasketData;
@@ -32,6 +34,7 @@ $(document).ready(function() {
     $(window).resize(function() {
         reformatProductGrid(); 
         stickFooterToBasketBottom();
+        swapBaskets();
     });
     
     String.prototype.interpolate = function(params) {
@@ -85,7 +88,7 @@ $(document).ready(function() {
     $('#basket-minimise').click(minimiseBasket);
 
     function minimiseBasket() {
-        if (!basketMaximised) {
+        if (!basketMaximised || $('#shop-small-col').data('hidden')) {
             return;
         }
         $('#shop-small-col').animate({width: '5%'});
@@ -104,7 +107,7 @@ $(document).ready(function() {
     }
     
     function maximiseBasket() {
-        if (basketMaximised) {
+        if (basketMaximised || $('#shop-small-col').data('hidden')) {
             return;
         }
         $('#shop-small-col').animate({width: '25%'});
@@ -283,7 +286,10 @@ $(document).ready(function() {
         if ($('#basket-items').find('.basket-widget').length === 1) {
             minimiseBasket();
         }
-        getBasketWidgetByProductId(productId).remove();
+        let basketWidget = getBasketWidgetByProductId(productId);
+        basketWidgetOffHover($(basketWidget));
+        basketWidget.remove();
+        stickFooterToBasketBottom();
     }
 
     function getBasketItemHtml(data) {
@@ -298,11 +304,13 @@ $(document).ready(function() {
 
     function overlapBetweenBasketItemsAndFooter() {
         let lastBasketItem = document.getElementById('basket-items').lastElementChild;
-        let itemsBottom = lastBasketItem.getBoundingClientRect().bottom;
-        let basketFooter = document.getElementById('basket-footer');
-        let footerTop = basketFooter.getBoundingClientRect().top;
-        if (footerTop - itemsBottom < 50) {
-            return true;
+        if (lastBasketItem) {
+            let itemsBottom = lastBasketItem.getBoundingClientRect().bottom;
+            let basketFooter = document.getElementById('basket-footer');
+            let footerTop = basketFooter.getBoundingClientRect().top;
+            if (footerTop - itemsBottom < 50) {
+                return true;
+            }
         }
     }
 
@@ -323,24 +331,28 @@ $(document).ready(function() {
         for (let productId in basketData) {
             totalPrice += convertCurrencyStringToFloat(basketData[productId].totalPrice);
         }
-        document.getElementById('basket-price-value').innerHTML = `£${totalPrice.toFixed(2)}`;
+        $('.basket-price-value').html(`£${totalPrice.toFixed(2)}`);
     }
 
     function disableCheckout() {
-        let checkoutButton = document.getElementById('basket-checkout');
-        checkoutButton.style.pointerEvents = 'none';
-        checkoutButton.style.cursor = 'default';
-        checkoutButton.innerHTML = '<img src="images/spinner-unscreen.gif" height="100%">';
+        let checkoutButtons = document.getElementsByClassName('basket-checkout');
+        for (let checkoutButton of checkoutButtons) {
+            checkoutButton.style.pointerEvents = 'none';
+            checkoutButton.style.cursor = 'default';
+            checkoutButton.innerHTML = '<img src="images/spinner-unscreen.gif" height="100%">';
+        }
     }
 
     function enableCheckout() {
-        let checkoutButton = document.getElementById('basket-checkout');
-        checkoutButton.style.pointerEvents = 'auto';
-        checkoutButton.style.cursor = 'pointer';
-        checkoutButton.innerHTML = 'Checkout';
-        $(checkoutButton).click(function() {
-            $(this).html('<img src="images/spinner-unscreen.gif" height="100%">');
-        });
+        let checkoutButtons = document.getElementsByClassName('basket-checkout');
+        for (let checkoutButton of checkoutButtons) {
+            checkoutButton.style.pointerEvents = 'auto';
+            checkoutButton.style.cursor = 'pointer';
+            checkoutButton.innerHTML = 'Checkout';
+            $(checkoutButton).click(function() {
+                $(this).html('<img src="images/spinner-unscreen.gif" height="100%">');
+            });
+        }
     }
 })
 
@@ -385,4 +397,17 @@ function basketWidgetOffHover(widget) {
     otherBasketWidgets.each(function() {
         $(this).find('.basket-widget-overlay').addClass('d-none');
     });
+}
+
+function swapBaskets() {
+    if ($(this).width() < 1200) {
+        $('#shop-large-col').data('width', $(this).width());
+        $('#shop-large-col').width('100%');
+        $('#shop-small-col').data('hidden', true);
+        $('#shop-small-col').addClass('d-none');
+    } else {
+        $('#shop-large-col').width($(this).data('width'));
+        $('#shop-small-col').data('hidden', false);
+        $('#shop-small-col').removeClass('d-none');
+    }
 }

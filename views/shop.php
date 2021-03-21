@@ -3,6 +3,9 @@
         <div id="search-container">
             {{ content }}
         </div>
+        <div id="mini-basket-container">
+            {{ content }}
+        </div>
         <div id="products-container">
             {{ content }}
         </div>

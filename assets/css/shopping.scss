@@ -133,6 +133,10 @@
     position: absolute;
     top: 130px;
     width: 100%;
+
+    @media (max-width: 576px) {
+        top: 168px;
+    }
 }
 
 #shop-large-col {
@@ -282,6 +286,10 @@
     padding: 0px 5px 5px 0px;
 }
 
+#mini-basket-container {
+    padding: 0px 5px 0px 0px;
+}
+
 #products-container {
     flex: 1;
     height: 100;
@@ -313,14 +321,16 @@
     --bs-gutter-x: 0rem;
     display: flex;
     justify-content: space-evenly;
-    padding: 5px 10px;
+    padding: 5px;
 
     .search-group {
         align-items: center;
         display: flex;
         justify-content: center;
-        margin: 5px 0px;
-        width: 400px;
+
+        input, select {
+            margin: 5px;
+        }
     }
 
     label {
@@ -469,40 +479,57 @@
             }
         }
     }
+}
 
-    #basket-footer {
-        background-color: darken($lightgrey, 5%);
-        border-top: 2px solid $grey;
-        bottom: 0px;
-        height: 75px;
-        justify-content: center;
-        padding: 15px 0px;
-        position: absolute;
-        width: 100%;
-        
-        %basket-footer-item {
-            flex: 1;
-        }
+#basket-footer {
+    background-color: darken($lightgrey, 5%);
+    border-top: 2px solid $grey;
+    bottom: 0px;
+    display: flex;
+    height: 75px;
+    justify-content: center;
+    padding: 15px 0px;
+    position: absolute;
+    width: 100%;
+    
+    %basket-footer-item {
+        flex: 1;
+    }
 
-        #basket-price {
-            @extend %basket-footer-item;
-            text-align: center;
-        }
+    #basket-price {
+        @extend %basket-footer-item;
+        text-align: center;
+    }
 
-        #basket-checkout {
-            @extend %basket-footer-item;
-            @extend %green-button;
-            color: black;
-            line-height: 2.2;
-            margin: 0px 15px;
-            text-align: center;
-            text-decoration: none;
-        }
+    .basket-checkout {
+        @extend %basket-footer-item;
+        @extend %green-button;
+        color: black;
+        line-height: 2.2;
+        margin: 0px 15px;
+        text-align: center;
+        text-decoration: none;
+    }
+}
+
+#mini-basket-footer {
+    @extend #basket-footer;
+    border-radius: 5px;
+    border-top: none;
+    display: none !important;
+    height: 63px;
+    position: static;
+
+    @media (max-width: 1199px) {
+        display: flex !important;
+    }
+
+    label {
+        width: auto;
     }
 }
 
 %basket-min-max {
-    
     cursor: pointer;
 }
 

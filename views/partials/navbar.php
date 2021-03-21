@@ -18,16 +18,16 @@ $isAdmin = $app->hasUser() && $app->getUser()->isAdmin();
     <div id="header-center" class="col-sm-4 col-12 my-1">
         <div id="secondary-navbar" class="rounded">
             <ul class="nav">
-                <li id="nav-item-shop" class="text-center my-1 col-12 <?= $isAdmin ? 'col-md-4' : 'col-md-6' ?>">
+                <li id="nav-item-shop" class="nav-item text-center col-12 <?= $isAdmin ? 'col-md-4' : 'col-md-6' ?>">
                     <span class="text"><a class="btn" href="/shop">Shop</a></span>
                     <span class="icon"><a class="btn" href="/shop"><i class="fas fa-shopping-cart"></i></a></span>
                 </li>
-                <li id="nav-item-other" class="text-center my-1 col-12 <?= $isAdmin ? 'col-md-4' : 'col-md-6' ?>">
+                <!-- <li id="nav-item-other" class="text-center my-1 col-12 <?= $isAdmin ? 'col-md-4' : 'col-md-6' ?>">
                     <span class="text"><a class="btn" href="#">Other</a></span>
                     <span class="icon"><a class="btn" href="#"><i class="fas fa-envelope-open"></i></a></span>
-                </li>
+                </li> -->
                 <?php if ($isAdmin): ?>
-                    <li id="nav-item-admin" class="text-center my-1 col-12 <?= $isAdmin ? 'col-md-4' : 'col-md-6' ?>">
+                    <li id="nav-item-admin" class="nav-item text-center my-1 col-12 <?= $isAdmin ? 'col-md-4' : 'col-md-6' ?>">
                         <span class="text"><a class="btn text-primary" href="/admin">Admin</a></span>
                         <span class="icon"><a class="btn text-primary" href="/admin"><i class="fas fa-user-lock"></i></a></span>
                     </li>

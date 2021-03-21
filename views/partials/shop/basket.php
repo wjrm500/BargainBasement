@@ -8,9 +8,9 @@
     <div id="basket-footer">
         <div id="basket-price">
             <label id="basket-price-label">Total price:</label>
-            <div id="basket-price-value"></div>
+            <div class="basket-price-value"></div>
         </div>
-        <a id="basket-checkout" type="submit" href="/shop/checkout">
+        <a class="basket-checkout" type="submit" href="/shop/checkout">
             Checkout
         </a>
     </div>

@@ -37,7 +37,7 @@ class ShopController extends Controller
                     'sugars'    => $product->sugars_g,
                     'salt'      => $product->salt_g
                 ],
-                'categories'  => array_map(fn($cat) => str_replace(' ', '_', $cat->name), $product->categories())
+                'categories'  => array_map(fn($cat) => $cat->id, $product->categories())
             ];
         }
         $productWidgets = array_map(
@@ -54,8 +54,8 @@ class ShopController extends Controller
         ]);
         return $this->render([
             'productCategories' => ProductCategory::findAll(),
-            'productData'    => json_encode($productData),
-            'productWidgets' => $productWidgets
+            'productData'       => json_encode($productData),
+            'productWidgets'    => $productWidgets
         ]);
     }
 

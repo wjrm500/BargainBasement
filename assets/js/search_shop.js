@@ -23,7 +23,7 @@ $(document).ready(function() {
                 console.log($(this));
                 console.log(category);
                 console.log('');
-                if (categoryId == category.id) {
+                if (categoryId == category) {
                     $(this).removeClass('d-none');
                     return;
                 }

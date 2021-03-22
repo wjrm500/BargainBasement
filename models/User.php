@@ -8,7 +8,7 @@ class User extends DbModel
 {
     public string $username = '';
     public string $password = '';
-    public int $country_id;
+    public int $country_id = 0;
 
     public function labels(): array
     {

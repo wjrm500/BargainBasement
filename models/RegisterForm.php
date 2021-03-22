@@ -5,12 +5,6 @@ namespace app\models;
 class RegisterForm extends User
 {
     public string $confirmPassword = '';
-    public array $countries = [];
-
-    public function __construct()
-    {
-        $this->countries = Country::findAll();
-    }
 
     public static function attributes(): array
     {
@@ -32,6 +26,9 @@ class RegisterForm extends User
     public function rules(): array
     {
         return [
+                'country_id'      => [
+                    self::RULE_REQUIRED
+                ],
                 'username'        => [
                     self::RULE_REQUIRED,
                     [

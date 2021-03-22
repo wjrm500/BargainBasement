@@ -10,6 +10,7 @@ use app\core\LayoutTree;
 use app\core\middlewares\LoggedIn;
 use app\core\Request;
 use app\core\Response;
+use app\models\Country;
 use app\models\LoginForm;
 use app\models\RegisterForm;
 
@@ -49,11 +50,14 @@ class AccountController extends Controller
                     BootstrapColorConsts::SUCCESS
                 );
                 $this->app->login($registerForm);
-                return $response->redirect('/');
+                return $response->redirect($request->getRedirectUrl() ?? '/');
             }
         }
         $this->layoutTree->customise(ViewConsts::REGISTER);
-        return $this->render(compact('registerForm'));
+        return $this->render([
+            'countries'    => Country::findAll(),
+            'registerForm' => $registerForm
+        ]);
     }
 
     public function logout(Request $request, Response $response)

@@ -67,4 +67,9 @@ class Request
     {
         return $_GET['redirect-url'];
     }
+
+    public function isRedirected()
+    {
+        return isset($_GET['redirect-url']);
+    }
 }

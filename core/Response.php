@@ -19,4 +19,9 @@ class Response
         }
         exit();
     }
+
+    public function getForwardedRedirectUrl(Request $request, $location)
+    {
+        return $location . '?redirect-url=' . urlencode($request->getRedirectUrl()); 
+    }
 }

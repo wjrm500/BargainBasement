@@ -36,6 +36,11 @@ class LoginForm extends User
         ];
     }
 
+    public static function attributes(): array
+    {
+        return ['username', 'password'];
+    }
+
     public function login()
     {
         return Application::$app->login($this);

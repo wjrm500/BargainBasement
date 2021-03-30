@@ -8,7 +8,7 @@ class ViewConsts
     public const ERROR = '_error';
     public const LOGIN = 'login';
     public const REGISTER = 'register';
-    public const PROFILE = 'profile';
+    public const ACCOUNT = 'account';
     public const CHECKOUT = 'checkout';
     public const HOME = 'home';
     public const FORM_FIELD = 'partials/form/field';

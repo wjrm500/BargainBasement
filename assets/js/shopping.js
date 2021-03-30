@@ -1,4 +1,4 @@
-var productData, basketWidgetTemplate, productModalTemplate;
+var productData, basketData, basketWidgetTemplate, productModalTemplate;
 
 $(document).ready(function() {
     // Check what is in user's cart - any products that are in the cart should have the number of items in the product widget with relevant buttons
@@ -6,7 +6,7 @@ $(document).ready(function() {
     swapBaskets();
 
     productData = $('#products').data('productData');
-    var basketData = {}; // Load basket data asynchronously from DB
+    basketData = {}; // Load basket data asynchronously from DB
     var sendBasketData;
     var basketMaximised = false;
 
@@ -125,13 +125,6 @@ $(document).ready(function() {
         $('#basket').unbind();
         basketMaximised = true;
     }
-
-    function convertArrayToObject(arr) {
-        let obj = {};
-        for (let i = 0; i < arr.length; ++i)
-          obj[i] = arr[i];
-        return obj;
-      }
 
     // When user clicks add button on a product, add that number of products to cart and replace add button with - and +
     // Every time the user modifies their cart (and after a gap of maybe 5 seconds), make a post request to the back end to update their shopping cart in a table
@@ -349,12 +342,25 @@ $(document).ready(function() {
             checkoutButton.style.pointerEvents = 'auto';
             checkoutButton.style.cursor = 'pointer';
             checkoutButton.innerHTML = 'Checkout';
-            $(checkoutButton).click(function() {
-                $(this).html('<img src="images/spinner-unscreen.gif" height="100%" width="100%" style="object-fit: contain;">');
+            $(checkoutButton).click(function(e) {
+                e.preventDefault();
+                if (handleCheckout()) {
+                    window.location.replace($(this).attr('href'));
+                }
+                return true;
             });
         }
     }
 })
+
+function handleCheckout() {
+    if ($('#basket-items').find('.basket-widget').length === 0) {
+        alert('You cannot checkout a basket with nothing in it');
+        return false;
+    }
+    $(this).html('<img src="images/spinner-unscreen.gif" height="100%" width="100%" style="object-fit: contain;">');
+    return true;
+}
 
 function reformatProductGrid() {
     let gridWidth = $('#products-grid').width();

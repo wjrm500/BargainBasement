@@ -28,3 +28,22 @@ function multiplyCurrencyString(currencyString, multiplier) {
     result = float * multiplier;
     return convertFloatToCurrencyString(result);
 }
+
+function convertArrayToObject(arr) {
+    let obj = {};
+    for (let i = 0; i < arr.length; ++i)
+      obj[i] = arr[i];
+    return obj;
+}
+
+function convertObjectToArray(obj) {
+    let arr = [];
+    for (let i in obj)
+      arr.push(obj[i]);
+    return arr;
+}
+
+function camelCaseToWords(string) {
+    let result = string.replace(/([A-Z])/g, " $1");
+    return result.charAt(0).toUpperCase() + result.slice(1);
+}

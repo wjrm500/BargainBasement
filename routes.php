@@ -20,7 +20,7 @@ $app->router->controller('/register', [AccountController::class, 'register']);
 
 $app->router->get('/logout', [AccountController::class, 'logout']);
 
-$app->router->get('/profile', [AccountController::class, 'profile']);
+$app->router->get('/account', [AccountController::class, 'account']);
 
 $app->router->get('/shop', [ShopController::class, 'index']);
 $app->router->get('/shop/ajax/get-templates', [ShopController::class, 'getTemplates']);

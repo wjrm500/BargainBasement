@@ -50,4 +50,10 @@ class User extends DbModel
     {
         return [];
     }
+
+    public function orders()
+    {
+        $shoppingCarts = ShoppingCart::find(['user_id' => $this->id], true);
+        return array_filter($shoppingCarts, fn($cart) => $cart->paid());
+    }
 }

@@ -70,9 +70,18 @@ class AccountController extends Controller
         return $response->redirect('/');
     }
 
-    public function profile(Request $request, Response $response)
+    public function account(Request $request, Response $response)
     {
-        $this->layoutTree->customise(ViewConsts::PROFILE);
-        return $this->render();
+        $this->addScript('/js/account.js');
+        $this->layoutTree->customise(ViewConsts::ACCOUNT);
+        $user = $this->app->getUser();
+        $country = Country::find(['id' => $user->country_id])->name;
+        $orders = $user->orders();
+        usort($orders, function($a, $b) {return strcmp($b->updated_at, $a->updated_at);});
+        return $this->render([
+            'country' => $country,
+            'email'   => $user->username,
+            'orders'  => $orders
+        ]);
     }
 }

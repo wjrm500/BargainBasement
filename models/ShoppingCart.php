@@ -45,9 +45,14 @@ class ShoppingCart extends DbModel
         return count($this->getItems());
     }
 
+    public function payment()
+    {
+        return Payment::find(['shopping_cart_id'=> $this->id]);
+    }
+
     public function paid()
     {
-        return boolval(Payment::find(['shopping_cart_id'=> $this->id]));
+        return boolval($this->payment());
     }
 
     public static function findCurrent($userId)
@@ -59,6 +64,6 @@ class ShoppingCart extends DbModel
 
     public function getOverallPrice()
     {
-        return array_reduce($this->getItems(), fn($carry, $item) => $carry + (float) $item->totalPrice(), 0);
+        return $this->paid() ? $this->payment()->price_paid : array_reduce($this->getItems(), fn($carry, $item) => $carry + (float) $item->totalPrice(), 0);
     }
 }

@@ -86,7 +86,7 @@ function createTableFromJSON(json, container) {
         }
     }
     let table = document.createElement("table");
-    ['table', 'shopping-cart-table'].forEach((x) => table.classList.add(x));
+    ['table', 'table-striped', 'shopping-cart-table'].forEach((x) => table.classList.add(x));
     let tr = table.insertRow(-1);
     for (let i = 0; i < col.length; i++) {
         let th = document.createElement("th");
@@ -133,20 +133,6 @@ function shoppingCartsEqual(a, b) {
     }
     return true;
 }
-
-// Separate file for this
-function camelCaseToWords(string) {
-    let result = string.replace(/([A-Z])/g, " $1");
-    return result.charAt(0).toUpperCase() + result.slice(1);
-}
-
-// Separate file for this
-function convertObjectToArray(obj) {
-    let arr = [];
-    for (let i in obj)
-      arr.push(obj[i]);
-    return arr;
-  }
 
 // Duplicate of function inside shopping.js
 function convertCurrencyStringToFloat(currencyString) {

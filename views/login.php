@@ -20,7 +20,7 @@
             </div>
         </form>
         <div class="col-6 offset-3 d-flex flex-column align-items-center">
-            <label class="text-center font-weight-bold mb-2">Don't have an account?</label>
+            <label class="text-center mb-2"><strong>Don't have an account?</strong></label>
             <a href="<?= $app->request->isRedirected() ? $app->response->getForwardedRedirectUrl($app->request, '/register') : '/register' ?>" class="btn btn-success">Register here</a>
         </div>
     </div>
